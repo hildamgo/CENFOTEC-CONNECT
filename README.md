@@ -125,10 +125,10 @@ CENFOTEC-CONNECT/
 │
 ├── assets/
 ├── css/
-├── js/
-├── pages/
 ├── data/
 ├── docs/
+├── js/
+├── pages/
 ├── tests/
-├── README.md
-└── index.html
+├── index.html
+└── README.md
