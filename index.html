@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CENFOTEC CONNECT</title>
+
+    <link rel="stylesheet" href="css/styles.css"
+</head>
+<body>
+    <div class="login-container">
+    </div class="login-card">
+        <h1>CENFOTEC CONNECT</h1>
+        <p>Gestion de Actividades Universitarias</p>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Correo Electronico</label>
+                <input
+                    type="email"
+                    id="correo"
+                    required
+                    >
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input
+                    type="password"
+                    id="password"
+                    required
+                    >
+            </div>
+
+            <button type="submit">
+                Iniciar Sesión
+            </button>
+
+        </form>
+
+        <p>
+            <a href="pages/recuperar-password.html">
+                ¿Olvidó su contraseña?
+            </a>
+        </p>
+
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    
+</body>
+</html>
