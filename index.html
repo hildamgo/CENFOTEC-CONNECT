@@ -1,51 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CENFOTEC CONNECT</title>
-
-    <link rel="stylesheet" href="css/styles.css"
+  <meta charset="utf-8">
+  <title>Cenfotec Connect - Administración</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="login-container">
-    </div class="login-card">
-        <h1>CENFOTEC CONNECT</h1>
-        <p>Gestion de Actividades Universitarias</p>
-        <form id="loginForm">
-            <div class="form-group">
-                <label>Correo Electronico</label>
-                <input
-                    type="email"
-                    id="correo"
-                    required
-                    >
-            </div>
-            <div class="form-group">
-                <label>Contraseña</label>
-                <input
-                    type="password"
-                    id="password"
-                    required
-                    >
-            </div>
-
-            <button type="submit">
-                Iniciar Sesión
-            </button>
-
-        </form>
-
-        <p>
-            <a href="pages/recuperar-password.html">
-                ¿Olvidó su contraseña?
-            </a>
-        </p>
-
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <div class="brand">
+        <img src="logo.png" alt="CENFOTEC logo" class="logo" />
+        <div>
+          <h1 class="site-title">Cenfotec Connect</h1>
+          <p class="site-subtitle">Gestión de actividades y recursos</p>
+        </div>
+      </div>
+      <nav class="main-nav" role="navigation" aria-label="Navegación principal">
+        <button id="nav-dashboard" class="nav-btn">Panel</button>
+        <button id="nav-spaces" class="nav-btn">Gestión de Espacios</button>
+        <button id="nav-responsibles" class="nav-btn">Gestión de Responsables</button>
+        <button id="nav-activities" class="nav-btn">Gestión de Actividades</button>
+        <button id="nav-users" class="nav-btn">Gestión de Usuarios</button>
+      </nav>
     </div>
+  </header>
 
-    <script src="js/storage.js"></script>
-    <script src="js/auth.js"></script>
-    
+  <main id="app" role="main" aria-live="polite">
+    <!-- Vistas inyectadas dinámicamente -->
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div>Universidad CENFOTEC — Cenfotec Connect</div>
+      <div class="footer-right">Contacto: soporte@cenfotec.ac.cr</div>
+    </div>
+  </footer>
+
+  <!-- Plantilla: Dashboard (placeholder para futuros módulos) -->
+  <template id="tpl-dashboard">
+    <section class="view">
+      <h2>Panel Principal</h2>
+      <div class="card">
+        <p>Resumen rápido: número de actividades, espacios y responsables.</p>
+        <ul id="dashboard-stats">
+          <li>Actividades: <span id="stat-activities">—</span></li>
+          <li>Espacios: <span id="stat-spaces">—</span></li>
+          <li>Responsables: <span id="stat-responsibles">—</span></li>
+        </ul>
+      </div>
+    </section>
+  </template>
+
+  <!-- Plantilla: Espacios / Lugares -->
+  <template id="tpl-spaces">
+    <section class="view" aria-labelledby="title-spaces">
+      <h2 id="title-spaces">Gestión de Espacios</h2>
+
+      <div class="card">
+        <h3>Registrar Espacio</h3>
+        <div id="msg-spaces" class="error" role="status"></div>
+        <form id="spaceForm" novalidate>
+          <label>Nombre <input id="name" name="name" required></label>
+          <label>Sede <input id="campus" name="campus" required></label>
+          <label>Descripción <textarea id="description" name="description"></textarea></label>
+          <div class="form-actions">
+            <button type="submit">Guardar</button>
+            <button type="button" id="reset-space">Limpiar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Listado de Espacios</h3>
+        <table id="spacesTable" aria-describedby="spaces-desc">
+          <caption id="spaces-desc">Lista de espacios registrados</caption>
+          <thead><tr><th>Nombre</th><th>Sede</th><th>Descripción</th><th>Acciones</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </template>
+
+  <!-- Plantilla: Responsables -->
+  <template id="tpl-responsibles">
+    <section class="view" aria-labelledby="title-resp">
+      <h2 id="title-resp">Gestión de Responsables</h2>
+
+      <div class="card">
+        <h3>Registrar Responsable</h3>
+        <div id="msg-resp" class="error" role="status"></div>
+        <form id="respForm" novalidate>
+          <label>Identificación <input id="identification" name="identification" required></label>
+          <label>Nombre <input id="firstName" name="firstName" required></label>
+          <label>Apellido <input id="lastName" name="lastName" required></label>
+          <label>Correo <input id="email" name="email" type="email" required></label>
+          <label>Teléfono (separar por coma) <input id="phones" name="phones" required></label>
+          <label>Especialidad <input id="specialty" name="specialty"></label>
+          <label>Institución <input id="institution" name="institution"></label>
+          <label>Biografía <textarea id="biography" name="biography"></textarea></label>
+          <div class="form-actions">
+            <button type="submit">Guardar</button>
+            <button type="button" id="reset-resp">Limpiar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Listado de Responsables</h3>
+        <table id="listTable" aria-describedby="resp-desc">
+          <caption id="resp-desc">Lista de responsables registrados</caption>
+          <thead><tr><th>Identificación</th><th>Nombre</th><th>Correo</th><th>Teléfonos</th><th>Acciones</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </template>
+
+  <!-- Plantilla: Actividades (placeholder mínimo para integridad) -->
+  <template id="tpl-activities">
+    <section class="view">
+      <h2>Gestión de Actividades</h2>
+      <div class="card">
+        <p>Este módulo se integra con Espacios y Responsables. Aquí se crearán actividades y se asignarán espacios y responsables.</p>
+      </div>
+    </section>
+  </template>
+
+  <!-- Plantilla: Usuarios (placeholder mínimo) -->
+  <template id="tpl-users">
+    <section class="view">
+      <h2>Gestión de Usuarios</h2>
+      <div class="card">
+        <p>Administración de administradores: creación, edición, activación y desactivación.</p>
+      </div>
+    </section>
+  </template>
+
+  <script src="app.js" defer></script>
 </body>
 </html>
