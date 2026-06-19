@@ -13,152 +13,93 @@
         <img src = "assets/Images/Logo Oficial.jpeg" alt="Logo CENFOTEC Connect" class="logo" />
         <div>
           <h1 class="site-title">CENFOTEC Connect</h1>
-          <p class="site-subtitle">Gestión de actividades y recursos</p>
+          <nav class="menu">
+            <a href="index.html">Inicio</a>
+            <a href="login.html">Iniciar sesión</a>
+            <a href="usuarios.html">Usuarios</a>
+            <a href="actividades.html">Actividades</a>
+            <a href="espacios.html">Lugares</a>
+            <a href="responsables.html">Responsables</a>
+            <a href="participantes.html">Participantes</a>
+            <a href="inscripciones.html">Inscripciones</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="contenedor">
+            <h2>Bienvenido a CENFOTEC Connect</h2>
+            <p>
+                Plataforma web academica para administrar actividades universitarias,
+                espacios, responsables, participantes e inscripciones desde un solo lugar.
+            </p>
+            <a class="boton" href="login.html">Ingresar al sistema</a>
         </div>
-      </div>
-
-      <nav class="main-nav" role="navigation" aria-label="Navegación principal">
-        <button id="nav-dashboard" class="nav-btn" aria-controls="view">Panel</button>
-        <button id="nav-spaces" class="nav-btn" aria-controls="view">Gestión de Espacios</button>
-        <button id="nav-responsibles" class="nav-btn" aria-controls="view">Gestión de Responsables</button>
-        <button id="nav-activities" class="nav-btn" aria-controls="view">Gestión de Actividades</button>
-        <button id="nav-users" class="nav-btn" aria-controls="view">Gestión de Usuarios</button>
-        <button id="nav-participants" class="nav-btn">Gestión de Participantes</button>
-        <button id="nav-inscriptions" class="nav-btn">Gestión de Inscripciones</button>
-
-      </nav>
-    </div>
-  </header>
-
-  <main id="app" role="main" aria-live="polite">
-    <!-- Vistas inyectadas dinámicamente -->
-  </main>
-
-  <footer class="site-footer" role="contentinfo">
-    <div class="footer-inner">
-      <div>Universidad CENFOTEC — CENFOTEC Connect</div>
-      <div class="footer-right">Contacto: soporte@cenfotec.ac.cr</div>
-    </div>
-  </footer>
-
-  <!-- Plantillas de vistas -->
-  <template id="tpl-dashboard">
-    <section class="view" aria-labelledby="title-dashboard">
-      <h2 id="title-dashboard">Panel Principal</h2>
-      <div class="card">
-        <p>Resumen rápido del sistema.</p>
-        <ul id="dashboard-stats" class="stats-list">
-          <li>Actividades: <strong id="stat-activities">—</strong></li>
-          <li>Espacios: <strong id="stat-spaces">—</strong></li>
-          <li>Responsables: <strong id="stat-responsibles">—</strong></li>
-        </ul>
-      </div>
     </section>
-  </template>
 
-  <template id="tpl-spaces">
-    <section class="view" aria-labelledby="title-spaces">
-      <h2 id="title-spaces">Gestión de Espacios</h2>
+    <section class="Seccion">
+        <div class="contenedor">
+            <h2>Modulos del sistema</h2>
 
-      <div class="card">
-        <h3>Registrar Espacio</h3>
-        <div id="msg-spaces" class="msg error" role="status" aria-live="polite"></div>
-        <form id="spaceForm" class="form" novalidate>
-          <label>Nombre
-            <input id="name" name="name" required autocomplete="off" />
-          </label>
-          <label>Sede
-            <input id="campus" name="campus" required autocomplete="off" />
-          </label>
-          <label>Descripción
-            <textarea id="description" name="description" rows="3"></textarea>
-          </label>
-          <div class="form-actions">
-            <button type="submit" class="btn primary">Guardar</button>
-            <button type="button" id="reset-space" class="btn">Limpiar</button>
-          </div>
-        </form>
-      </div>
+            <div class="tarjeta">
+                <h3>Usuarios</h3>
+                <p>
+                    Registro y administracion de usuarios administradores,
+                    roles, estados y acceso al sistema.
+                </p>
+                <a class="boton" href="usuarios.html">Abrir</a>
+            </div>
 
-      <div class="card">
-        <h3>Listado de Espacios</h3>
-        <table id="spacesTable" class="table" aria-describedby="spaces-desc">
-          <caption id="spaces-desc">Lista de espacios registrados</caption>
-          <thead><tr><th>Nombre</th><th>Sede</th><th>Descripción</th><th>Acciones</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
+            <div class="tarjeta">
+                <h3>Actividades</h3>
+                <p>
+                    Creacion, consulta, edicion, busqueda y control de cupos
+                    de actividades universitarias.
+                </p>
+                <a class="boton" href="actividades.html">Abrir</a>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Lugares / Espacios</h3>
+                <p>
+                    Registro de espacios fisicos por sede y seleccion de lugares
+                    dentro o fuera del campus.
+                </p>
+                <a class="boton" href="espacios.html">Abrir</a>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Responsables</h3>
+                <p>
+                    Administracion de expositores y moderadores asignables
+                    a las actividades.
+                </p>
+                <a class="boton" href="responsables.html">Abrir</a>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Participantes</h3>
+                <p>
+                    Registro, consulta y busqueda de personas participantes
+                    en actividades.
+                </p>
+                <a class="boton" href="participantes.html">Abrir</a>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Inscripciones</h3>
+                <p>
+                    Control de inscripciones, cancelaciones y disponibilidad
+                    de cupos.
+                </p>
+                <a class="boton" href="inscripciones.html">Abrir</a>
+            </div>
+        </div>
     </section>
-  </template>
 
-  <template id="tpl-responsibles">
-    <section class="view" aria-labelledby="title-resp">
-      <h2 id="title-resp">Gestión de Responsables</h2>
-
-      <div class="card">
-        <h3>Registrar Responsable</h3>
-        <div id="msg-resp" class="msg error" role="status" aria-live="polite"></div>
-        <form id="respForm" class="form" novalidate>
-          <label>Identificación
-            <input id="identification" name="identification" required autocomplete="off" />
-          </label>
-          <label>Nombre
-            <input id="firstName" name="firstName" required autocomplete="off" />
-          </label>
-          <label>Apellido
-            <input id="lastName" name="lastName" required autocomplete="off" />
-          </label>
-          <label>Correo
-            <input id="email" name="email" type="email" required autocomplete="off" />
-          </label>
-          <label>Teléfono (separar por coma)
-            <input id="phones" name="phones" required autocomplete="off" />
-          </label>
-          <label>Especialidad
-            <input id="specialty" name="specialty" autocomplete="off" />
-          </label>
-          <label>Institución
-            <input id="institution" name="institution" autocomplete="off" />
-          </label>
-          <label>Biografía
-            <textarea id="biography" name="biography" rows="3"></textarea>
-          </label>
-          <div class="form-actions">
-            <button type="submit" class="btn primary">Guardar</button>
-            <button type="button" id="reset-resp" class="btn">Limpiar</button>
-          </div>
-        </form>
-      </div>
-
-      <div class="card">
-        <h3>Listado de Responsables</h3>
-        <table id="listTable" class="table" aria-describedby="resp-desc">
-          <caption id="resp-desc">Lista de responsables registrados</caption>
-          <thead><tr><th>Identificación</th><th>Nombre</th><th>Correo</th><th>Teléfonos</th><th>Acciones</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-  </template>
-
-  <template id="tpl-activities">
-    <section class="view" aria-labelledby="title-activities">
-      <h2 id="title-activities">Gestión de Actividades</h2>
-      <div class="card">
-        <p>Módulo integrado con Espacios y Responsables. Implementación posterior.</p>
-      </div>
-    </section>
-  </template>
-
-  <template id="tpl-users">
-    <section class="view" aria-labelledby="title-users">
-      <h2 id="title-users">Gestión de Usuarios</h2>
-      <div class="card">
-        <p>Módulo de administración de administradores. Implementación posterior.</p>
-      </div>
-    </section>
-  </template>
-
-  <script src="app.js" defer></script>
+<footer>
+    <p>&copy; 2026 CENFOTEC Connect.</p>
+</footer>
 </body>
 </html>

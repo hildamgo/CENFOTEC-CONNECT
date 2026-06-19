@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cenfotec Connect — Administración</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <header class="site-header" role="banner">
+        <div class="header-inner">
+          <div class="brand">
+            <img src = "assets/Images/Logo Oficial.jpeg" alt="Logo CENFOTEC Connect" class="logo" />
+            <div>
+              <h1 class="site-title">CENFOTEC Connect</h1>
+              <nav class="menu">
+                <a href="index.html">Inicio</a>
+                <a href="espacios.html">Lugares</a>
+                <a href="responsables.html">Responsables</a>
+                <a href="actividad_lugar.html">Lugar de actividad</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="seccion">
+            <div class="contenedor">
+                <h2>Gestion de Espacios</h2>
+                <p>Registro de Espacios por Sede</p>
+
+                <form id="formEspacio" class="formulario">
+                    <input type="hidden" id="EspacioId">
+
+                    <label for="nombreEspacio">Nombre del Espacio</label>
+                    <input type="text" id="nombreEspacio" placeholder="Auditorio, Laboratorio 1, Parqueo">
+                    <p class="mensaje-error" id="errorNombreEspacio"></p>
+
+                    <label for="estadoEspacio">Estado</label>
+                    <select id="estadoEspacio">
+                        <option value="Disponible">Disponible</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+
+                    <button class="boton" type="submit">Guardar Espacio</button>
+                    <button class="boton secundario" type="button" id="btnLimpiarEspacio">Limpiar</button>
+                </form>
+
+                <div class="busqueda">
+                    <label for="buscarEspacio">Buscar Espacio</label>
+                    <input type="search" id="buscarEspacio" placeholder="Buscar por nombre o sede.">
+                </div>
+
+                <div class="tabla-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Sede</th>
+                                <th>Estado</th>
+                                <th>Fecha de Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    
+</body>
