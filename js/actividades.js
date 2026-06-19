@@ -1,0 +1,233 @@
+const formActividad = document.getElementById("formActividad");
+const tipoLugar = document.getElementById("tipoLugar");
+const grupoEspacioInterno = document.getElementById("grupoEspacioInterno");
+const grupoLugarExterno = document.getElementById("grupoLugarExterno");
+const espacioActividad = document.getElementById("espacioActividad");
+const responsableActividad = document.getElementById("responsableActividad");
+const buscarActividad = document.getElementById("buscarActividad");
+const tablaActividades = document.getElementById("tablaActividades");
+
+function cargarEspacios() {
+    const espacios = obtenerDatos(CLAVE_ESPACIOS);
+
+    espacioActividad.innerHTML = '<option value="">Seleccione un espacio</option>';
+
+    espacios.forEach(function(espacio) {
+        if (espacio.estado === "Disponible") {
+            const opcion = document.createElement("option");
+            opcion.value = espacio.id;
+            opcion.textContent = espacio.nombre + " - " + espacio.sede;
+            espacioActividad.appendChild(opcion);
+        }
+    });
+}
+
+function cargarResponsables() {
+    const responsables = obtenerDatos(CLAVE_RESPONSABLES);
+
+    responsableActividad.innerHTML = '<option value="">Seleccione un responsable</option>';
+
+    responsables.forEach(function(responsable) {
+        const opcion = document.createElement("option");
+        opcion.value = responsable.id;
+        opcion.textContent = responsable.nombre + " " + responsable.primerApellido + " " + responsable.segundoApellido;
+        responsableActividad.appendChild(opcion);
+    });
+}
+
+function cambiarTipoLugar() {
+    if (tipoLugar.value === "interno") {
+        grupoEspacioInterno.style.display = "block";
+        grupoLugarExterno.style.display = "none";
+    } else if (tipoLugar.value === "externo") {
+        grupoEspacioInterno.style.display = "none";
+        grupoLugarExterno.style.display = "block";
+    } else {
+        grupoEspacioInterno.style.display = "none";
+        grupoLugarExterno.style.display = "none";
+    }
+}
+
+function validarActividad() {
+    let valido = true;
+
+    if (!validarTexto("nombreActividad", "errorNombreActividad", "El nombre de la actividad", 3)) {
+        valido = false;
+    }
+
+    if (document.getElementById("categoriaActividad").value === "") {
+        mostrarError("errorCategoriaActividad", "Seleccione una categoria.");
+        marcarCampo("categoriaActividad", false);
+        valido = false;
+    } else {
+        limpiarError("errorCategoriaActividad");
+        marcarCampo("categoriaActividad", true);
+    }
+
+    if (!validarTexto("descripcionActividad", "errorDescripcionActividad", "La descripcion", 10)) {
+        valido = false;
+    }
+
+    if (document.getElementById("fechaActividad").value === "") {
+        mostrarError("errorFechaActividad", "Seleccione una fecha.");
+        marcarCampo("fechaActividad", false);
+        valido = false;
+    } else {
+        limpiarError("errorFechaActividad");
+        marcarCampo("fechaActividad", true);
+    }
+
+    if (document.getElementById("horaInicio").value === "") {
+        mostrarError("errorHoraInicio", "Seleccione la hora de inicio.");
+        marcarCampo("horaInicio", false);
+        valido = false;
+    } else {
+        limpiarError("errorHoraInicio");
+        marcarCampo("horaInicio", true);
+    }
+
+    if (document.getElementById("horaFin").value === "") {
+        mostrarError("errorHoraFin", "Seleccione la hora de fin.");
+        marcarCampo("horaFin", false);
+        valido = false;
+    } else {
+        limpiarError("errorHoraFin");
+        marcarCampo("horaFin", true);
+    }
+
+    if (tipoLugar.value === "") {
+        mostrarError("errorTipoLugar", "Seleccione el tipo de lugar.");
+        marcarCampo("tipoLugar", false);
+        valido = false;
+    } else {
+        limpiarError("errorTipoLugar");
+        marcarCampo("tipoLugar", true);
+    }
+
+    if (tipoLugar.value === "interno" && espacioActividad.value === "") {
+        mostrarError("errorEspacioActividad", "Seleccione un espacio registrado.");
+        marcarCampo("espacioActividad", false);
+        valido = false;
+    } else {
+        limpiarError("errorEspacioActividad");
+    }
+
+    if (tipoLugar.value === "externo" && !validarTexto("lugarExterno", "errorLugarExterno", "El lugar externo", 3)) {
+        valido = false;
+    }
+
+    const cupo = document.getElementById("cupoActividad").value;
+    if (cupo === "" || Number(cupo) <= 0) {
+        mostrarError("errorCupoActividad", "El cupo debe ser mayor a 0.");
+        marcarCampo("cupoActividad", false);
+        valido = false;
+    } else {
+        limpiarError("errorCupoActividad");
+        marcarCampo("cupoActividad", true);
+    }
+
+    if (responsableActividad.value === "") {
+        mostrarError("errorResponsableActividad", "Seleccione un responsable.");
+        marcarCampo("responsableActividad", false);
+        valido = false;
+    } else {
+        limpiarError("errorResponsableActividad");
+        marcarCampo("responsableActividad", true);
+    }
+
+    return valido;
+}
+
+function guardarActividad(evento) {
+    evento.preventDefault();
+
+    if (!validarActividad()) {
+        return;
+    }
+
+    const espacios = obtenerDatos(CLAVE_ESPACIOS);
+    const responsables = obtenerDatos(CLAVE_RESPONSABLES);
+
+    const espacioSeleccionado = espacios.find(function(espacio) {
+        return espacio.id === espacioActividad.value;
+    });
+
+    const responsableSeleccionado = responsables.find(function(responsable) {
+        return responsable.id === responsableActividad.value;
+    });
+
+    let lugar = document.getElementById("lugarExterno").value.trim();
+
+    if (tipoLugar.value === "interno") {
+        lugar = espacioSeleccionado.nombre + " - " + espacioSeleccionado.sede;
+    }
+
+    const actividad = {
+        id: crearId(),
+        nombre: document.getElementById("nombreActividad").value.trim(),
+        categoria: document.getElementById("categoriaActividad").value,
+        descripcion: document.getElementById("descripcionActividad").value.trim(),
+        fecha: document.getElementById("fechaActividad").value,
+        horaInicio: document.getElementById("horaInicio").value,
+        horaFin: document.getElementById("horaFin").value,
+        tipoLugar: tipoLugar.value,
+        espacioId: espacioActividad.value,
+        lugar: lugar,
+        cupoMaximo: Number(document.getElementById("cupoActividad").value),
+        cuposOcupados: 0,
+        responsableId: responsableActividad.value,
+        responsableNombre: responsableSeleccionado.nombre + " " + responsableSeleccionado.primerApellido,
+        estado: "Disponible"
+    };
+
+    const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
+    actividades.push(actividad);
+    guardarDatos(CLAVE_ACTIVIDADES, actividades);
+
+    formActividad.reset();
+    cambiarTipoLugar();
+    mostrarActividades();
+    alert("Actividad guardada correctamente.");
+}
+
+function mostrarActividades() {
+    const textoBusqueda = buscarActividad.value.toLowerCase();
+    const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
+
+    const filtradas = actividades.filter(function(actividad) {
+        const texto = actividad.nombre + " " +
+            actividad.lugar + " " +
+            actividad.responsableNombre + " " +
+            actividad.descripcion;
+
+        return texto.toLowerCase().includes(textoBusqueda);
+    });
+
+    tablaActividades.innerHTML = "";
+
+    filtradas.forEach(function(actividad) {
+        const fila = document.createElement("tr");
+
+        fila.innerHTML = `
+            <td>${actividad.nombre}</td>
+            <td>${actividad.categoria}</td>
+            <td>${actividad.fecha}</td>
+            <td>${actividad.horaInicio} - ${actividad.horaFin}</td>
+            <td>${actividad.lugar}</td>
+            <td>${actividad.cuposOcupados}/${actividad.cupoMaximo}</td>
+            <td>${actividad.responsableNombre}</td>
+            <td>${actividad.estado}</td>
+        `;
+
+        tablaActividades.appendChild(fila);
+    });
+}
+
+tipoLugar.addEventListener("change", cambiarTipoLugar);
+formActividad.addEventListener("submit", guardarActividad);
+buscarActividad.addEventListener("input", mostrarActividades);
+
+cargarEspacios();
+cargarResponsables();
+cambiarTipoLugar();
+mostrarActividades();

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Actividades</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <body>
+        <header class="site-header" role="banner">
+          <div class="header-inner">
+            <div class="brand">
+              <img src = "assets/Images/Logo Oficial.jpeg" alt="Logo CENFOTEC Connect" class="logo" />
+              <div>
+                <h1 class="site-title">CENFOTEC Connect</h1>
+                <nav class="menu">
+                  <a href="index.html">Inicio</a>
+                  <a href="login.html">Iniciar sesión</a>
+                  <a href="usuarios.html">Usuarios</a>
+                  <a href="actividades.html">Actividades</a>
+                  <a href="espacios.html">Lugares</a>
+                  <a href="responsables.html">Responsables</a>
+                  <a href="participantes.html">Participantes</a>
+                  <a href="inscripciones.html">Inscripciones</a>
+              </nav>
+          </div>
+      </header>
+
+    <main>
+        <section class="Seccion">
+            <div class="contenedor">
+                <h2>Gestion de Actividades</h2>
+                <p class="texto-ayuda">
+                    Registro de actividades con nombre, categoria, descripcion,
+                    horario, lugar, cupo maximo y responsable.
+                </p>
+
+                <form class="formulario" id="formActividad">
+                    <label for="nombreActividad">Nombre de la actividad</label>
+                    <input type="text" id="nombreActividad" placeholder="Ej: Charla de tecnologia">
+                    <p class="mensaje-error" id="errorNombreActividad"></p>
+
+                    <label for="categoriaActividad">Categoria</label>
+                    <select id="categoriaActividad">
+                        <option value="">Seleccione una categoria</option>
+                        <option value="Charla">Charla</option>
+                        <option value="Taller">Taller</option>
+                        <option value="Conferencia">Conferencia</option>
+                        <option value="Feria">Feria</option>
+                    </select>
+                    <p class="mensaje-error" id="errorCategoriaActividad"></p>
+
+                    <label for="descripcionActividad">Descripcion</label>
+                    <textarea id="descripcionActividad" rows="4" placeholder="Descripcion de la actividad"></textarea>
+                    <p class="mensaje-error" id="errorDescripcionActividad"></p>
+
+                    <label for="fechaActividad">Fecha</label>
+                    <input type="date" id="fechaActividad">
+                    <p class="mensaje-error" id="errorFechaActividad"></p>
+
+                    <label for="horaInicio">Hora inicio</label>
+                    <input type="time" id="horaInicio">
+                    <p class="mensaje-error" id="errorHoraInicio"></p>
+
+                    <label for="horaFin">Hora fin</label>
+                    <input type="time" id="horaFin">
+                    <p class="mensaje-error" id="errorHoraFin"></p>
+
+                    <label for="tipoLugar">Tipo de lugar</label>
+                    <select id="tipoLugar">
+                        <option value="">Seleccione una opcion</option>
+                        <option value="interno">Dentro de la universidad</option>
+                        <option value="externo">Fuera de la universidad</option>
+                    </select>
+                    <p class="mensaje-error" id="errorTipoLugar"></p>
+
+                    <div id="grupoEspacioInterno" class="grupo-oculto">
+                        <label for="espacioActividad">Espacio registrado</label>
+                        <select id="espacioActividad">
+                            <option value="">Seleccione un espacio</option>
+                        </select>
+                        <p class="mensaje-error" id="errorEspacioActividad"></p>
+                    </div>
+
+                    <div id="grupoLugarExterno" class="grupo-oculto">
+                        <label for="lugarExterno">Lugar externo</label>
+                        <input type="text" id="lugarExterno" placeholder="Ej: Hotel, empresa, auditorio externo">
+                        <p class="mensaje-error" id="errorLugarExterno"></p>
+                    </div>
+
+                    <label for="cupoActividad">Cupo maximo</label>
+                    <input type="number" id="cupoActividad" min="1" placeholder="Ej: 30">
+                    <p class="mensaje-error" id="errorCupoActividad"></p>
+
+                    <label for="responsableActividad">Responsable</label>
+                    <select id="responsableActividad">
+                        <option value="">Seleccione un responsable</option>
+                    </select>
+                    <p class="mensaje-error" id="errorResponsableActividad"></p>
+
+                    <button type="submit">Guardar actividad</button>
+                </form>
+
+                <div class="busqueda">
+                    <label for="buscarActividad">Buscar actividad</label>
+                    <input type="search" id="buscarActividad" placeholder="Buscar por nombre, lugar, responsable o descripcion">
+                </div>
+
+                <div class="tabla-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Categoria</th>
+                                <th>Fecha</th>
+                                <th>Horario</th>
+                                <th>Lugar</th>
+                                <th>Cupo</th>
+                                <th>Responsable</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaActividades"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 CENFOTEC Connect.</p>
+    </footer>
+
+    <script src="js/datos.js"></script>
+    <script src="js/actividades.js"></script>
+</body>
+</html>
