@@ -17,6 +17,9 @@ document.getElementById('nav-spaces').addEventListener('click', () => mostrarVis
 document.getElementById('nav-responsibles').addEventListener('click', () => mostrarVista('responsibles'));
 document.getElementById('nav-activities').addEventListener('click', () => mostrarVista('activities'));
 document.getElementById('nav-users').addEventListener('click', () => mostrarVista('users'));
+//Redirige las paginas  de participantes e isncripcciones, #duda#.
+document.getElementById('nav-participants').addEventListener('click', () => {window.location.href = 'pages/participantes.html';});
+document.getElementById('nav-inscriptions').addEventListener('click', () => {window.location.href = 'pages/inscripciones.html';});
 
 // Vista inicial
 mostrarVista('dashboard');
