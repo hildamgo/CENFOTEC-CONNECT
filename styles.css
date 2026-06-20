@@ -455,3 +455,17 @@ td button {
 td button:hover {
   background-color: #fff0ef;
 }
+td .btn-editar {
+  background: none;
+  border: 1px solid #1a73e8;
+  border-radius: 5px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #1a73e8;
+  margin-right: 6px;
+}
+
+td .btn-editar:hover {
+  background-color: #e8f0fe;
+}
