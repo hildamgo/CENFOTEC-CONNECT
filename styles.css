@@ -8,6 +8,7 @@
     --gap:12px;
     --max-width:1100px;
   }
+  
   *{
     margin: 0;
     padding: 0;
@@ -236,6 +237,23 @@ th{
     display: block;
     width: 520px;
 }
+
+.hero-imagen{
+  width: 100%;
+  background-color: #FFFFFF;
+}
+
+.hero-imagen img{
+  width: 100%;
+  display: block;
+}
+
+.tarjeta-grande{
+  display: block;
+  width: 100%;
+  min-height: auto;
+}
+
 .foto-integrante{
   width: 100%;
   height: 180px;
