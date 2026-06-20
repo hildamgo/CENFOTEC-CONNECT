@@ -53,6 +53,29 @@
         </div>
     </div>
 
+    <div class="seccion" id="seccion-edicion" style="display: none;">
+        <p class="seccion-label">Editar administrador</p>
+
+        <div class="campo">
+            <label for="edit-nombre">Nombre completo<span class="req">*</span></label>
+            <input type="text" id="edit-nombre" placeholder="Ej. Paula Porras" maxlength="50" />
+            <span class="error-msg" id="err-edit-nombre"></span>
+        </div>
+
+        <div class="campo">
+            <label for="edit-correo">Correo electronico</label>
+            <input type="email" id="edit-correo" disabled />
+            <span style="font-size: 12px; color: #800;">
+                El correo no se puede modificar.
+            </span>
+        </div>
+
+        <div class="acciones">
+            <button class="btn-secundario" onclick="cerrarEdicion()">Cancelar</button>
+            <button class="btn-primario" onclick="guardarEdicion()">Guardar cambios</button>
+        </div>
+    </div>
+
     <!--Y aqui se van a poner los botoncitos de acciones para el formulario-->
 
     <div class="acciones">
@@ -84,5 +107,7 @@
         <tbody id="admin-tbody"></tbody>
     </table>
 </div>
+
+
 </body>
 </html>
