@@ -165,3 +165,40 @@ function cerrarEdicion() {
 
     indiceEditando = null;
 }
+
+function guardarEdicion(){
+    const nombre = document.getElementById('edit-nombre').value.trim();
+    const rol    = document.getElementById('edit-rol').value;
+
+    document.getElementById('err-edit').textContent = '';
+    document.getElementById('err-edit-rol').textContent = '';
+    document.getElementById('edit-nombre').classList.remove('error');
+    document.getElementById('edit-rol').classList.remove('error');
+
+    let esValido = true;
+
+    if (nombre === ''){
+        document.getElementById('edit-nombre').classList.add('error');
+        document.getElementById('err-edit-nombre').textContent = 'El nombre es obligatorio;
+        esValido = false;
+    }
+
+    if (rol === ''){
+        document.getElementById('edit-rol').classList.add('error');
+        document.getElementById('err-edit-rol').textContent = 'Seleccione un rol;
+        esValido = false;
+    }
+
+    if (!esValido) {
+        return;
+    }
+
+    admins[IndiceEditando].nombre = nombre;
+    admins[IndiceEditando].rol    = rol;
+
+    renderizarTabla();
+
+    cerrarEdicion();
+
+    alert ('Administrador "' +  nombre + '" actualizado correctamente');
+}
