@@ -122,6 +122,7 @@ function renderizarTabla() {
         '<td>' + admin.correo + '</td>' +
         '<td>' + rolTexto + '</td>' +
         '<td>' +
+        '<button onclick="abrirEdicion(' + indice + ')">Editar</button>' +
         '<button onclick="eliminarAdmin(' + indice + ')">Eliminar</button>' +
         '</td>';
 
