@@ -218,3 +218,13 @@ function guardarEdicion(){
 
     alert ('Administrador "' +  nombre + '" actualizado correctamente');
 }
+
+function toggleEstado(indice){
+    const admin = admins [indice];
+    const accion = admin.estado === 'activo' ? 'desactivar' : 'activar';
+
+    if (confirm ('¿Desea ' + accion + 'a "' + admin.nombre + '"?')) {
+        admins[indice].estado = admin.estado === 'activo' ?  'inactivo':"activo";
+        renderizarTabla();
+        }
+}
