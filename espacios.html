@@ -7,72 +7,52 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <header class="site-header" role="banner">
-        <div class="header-inner">
-          <div class="brand">
-            <img src = "assets/Images/Logo Oficial.jpeg" alt="Logo CENFOTEC Connect" class="logo" />
-            <div>
-              <h1 class="site-title">CENFOTEC Connect</h1>
-              <nav class="menu">
-                <a href="index.html">Inicio</a>
-                <a href="espacios.html">Lugares</a>
-                <a href="responsables.html">Responsables</a>
-                <a href="actividad_lugar.html">Lugar de actividad</a>
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+        <div class="brand">
+          <img src = "assets/Images/Logo Oficial.jpeg" alt="Logo CENFOTEC Connect" class="logo" />
+          <div>
+            <h1 class="site-title">CENFOTEC Connect</h1>
+            <nav class="menu">
+              <a href="index.html">Inicio</a>
+              <a href="login.html">Iniciar sesión</a>
+              <a href="usuarios.html">Usuarios</a>
+              <a href="actividades.html">Actividades</a>
+              <a href="espacios.html">Lugares</a>
+              <a href="responsables.html">Responsables</a>
+              <a href="participantes.html">Participantes</a>
+              <a href="inscripciones.html">Inscripciones</a>
             </nav>
+          </div>
+      </div>
+  </header>
+  <main>
+    <section class="hero">
+        <div class="contenedor">
+            <h2> Gestion adminisrativa de Actividades</h2>
+            <p>
+                Modulos para registrar espacios fisicos, responsables y lugares
+                de actividades dentro o fuera del campus universitario.
+            </p>
+            <a class="boton" href="espacios.html">Gestionar espacios</a>
         </div>
-    </header>
-
-    <main>
-        <section class="seccion">
-            <div class="contenedor">
-                <h2>Gestion de Espacios</h2>
-                <p>Registro de Espacios por Sede</p>
-
-                <form id="formEspacio" class="formulario">
-                    <input type="hidden" id="EspacioId">
-
-                    <label for="nombreEspacio">Nombre del Espacio</label>
-                    <input type="text" id="nombreEspacio" placeholder="Auditorio, Laboratorio 1, Parqueo">
-                    <p class="mensaje-error" id="errorNombreEspacio"></p>
-
-                    <label for="estadoEspacio">Estado</label>
-                    <select id="estadoEspacio">
-                        <option value="Disponible">Disponible</option>
-                        <option value="Inactivo">Inactivo</option>
-                    </select>
-
-                    <button class="boton" type="submit">Guardar Espacio</button>
-                    <button class="boton secundario" type="button" id="btnLimpiarEspacio">Limpiar</button>
-                </form>
-
-                <div class="busqueda">
-                    <label for="buscarEspacio">Buscar Espacio</label>
-                    <input type="search" id="buscarEspacio" placeholder="Buscar por nombre o sede.">
-                </div>
-
-                <div class="tabla-contenedor">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Sede</th>
-                                <th>Estado</th>
-                                <th>Fecha de Registro</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaEspacios"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 CENFOTEC Connect.</p>
-    </footer>
-
-    <script src="js/datos.js"></script>
-    <script src="js/espacios.js"></script>
+    </section>
+    <section class="seleccion">
+        <div class="contenedor">
+            <h2>Modulos Incluidos</h2>
+        <div class="tarjeta">
+            <h3>Lugares / Espacios</h3>
+            <p>Registro por sede y validacion de duplicados.</p>
+        </div>
+        <div class="tarjeta">
+            <h3>Responsables</h3>
+            <p>Registro de expositores o moderadores con busqueda y edicion.</p>
+        </div>
+        </div>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2026 CENFOTEC Connect.</p>
+  </footer>
 </body>
 </html>
