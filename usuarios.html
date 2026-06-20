@@ -10,6 +10,7 @@
 
 <body>
 <div class = "page">
+
     <h1>Registrar administrador</h1>
     <p> Solo el Administrador General puede crear nuevos usuarios en el sistema.</p>
 
@@ -19,7 +20,7 @@
 
     <!--Aqui el admin podria su nombre, puse el el mío como ejemplo :D-->
     <div class="campo">
-        <label for="nombre">Nombre completo<span class="req">*</span></label>
+        <label for="nombre">Nombre completo <span class="req">*</span></label>
         <input type="text" id="nombre" placeholder="Ej. Paula Porras" maxlength="50" />
         <span class="error-msg" id="err-nombre"></span>
     </div>
@@ -44,7 +45,6 @@
 
     <!--Aqui va para la contraseña de los admins-->
     <div class="grid-2">
-
         <div class="campo">
             <label for="password">Contraseña <span class="req">*</span></label>
             <input type="password" id="password" placeholder="Minimo 8 caracteres" maxlength="64" />
@@ -57,8 +57,15 @@
             <span class="error-msg" id="err-confirmar"></span>
         </div>
     </div>
+        <!--Y aqui se van a poner los botoncitos de acciones para el formulario-->    
+    <div class="acciones">
+        <button class="btn-secundario" onclick="limpiarFormulario()">Limpiar</button>
+        <button class="btn-primario" onclick="guardarAdmin()">Registrar al administrador</button>
+    </div>
 
-    <div class="seccion" id="seccion-edicion" style="display: none;">
+</div>
+
+<div class="seccion" id="seccion-edicion" style="display: none;">
         <p class="seccion-label">Editar administrador</p>
 
         <div class="campo">
@@ -74,21 +81,22 @@
                 El correo no se puede modificar.
             </span>
         </div>
-    </div>
 
-        <!--Y aqui se van a poner los botoncitos de acciones para el formulario-->
+        <div class="campo">
+            <label for="edit-rol">Rol <span class="req">*</span></label>
+            <select id="edit-rol">
+                <option value="">Seleccione su rol</option>
+                <option value="GA">Administrador General</option>
+                <option value="AA">Administrador de actividades</option>
+            </select>
+            <span class="error-msg" id="err-edit-rol"></span>
+        </div>
 
         <div class="acciones">
             <button class="btn-secundario" onclick="cerrarEdicion()">Cancelar</button>
             <button class="btn-primario" onclick="guardarEdicion()">Guardar cambios</button>
         </div>
     </div>
-
-    <div class="acciones">
-        <button class="btn-secundario" onclick="limpiarFormulario()">Limpiar</button>
-        <button class="btn-primario" onclick="guardarAdmin()">Registrar al administrador</button>
-    </div>
-</div>
 
 <div class="seccion">
 
@@ -115,7 +123,7 @@
         <tbody id="admin-tbody"></tbody>
     </table>
 </div>
-</div>
 
+</div>
 </body>
 </html>
