@@ -91,10 +91,13 @@ function iniciarSesion() {
 
     intentosFallidos = 0;
 
+    guardarSesion(admin);
+    activarDeteccionInactividad();
+
     if (admin.rol === 'GA'){
-        alert('Bienvenido, ' + admin.nombre + '. Redirigiendo al panel de Administrador General.');
+        window.location.href = 'usuarios.html';
     } else if (admin.rol === 'AA') {
-        alert('Bienvenido, ' + admin.nombre + '. Redirigiendo al panal de Administrador de Actividades');
+        window.location.href = 'usuarios.html';
     }
 }
 
