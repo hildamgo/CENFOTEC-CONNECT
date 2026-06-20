@@ -1,5 +1,14 @@
 // Esta lista de administradores registrador es una mini base de datos temporal para contener esa info
-let admins = [];
+let admins = [
+    {
+        nombre:         'Administrador General',
+        correo:         'admin@connect.com',
+        password:       'cenfotec123',
+        rol:            'GA',
+        estado:         'activo',
+        fechaCreacion:  '20/06/2026'
+    }
+];
 
 function limpiarErrores(){
     const campos = ['nombre', 'correo', 'rol', 'password', 'confirmar'];
