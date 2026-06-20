@@ -138,3 +138,30 @@ function eliminarAdmin(indice) {
         renderizarTabla();
     }
 }
+
+let IndiceEditando = null;
+
+function abrirEdicion (indice){
+    indiceEditando = indice;
+
+    const admin = admins [indice];
+
+    document.getElementById('edit-nombre').value = admin.nombre;
+    document.getElementById('edit-correo').value = admin.correo;
+    document.getElementById('edit-rol').value = admin.rol;
+
+    document.getElementById('err-edit-nombre').textContent = '';
+    document.getElementById('err-edit-rol').textContent = '';
+    document.getElementById('edit-nombre').classList.remove('error');
+    document.getElementById('edit-rol').classList.remove('remove');
+
+    document.getElementById ('seccion-edicion').style.display = 'block';
+
+    document.getElementById('seccion-edicion').scrollIntoView({ behavior: 'smooth'});
+}
+
+function cerrarEdicion() {
+    document.getElementById('seccion-edicion').style.display = 'none';
+
+    indiceEditando = null;
+}
