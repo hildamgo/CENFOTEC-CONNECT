@@ -533,3 +533,34 @@ td .btn-editar:hover {
     font-size: 13px;
     color: #7a4100;
 }
+
+.barra-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.barra-superior span {
+    font-size: 13px;
+    color: #666;
+}
+
+.btn-cerrar-sesion {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: none;
+    border: 1px solid #d93025;
+    color: #d93025;
+    transition: background 0.15s;
+}
+
+.btn-cerrar-sesion:hover {
+    background-color: #fce8e6;
+}
