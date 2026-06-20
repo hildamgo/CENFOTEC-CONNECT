@@ -61,5 +61,28 @@
     </div>
 </div>
 
+<div class="seccion">
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <p class="seccion-label">Administradores registrados</p>
+    <span id="contador">0</span>
+    </div>
+
+    <p id="sin-datos" style="color:blue; font-size: 13px;">
+        Aun no hay administradores registrados.
+    </p>
+
+    <table id="admin-tabla" style="display: none; width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="admin-tbody"></tbody>
+    </table>
+</div>
 </body>
 </html>
