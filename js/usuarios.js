@@ -10,6 +10,20 @@ let admins = [
     }
 ];
 
+function verificarSesion(){
+    const sesionActiva = sessionStorage.getItem('sesionActiva');
+
+    if (sesionActiva !== 'true'){
+        window.location.href = 'login.html';
+        return;
+    }
+
+    activarDeteccionInactividad();
+
+}
+
+verificarSesion();
+
 function limpiarErrores(){
     const campos = ['nombre', 'correo', 'rol', 'password', 'confirmar'];
 
