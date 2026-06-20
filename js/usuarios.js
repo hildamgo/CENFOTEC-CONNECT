@@ -80,9 +80,15 @@ function guardarAdmin() {
     }
 
     admins.push({
-        nombre: nombre,
-        correo: correo,
-        rol:    rol,
+        nombre:         nombre,
+        correo:         correo,
+        rol:            rol,
+        estado:         'activo',
+        fechaCreacion:  new Date().toLocaleDateString('es-CR', {
+                            day:    '2-digit',
+                            month:  '2-digit',
+                            year:   'numeric'
+        })
     });
 
     renderizarTabla();
@@ -116,11 +122,17 @@ function renderizarTabla() {
         ? 'Administrador General'
         : 'Administrador de Actividades';
 
+        const estadoEtiqueta = admin.estado === 'activo'
+            ? '<span class="etiqueta-activo">Activo</span>'
+            : '<span class="etiqueta-inactivo">Inactivo</span>';
+
         const fila = document.createElement('tr');
         fila.innerHTML =
         '<td>' + admin.nombre + '</td>' +
         '<td>' + admin.correo + '</td>' +
         '<td>' + rolTexto + '</td>' +
+        '<td>' + estadoEtiquea + '</td>' +
+        '<td>' + admin.fechaCreacion + '</td>'
         '<td>' +
         '<button onclick="abrirEdicion(' + indice + ')">Editar</button>' +
         '<button onclick="eliminarAdmin(' + indice + ')">Eliminar</button>' +
@@ -179,13 +191,13 @@ function guardarEdicion(){
 
     if (nombre === ''){
         document.getElementById('edit-nombre').classList.add('error');
-        document.getElementById('err-edit-nombre').textContent = 'El nombre es obligatorio;
+        document.getElementById('err-edit-nombre').textContent = 'El nombre es obligatorio';
         esValido = false;
     }
 
     if (rol === ''){
         document.getElementById('edit-rol').classList.add('error');
-        document.getElementById('err-edit-rol').textContent = 'Seleccione un rol;
+        document.getElementById('err-edit-rol').textContent = 'Seleccione un rol';
         esValido = false;
     }
 
