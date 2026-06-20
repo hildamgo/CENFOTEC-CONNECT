@@ -126,15 +126,19 @@ function renderizarTabla() {
             ? '<span class="etiqueta-activo">Activo</span>'
             : '<span class="etiqueta-inactivo">Inactivo</span>';
 
+        const textoEstado = admin.estado === 'activo' ? 'Desactivar' : 'Activar';
+        const claseEstado = admin.estado === 'activo' ? 'btn-desactivar' : 'btn-activar';
+
         const fila = document.createElement('tr');
         fila.innerHTML =
         '<td>' + admin.nombre + '</td>' +
         '<td>' + admin.correo + '</td>' +
         '<td>' + rolTexto + '</td>' +
-        '<td>' + estadoEtiquea + '</td>' +
-        '<td>' + admin.fechaCreacion + '</td>'
+        '<td>' + estadoEtiqueta + '</td>' +
+        '<td>' + admin.fechaCreacion + '</td>' +
         '<td>' +
-        '<button onclick="abrirEdicion(' + indice + ')">Editar</button>' +
+        '<button class="btn-editar" onclick="abrirEdicion( '+ indice +')">Editar</button>' +
+        '<button class="' + claseEstado + '" onclick="toggleEstado(' +  indice + ')">' + textoEstado + '</button>' +
         '<button onclick="eliminarAdmin(' + indice + ')">Eliminar</button>' +
         '</td>';
 
@@ -165,7 +169,7 @@ function abrirEdicion (indice){
     document.getElementById('err-edit-nombre').textContent = '';
     document.getElementById('err-edit-rol').textContent = '';
     document.getElementById('edit-nombre').classList.remove('error');
-    document.getElementById('edit-rol').classList.remove('remove');
+    document.getElementById('edit-rol').classList.remove('error');
 
     document.getElementById ('seccion-edicion').style.display = 'block';
 
@@ -182,7 +186,7 @@ function guardarEdicion(){
     const nombre = document.getElementById('edit-nombre').value.trim();
     const rol    = document.getElementById('edit-rol').value;
 
-    document.getElementById('err-edit').textContent = '';
+    document.getElementById('err-edit-nombre').textContent = '';
     document.getElementById('err-edit-rol').textContent = '';
     document.getElementById('edit-nombre').classList.remove('error');
     document.getElementById('edit-rol').classList.remove('error');
@@ -205,8 +209,8 @@ function guardarEdicion(){
         return;
     }
 
-    admins[IndiceEditando].nombre = nombre;
-    admins[IndiceEditando].rol    = rol;
+    admins[indiceEditando].nombre = nombre;
+    admins[indiceEditando].rol    = rol;
 
     renderizarTabla();
 
