@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Iniciar sesion</title>
+        <link ref="stylesheet" href="styles.css" />
+    </head>
+
+    <body>
+        <div class="page-login">
+
+            <div class="login-card">
+
+                <!--Esta vendria siendo el saludo inicial a los que se van a logear-->
+                <div class="login-header">
+                    <h1>¡Bienvenido!</h1>
+                    <p>Ingrese sus datos para acceder al sistema.</p>
+                </div>
+                <!--Este espacio será para ingresar el correo de usuario :D-->
+                <div class="campo">
+                    <label for="login-correo">Correo electronico <span class="req">*</span></label>
+                    <input type="email" id="login-correo" placeholder="correo@ejemplo.com" />
+                    <span class="error-msg" id="err-login-correo"></span>
+                </div>
+                <!--Por acá para no irnos perdiendo, ponemos el espacio de contraseña-->
+                <div class="campo">
+                    <label for="login-password">Contraseña <span class="req">*</span></label>
+                    <input type="password" id="login-password" placeholder="Ingrese su contraseña" />
+                    <span class="error-msg" id="err-login-password"></span>
+                </div>
+                <!--Este seria el mensaje si los datos ingresados no estan relacionados con los que ya se encuentran en el sistema-->
+                <div id="error-login" class="error-login" style="display: none;">
+                    Datos incorrectos. Verifique su correo y contraseña.
+                </div>
+                <!--Para cuando se logueen varias veces, como base de seguridad, que se bloquee temporalmente-->
+                <div id="error-bloqueo" class="error-bloqueo" style="display: none;">
+                    Su cuenta ha sido bloqueada temporalmente por multiples intentos fallido.
+                    Intente nuevamente en <span id="tiempo-restante"></span> segundos.
+                </div>
+                <!--Y ya aqui esta el botoncito para el login-->
+                <div class="acciones" style="justify-content: center;">
+                    <button class="btn-primario" style="width: 100%" onclick="iniciarSesion()">
+                        Iniciar sesión
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <script src="js/login.js"></script>
+    </body>
+</html>
