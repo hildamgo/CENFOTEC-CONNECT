@@ -488,3 +488,48 @@ td .btn-editar:hover {
     background-color: #fce8e6;
     color: #a50e0e;
 }
+.page-login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+}
+
+.login-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.login-header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+.login-header p {
+    font-size: 13px;
+    color: #666;
+}
+.error-login {
+    background-color: #fce8e6;
+    border: 1px solid #f5c6c6;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #a50e0e;
+}
+.error-bloqueo {
+    background-color: #fef3e2;
+    border: 1px solid #f9d9a0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #7a4100;
+}
