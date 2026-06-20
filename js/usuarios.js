@@ -65,3 +65,75 @@ function limpiarFormulario(){
     document.getElementById('confirmar').value  = '';
     limpiarErrores();
 }
+
+function guardarAdmin() {
+    const nombre    = document.getElementById('nombre').value.trim();
+    const correo    = document.getElementById('correo').value.trim();
+    const rol       = document.getElementById('rol').value;
+    const password  = document.getElementById('password').value;
+    const confirmar = document.getElementById('confirmar').value;
+
+    limpiarErrores ();
+
+    if(!validarFormulario(nombre, correo, rol, password, confirmar)){
+        return;
+    }
+
+    admins.push({
+        nombre: nombre,
+        correo: correo,
+        rol:    rol,
+    });
+
+    renderizarTabla();
+
+    limpiarFormulario();
+
+    alert('Administrador "' + nombre + '" registrado correctamente.');
+}
+
+function renderizarTabla() {
+    const tbody         = document.getElementById('admin-tbody');
+    const sinDatos      = document.getElementById('sin-datos');
+    const tabla         = document.getElementById('admin-tabla');
+    const contadorEl    = document.getElementById('contador');
+    
+    contadorEl.textContent = admins.length;
+
+    if (admins.length === 0) {
+        sinDatos.style.display = 'block';
+        tabla.style.display    = 'none';
+        return;
+    }
+
+    sinDatos.style.display = 'none';
+    tabla.style.display = 'table';
+
+    tbody.innerHTML = '';
+
+    admins.forEach(function(admin, indice) {
+        const rolTexto = admin.rol === 'GA'
+        ? 'Administrador General'
+        : 'Administrador de Actividades';
+
+        const fila = document.createElement('tr');
+        fila.innerHTML =
+        '<td>' + admin.nombre + '</td>' +
+        '<td>' + admin.correo + '</td>' +
+        '<td>' + rolTexto + '</td>' +
+        '<td>' +
+        '<button onclick="eliminarAdmin(' + indice + ')">Eliminar</button>' +
+        '</td>';
+
+        tbody.appendChild(fila);
+    });
+}
+
+function eliminarAdmin(indice) {
+    const nombre = admins[indice].nombre;
+
+    if (confirm('¿Eliminar a "' + nombre + '"?')) {
+        admins.splice(indice, 1);
+        renderizarTabla();
+    }
+}
