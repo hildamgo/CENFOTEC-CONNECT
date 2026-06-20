@@ -147,12 +147,14 @@ function renderizarTabla() {
 }
 
 function eliminarAdmin(indice) {
-    const nombre = admins[indice].nombre;
+    const nombre = admins[indice];
 
-    if (confirm('¿Eliminar a "' + nombre + '"?')) {
-        admins.splice(indice, 1);
-        renderizarTabla();
+    if (admin.estado === 'activo') {
+        alert('No es posible eleminar a "' + admin.nombre + '" porque está activo. Si desea restringir su acceso, use la opcion Desactivar.');
+        return;
     }
+
+    alert('No es posible eliminar administradores del sistema para conservar la trazabilidad historica. Si desea restringir su acceso, use la opcion Desactivar.');
 }
 
 let indiceEditando = null;
