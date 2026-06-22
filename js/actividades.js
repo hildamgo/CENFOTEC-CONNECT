@@ -209,6 +209,7 @@ function mostrarActividades() {
         const fila = document.createElement("tr");
 
         fila.innerHTML = `
+            <td><span style="font-family: monospace; font-size: 11px; color: #888;">${actividad.id}</span></td>
             <td>${actividad.nombre}</td>
             <td>${actividad.categoria}</td>
             <td>${actividad.fecha}</td>
