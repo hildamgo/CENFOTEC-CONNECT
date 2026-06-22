@@ -564,3 +564,12 @@ td .btn-editar:hover {
 .btn-cerrar-sesion:hover {
     background-color: #fce8e6;
 }
+.enlace-olvide{
+    font-size: 12px;
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.enlace-olvide:hover{
+    text-decoration: underline;
+}
