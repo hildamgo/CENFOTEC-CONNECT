@@ -206,6 +206,9 @@ function mostrarActividades() {
     tablaActividades.innerHTML = "";
 
     filtradas.forEach(function(actividad) {
+
+        actividad = actualizarEstado(actividad);
+
         const fila = document.createElement("tr");
 
         fila.innerHTML = `
@@ -218,10 +221,40 @@ function mostrarActividades() {
             <td>${actividad.cuposOcupados}/${actividad.cupoMaximo}</td>
             <td>${actividad.responsableNombre}</td>
             <td>${actividad.estado}</td>
+            <td>
+                ${actividad.estado !== 'Cancelada' && actividad.estado !== 'Finalizada'
+                    ? `<button onclick="cancelarActividad"('${actividad.id}')">Cancelar</button>`
+                    : '-'
+
+                }
+            </td>
         `;
 
         tablaActividades.appendChild(fila);
     });
+}
+
+function actualizarEstado(actividad) {
+
+    if (actividad.estado === 'Cancelada') {
+        return actividad;
+    }
+
+    const fechaHoraFin = new Date(actividad.fecha + 'T' + actividad.horaFin);
+    const ahora        = new Date ();
+
+    if (ahora > fechaHoraFin) {
+        actividad.estado = 'Finalizada';
+        return actividad;
+    }
+
+    if (actividad.cupos0cupados >= actividad.cupoMaximo) {
+        actividad.estado = 'Llena';
+        return;
+    }
+
+    actividad.estado = 'Disponible';
+    return actividad;
 }
 
 tipoLugar.addEventListener("change", cambiarTipoLugar);
