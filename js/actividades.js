@@ -257,6 +257,26 @@ function actualizarEstado(actividad) {
     return actividad;
 }
 
+function cancelarActividad (id){
+    if (!confirm('¿Está seguro de cancelar esta actividad? Todas las inscripciones activas serán canceladas.'))
+        return;
+}
+
+const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
+
+const indice = actividades.findIndex(funtion(a) {
+    return a.id === id;
+});
+
+if (indice === -1) return;
+
+actividades[indice].estado = 'Cancelada';
+
+guardarDatos(CLAVE_ACTIVIDADES, actividades);
+mostrarActividades();
+alert('Actividad cancelada correctamente.');
+
+
 tipoLugar.addEventListener("change", cambiarTipoLugar);
 formActividad.addEventListener("submit", guardarActividad);
 buscarActividad.addEventListener("input", mostrarActividades);
