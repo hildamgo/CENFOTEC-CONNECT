@@ -8,7 +8,7 @@
     --gap:12px;
     --max-width:1100px;
   }
-  
+
   *{
     margin: 0;
     padding: 0;
@@ -34,8 +34,10 @@ body{
 /* Nav */
 .menu{
     background-color: #003366;
+    width: 100%;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 0;
+    text-align: center;
 }
 
 /* Enlaces del Nav */
@@ -276,13 +278,11 @@ body {
   color: #1a1a1a;
 }
 
-
 .page {
   max-width: 700px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
-
 
 .page-header h1 {
   font-size: 20px;
@@ -295,7 +295,6 @@ body {
   color: #666;
   margin-bottom: 1.5rem;
 }
-
 
 .seccion {
   background: #ffffff;
@@ -316,7 +315,6 @@ body {
   letter-spacing: 0.06em;
 }
 
-
 .campo {
   display: flex;
   flex-direction: column;
@@ -332,7 +330,6 @@ label {
 .req {
   color: #d93025;
 }
-
 
 input,
 select {
@@ -354,13 +351,11 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
 }
 
-
 input.error,
 select.error {
   border-color: #d93025;
   background-color: #fff8f7;
 }
-
 
 .error-msg {
   font-size: 12px;
@@ -507,16 +502,19 @@ td .btn-editar:hover {
     flex-direction: column;
     gap: 16px;
 }
+
 .login-header h1 {
     font-size: 22px;
     font-weight: 600;
     color: #1a1a1a;
     margin-bottom: 4px;
 }
+
 .login-header p {
     font-size: 13px;
     color: #666;
 }
+
 .error-login {
     background-color: #fce8e6;
     border: 1px solid #f5c6c6;
@@ -525,6 +523,7 @@ td .btn-editar:hover {
     font-size: 13px;
     color: #a50e0e;
 }
+
 .error-bloqueo {
     background-color: #fef3e2;
     border: 1px solid #f9d9a0;
@@ -564,6 +563,7 @@ td .btn-editar:hover {
 .btn-cerrar-sesion:hover {
     background-color: #fce8e6;
 }
+
 .enlace-olvide{
     font-size: 12px;
     color: #1a73e8;
@@ -572,4 +572,20 @@ td .btn-editar:hover {
 
 .enlace-olvide:hover{
     text-decoration: underline;
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand img{
+  width: 75px;
+  height: auto;
+}
+
+.brand h1{
+  font-size: 28px;
+  margin: 0;
 }

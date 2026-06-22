@@ -101,10 +101,7 @@ function guardarResponsable(evento){
             const fila = document.createElement("tr");
             fila.innerHTML = '
                 <td>${resposable.nombre} ${responsable.primerApellido} ${responsable.segundoApellido}</td>
-                <td>${resposable.identificacion}</td>
-                <td>${resposable.correo}</td>
-                <td>${resposable.especialidad}</td>
-                <td>${resposable.fechaRegistro}</td>
+                <><td>${resposable.identificacion}</td><td>${resposable.correo}</td><td>${resposable.especialidad}</td><td>${resposable.fechaRegistro}</td></>
             ';
             tablaResponsable.appendChild(fila);
         });
