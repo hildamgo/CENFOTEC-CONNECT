@@ -65,7 +65,8 @@ footer{
 }
 
 .contenedor{
-    width: 960px;
+    width: 90%;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
@@ -110,6 +111,10 @@ footer{
 
 .Seccion{
     padding: 45px 0;
+    background-color: #FFFFFF;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
 }
 
 .Seccion h2{
@@ -141,12 +146,14 @@ footer{
 
 .formulario-contenedor,
 .formulario{
-    width: 520px;
+    width: 100%;
+    max-width: 560px;
+    margin: 25px auto;
     background-color: #FFFFFF;
     padding: 30px;
-    border: 2px solid #dddddd;
+    border: 1px solid #dddddd;
     border-radius: 10px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
 }
 
@@ -167,7 +174,7 @@ footer{
     width: 100%;
     padding: 11px;
     border: 1px solid #aaaaaa;
-    border-radius: 5px;
+    border-radius: 6%;
     font-size: 15px;
     font-family: Arial, Helvetica, sans-serif;
     color: #333333;
@@ -188,8 +195,9 @@ footer{
 }
 
 .busqueda{
-    width: 520px;
-    margin: 25px 0;
+    width: 100%;
+    max-width: 560px;
+    margin: 25px auto;
 }
 
 .mensaje-error{
@@ -279,9 +287,10 @@ body {
 }
 
 .page {
-  max-width: 700px;
+  max-width: 90%;
+  max-width: 760px;
   margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 0;
 }
 
 .page-header h1 {
