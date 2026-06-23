@@ -23,18 +23,21 @@
                     <input type="email" id="login-correo" placeholder="correo@ejemplo.com" />
                     <span class="error-msg" id="err-login-correo"></span>
                 </div>
+                
+                <!--Por acá para no irnos perdiendo, ponemos el espacio de contraseña-->
+
+                <div class="campo">
+                    <label for="login-password">Contraseña <span class="req">*</span></label>
+                    <input type="password" id="login-password" placeholder="Ingrese su contraseña" />
+                    <span class="error-msg" id="err-login-password"></span>
+                </div>
 
                 <!--En uno de los requerimientos se solicita restablecer la contraseña entonces lo agregamos acá-->
 
                 <div style="text-align: right; margin-top: -8px;">
                     <a href="restablecer.html" class="enlace-olvide">¿Olvidaste tu contraseña?</a>
                 </div>
-                <!--Por acá para no irnos perdiendo, ponemos el espacio de contraseña-->
-                <div class="campo">
-                    <label for="login-password">Contraseña <span class="req">*</span></label>
-                    <input type="password" id="login-password" placeholder="Ingrese su contraseña" />
-                    <span class="error-msg" id="err-login-password"></span>
-                </div>
+
                 <!--Este seria el mensaje si los datos ingresados no estan relacionados con los que ya se encuentran en el sistema-->
                 <div id="error-login" class="error-login" style="display: none;">
                     Datos incorrectos. Verifique su correo y contraseña.
