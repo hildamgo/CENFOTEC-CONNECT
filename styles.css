@@ -44,7 +44,7 @@ body{
 .menu a{
     display: inline-block;
     color: #FFFFFF;
-    margin-right: 20px;
+    margin: 5px 10px;
     padding: 8px 10px;
     border-radius: 5px;
     text-decoration: none;
