@@ -1,5 +1,5 @@
 const formResponsable = document.getElementById("formResponsable");
-const tablaResponsable = document.getElementById("tablaResponsable");
+const tablaResponsable = document.getElementById(tablaResponsable);
 const buscarResponsable = document.getElementById(buscarResponsable);
 const btnLimpiarResponsable = document.getElementById(btnLimpiarResponsable);
 
