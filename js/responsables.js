@@ -1,7 +1,7 @@
 const formResponsable = document.getElementById("formResponsable");
-const tablaResponsable = document.getElementById("tablaResponsable");
-const buscarResponsable = document.getElementById("buscarResponsable");
-const btnLimpiarResponsable = document.getElementById("btnLimpiarResponsable");
+const tablaResponsable = document.getElementById(tablaResponsable);
+const buscarResponsable = document.getElementById(buscarResponsable);
+const btnLimpiarResponsable = document.getElementById(btnLimpiarResponsable);
 
 function obtenerFormularioResponsable(){
     return {
@@ -99,7 +99,7 @@ function guardarResponsable(evento){
 
         filtrados.forEach(function(responsable) {
             const fila = document.createElement("tr");
-            fila.innerHTML = '
+            fila.innerHTML = ''
                 <td>${resposable.nombre} ${responsable.primerApellido} ${responsable.segundoApellido}</td>
                 <><td>${resposable.identificacion}</td><td>${resposable.correo}</td><td>${resposable.especialidad}</td><td>${resposable.fechaRegistro}</td></>
             ';
