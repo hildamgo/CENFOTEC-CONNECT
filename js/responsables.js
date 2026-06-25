@@ -19,7 +19,7 @@ function obtenerFormularioResponsable(){
     };
 }
 function validarResponsable() {
-    const validaciones = {
+    const validaciones = [
         validarTexto("identificacion","errorIdentificacion","La identificacion", 5),
         validarCorreo("correo", "errorCorreo"),
         validarTexto("nombre", "errorNombre", "El nombre", 2),
@@ -30,7 +30,7 @@ function validarResponsable() {
         validarTexto("institucion", "errorInstitucion", "La institucion", 2),
         validarTexto("biografia", "errorBiografia", "La biografia", 2),
         validarUrl("fotografia", "errorFotografia")
-    };
+    ];
     return validaciones.every(function(valor){
         return valor === true;
     });
