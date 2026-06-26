@@ -9,9 +9,7 @@ const tablaActividades = document.getElementById("tablaActividades");
 
 function cargarEspacios() {
     const espacios = obtenerDatos(CLAVE_ESPACIOS);
-
     espacioActividad.innerHTML = '<option value="">Seleccione un espacio</option>';
-
     espacios.forEach(function(espacio) {
         if (espacio.estado === "Disponible") {
             const opcion = document.createElement("option");
@@ -24,9 +22,7 @@ function cargarEspacios() {
 
 function cargarResponsables() {
     const responsables = obtenerDatos(CLAVE_RESPONSABLES);
-
     responsableActividad.innerHTML = '<option value="">Seleccione un responsable</option>';
-
     responsables.forEach(function(responsable) {
         const opcion = document.createElement("option");
         opcion.value = responsable.id;
@@ -190,6 +186,48 @@ function guardarActividad(evento) {
     alert("Actividad guardada correctamente.");
 }
 
+function actualizarEstado(actividad) {
+    if (actividad.estado === 'Cancelada') {
+        return actividad;
+    }
+
+    const fechaHoraFin = new Date(actividad.fecha + 'T' + actividad.horaFin);
+    const ahora = new Date();
+
+    if (ahora > fechaHoraFin) {
+        actividad.estado = 'Finalizada';
+        return actividad;
+    }
+
+    if (actividad.cuposOcupados >= actividad.cupoMaximo) {
+        actividad.estado = 'Llena';
+        return actividad;  // ✅ Corregido: return actividad, no return vacío
+    }
+
+    actividad.estado = 'Disponible';
+    return actividad;
+}
+
+function cancelarActividad(id) {
+    if (!confirm('¿Está seguro de cancelar esta actividad? Todas las inscripciones activas serán canceladas.')) {
+        return;
+    }
+
+    const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
+
+    const indice = actividades.findIndex(function(a) {
+        return a.id === id;
+    });
+
+    if (indice === -1) return;
+
+    actividades[indice].estado = 'Cancelada';
+
+    guardarDatos(CLAVE_ACTIVIDADES, actividades);
+    mostrarActividades();
+    alert('Actividad cancelada correctamente.');
+}
+
 function mostrarActividades() {
     const textoBusqueda = buscarActividad.value.toLowerCase();
     const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
@@ -199,14 +237,12 @@ function mostrarActividades() {
             actividad.lugar + " " +
             actividad.responsableNombre + " " +
             actividad.descripcion;
-
         return texto.toLowerCase().includes(textoBusqueda);
     });
 
     tablaActividades.innerHTML = "";
 
     filtradas.forEach(function(actividad) {
-
         actividad = actualizarEstado(actividad);
 
         const fila = document.createElement("tr");
@@ -223,9 +259,8 @@ function mostrarActividades() {
             <td>${actividad.estado}</td>
             <td>
                 ${actividad.estado !== 'Cancelada' && actividad.estado !== 'Finalizada'
-                    ? `<button onclick="cancelarActividad"('${actividad.id}')">Cancelar</button>`
+                    ? `<button onclick="cancelarActividad('${actividad.id}')">Cancelar</button>`
                     : '-'
-
                 }
             </td>
         `;
@@ -233,49 +268,6 @@ function mostrarActividades() {
         tablaActividades.appendChild(fila);
     });
 }
-
-function actualizarEstado(actividad) {
-
-    if (actividad.estado === 'Cancelada') {
-        return actividad;
-    }
-
-    const fechaHoraFin = new Date(actividad.fecha + 'T' + actividad.horaFin);
-    const ahora        = new Date ();
-
-    if (ahora > fechaHoraFin) {
-        actividad.estado = 'Finalizada';
-        return actividad;
-    }
-
-    if (actividad.cupos0cupados >= actividad.cupoMaximo) {
-        actividad.estado = 'Llena';
-        return;
-    }
-
-    actividad.estado = 'Disponible';
-    return actividad;
-}
-
-function cancelarActividad (id){
-    if (!confirm('¿Está seguro de cancelar esta actividad? Todas las inscripciones activas serán canceladas.'))
-        return;
-}
-
-const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
-
-const indice = actividades.findIndex(funtion(a) {
-    return a.id === id;
-});
-
-if (indice === -1) return;
-
-actividades[indice].estado = 'Cancelada';
-
-guardarDatos(CLAVE_ACTIVIDADES, actividades);
-mostrarActividades();
-alert('Actividad cancelada correctamente.');
-
 
 tipoLugar.addEventListener("change", cambiarTipoLugar);
 formActividad.addEventListener("submit", guardarActividad);
