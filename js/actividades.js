@@ -201,7 +201,7 @@ function actualizarEstado(actividad) {
 
     if (actividad.cuposOcupados >= actividad.cupoMaximo) {
         actividad.estado = 'Llena';
-        return actividad;  // ✅ Corregido: return actividad, no return vacío
+        return actividad;  
     }
 
     actividad.estado = 'Disponible';
@@ -259,7 +259,8 @@ function mostrarActividades() {
             <td>${actividad.estado}</td>
             <td>
                 ${actividad.estado !== 'Cancelada' && actividad.estado !== 'Finalizada'
-                    ? `<button onclick="cancelarActividad('${actividad.id}')">Cancelar</button>`
+                    ? ` <button onclick="abrirEdicionActividad('${actividad.id}')">Editar</button>
+                        <button onclick="cancelarActividad('${actividad.id}')">Cancelar</button>`
                     : '-'
                 }
             </td>
