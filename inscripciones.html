@@ -3,10 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cenfotec Connect-Gestión de inscripciones</title>
+    <title>Gestión de Inscripciones — CENFOTEC Connect</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <!-- Inicializacion de la gestion de inscripciones en proceso -->
-    <h1>Gestión de Inscripciones</h1>
+
+<header class="encabezado">
+    <div class="contenedor">
+        <h1>CENFOTEC Connect</h1>
+    </div>
+</header>
+
+<nav class="menu">
+    <a href="index.html">Inicio</a>
+    <a href="usuarios.html">Usuarios</a>
+    <a href="actividades.html">Actividades</a>
+    <a href="espacios.html">Lugares</a>
+    <a href="responsables.html">Responsables</a>
+    <a href="participantes.html">Participantes</a>
+    <a href="inscripciones.html">Inscripciones</a>
+</nav>
+
+<main>
+<section class="Seccion">
+<div class="contenedor">
+
+    <h2>Gestión de Inscripciones</h2>
+    <p class="texto-ayuda">Inscribir participantes a actividades, cancelar y gestionar inscripciones.</p>
+
+    <!-- Formulario de inscripción RF-29 -->
+    <form id="formInscripcion" class="formulario" novalidate>
+
+        <input type="hidden" id="inscripcionId">
+
+        <label for="selectParticipante">Participante *</label>
+        <select id="selectParticipante">
+            <option value="">— Seleccione un participante —</option>
+        </select>
+        <span class="mensaje-error" id="err-participante"></span>
+
+        <label for="selectActividad">Actividad *</label>
+        <select id="selectActividad">
+            <option value="">— Seleccione una actividad —</option>
+        </select>
+        <span class="mensaje-error" id="err-actividad"></span>
+
+        <button type="submit">Inscribir Participante</button>
+        <button type="button" id="btnLimpiar" class="secundario">Limpiar</button>
+
+    </form>
+
+    <hr>
+
+    <!-- Búsqueda RF-30 -->
+    <h3>Búsqueda</h3>
+    <div class="busqueda">
+        <label for="buscarInscripcion">Buscar por participante, identificación o actividad</label>
+        <input type="search" id="buscarInscripcion" placeholder="Escribe para buscar...">
+    </div>
+
+    <!-- Filtros RF-30 -->
+    <h3>Filtros</h3>
+    <div class="busqueda">
+        <label for="filtroEstado">Estado</label>
+        <select id="filtroEstado">
+            <option value="">Todos</option>
+            <option value="Activa">Activa</option>
+            <option value="Cancelada">Cancelada</option>
+        </select>
+
+        <label for="filtroCategoria">Categoría</label>
+        <select id="filtroCategoria">
+            <option value="">Todas</option>
+        </select>
+
+        <label for="filtroFecha">Fecha de actividad</label>
+        <input type="date" id="filtroFecha">
+    </div>
+
+    <!-- Tabla RF-30 -->
+    <div class="tabla-contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th>Participante</th>
+                    <th>Identificación</th>
+                    <th>Actividad</th>
+                    <th>Categoría</th>
+                    <th>Fecha Actividad</th>
+                    <th>Fecha Inscripción</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaInscripciones"></tbody>
+        </table>
+    </div>
+
+</div>
+</section>
+</main>
+
+<footer>
+    <p>&copy; 2026 CENFOTEC Connect.</p>
+</footer>
+
+<script src="js/inscripciones.js"></script>
+
 </body>
 </html>
