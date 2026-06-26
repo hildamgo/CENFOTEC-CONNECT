@@ -228,6 +228,58 @@ function cancelarActividad(id) {
     alert('Actividad cancelada correctamente.');
 }
 
+let idEditando = null;
+
+function abrirEdicionActividad(id) {
+    const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
+
+    const actividad = actividades.find(function(a) {
+        return a.id === id;
+    });
+
+    if (!actividad) return;
+
+    idEditando = id;
+
+    document.getElementById('editId').value             = actividad.id;
+    document.getElementById('editNombre').value         = actividad.nombre;
+    document.getElementById('editCategoria').value      = actividad.categoria;
+    document.getElementById('editDescripcion').value    = actividad.descripcion;
+    document.getElementById('editFecha').value          = actividad.fecha;
+    document.getElementById('editHoraInicio').value     = actividad.horaInicio;
+    document.getElementById('editHoraFin').value        = actividad.horaFin;
+    document.getElementById('editCupo').value           = actividad.cupoMaximo;
+    
+    const responsables = obtenerDatos(CLAVE_RESPONSABLES);
+    const selectResponsable = document.getElementById('editResponsable');
+    selectResponsable.innerHTML = '<option value="">Seleccione un responsable</option>';
+
+    responsables.forEach(function(responsable) {
+        const opcion = document.createElement('option');
+        opcion.value = responsable.id;
+        opcion.textContent = responsable.nombre + ' ' + responsable.primerApellido + ' ' + responsable.segundoApellido;
+        selectResponsable.appendChild(opcion);
+    });
+
+    selectResponsable.value = actividad.responsableId;
+
+    document.getElementById('errorEditNombre').textContent          = '';
+    document.getElementById('errorEditCategoria').textContent       = '';
+    document.getElementById('errorEditDescripcion').textContent     = '';
+    document.getElementById('errorEditFecha').textContent           = '';
+    document.getElementById('errorEditHoraFin').textContent         = '';
+    document.getElementById('errorEditCupo').textContent            = '';
+    document.getElementById('errorEditResponsable').textContent     = '';
+
+    document.getElementById('seccionEdicion').style.display = 'block';
+    document.getElementById('seccionEdicion').scrollIntoView({ behavior: 'smooth'});
+}
+
+function cerrarEdicionActividad() {
+    document.getElementById('seccionEdicion').style.display = 'none';
+    idEditandot = null;
+}
+
 function mostrarActividades() {
     const textoBusqueda = buscarActividad.value.toLowerCase();
     const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
