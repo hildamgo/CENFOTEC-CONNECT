@@ -1,3 +1,35 @@
+const CLAVE_ESPACIOS = "cenfotec_espacios";
+const CLAVE_RESPONSABLES = "cenfotec_responsables";
+const CLAVE_ACTIVIDADES = "cenfotec_actividades";
+const CLAVE_SESION = "cenfotec_sesion";
+
+function crearId() {
+    return Date.now().toString();
+}
+
+function obtenerDatos(clave) {
+    return JSON.parse(localStorage.getItem(clave)) || [];
+}
+
+function guardarDatos(clave, datos) {
+    localStorage.setItem(clave, JSON.stringify(datos));
+}
+
+function obtenerFechaActual() {
+    return new Date().toLocaleDateString("es-CR");
+}
+
+function mostrarError(id, mensaje) {
+    const elemento = document.getElementById(id);
+    if (elemento) {
+        elemento.textContent = mensaje;
+    }
+}
+
+function limpiarError(id) {
+    mostrarError(id, "");
+}
+
 const formEspacio = document.getElementById("formEspacio");
 const tablaEspacios = document.getElementById("tablaEspacios");
 const buscarEspacio = document.getElementById("buscarEspacio");
