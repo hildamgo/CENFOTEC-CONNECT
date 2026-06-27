@@ -2,8 +2,9 @@ const CLAVE_ESPACIOS = "cenfotec_espacios";
 const CLAVE_RESPONSABLES = "cenfotec_responsables";
 const CLAVE_ACTIVIDADES = "cenfotec_actividades";
 const CLAVE_SESION = "cenfotec_sesion";
-const CLAVE_INSCRIPCIONES  = "cenfotec_inscripciones";
-const CLAVE_PARTICIPANTES  = "cenfotec_participantes";
+const CLAVE_INSCRIPCIONES = "cenfotec_inscripciones";
+const CLAVE_PARTICIPANTES = "cenfotec_participantes";
+const CLAVE_ADMINS = "cenfotec_admins";
 
 
 function crearId() {
