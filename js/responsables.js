@@ -189,8 +189,9 @@ function guardarResponsable(evento){
             error.textContent = "";
         });
     }
-    formResponsable.addEventListener("submit", guardarResponsable);
-    buscarResponsable.addEventListener("input", mostrarResponsables);
-    btnLimpiarResponsable.addEventListener("click", limpiarFormularioResponsable);
-    mostrarResponsables();
 }
+formResponsable.addEventListener("submit", guardarResponsable);
+buscarResponsable.addEventListener("input", mostrarResponsables);
+btnLimpiarResponsable.addEventListener("click", limpiarFormularioResponsable);
+mostrarResponsables();
+cargarResponsables();
