@@ -197,6 +197,48 @@
                         <tbody id="tablaActividades"></tbody>
                     </table>
                 </div>
+
+                <div class="filtros">
+
+        <div class="campo">
+        <label for="filtroCategoria">Categoría</label>
+        <select id="filtroCategoria" onchange="mostrarActividades()">
+            <option value="">Todas</option>
+            <option value="Cultural">Cultural</option>
+            <option value="Deportiva">Deportiva</option>
+            <option value="Tecnologica">Tecnológica</option>
+            <option value="Artistica">Artística</option>
+            <option value="Recreativa">Recreativa</option>
+            <option value="Voluntariado">Voluntariado</option>
+            <option value="Conferencia">Conferencia</option>
+            <option value="Taller General">Taller General</option>
+        </select>
+        </div>
+
+        <div class="campo">
+        <label for="filtroEstado">Estado</label>
+        <select id="filtroEstado" onchange="mostrarActividades()">
+            <option value="">Todos</option>
+            <option value="Disponible">Disponible</option>
+            <option value="Llena">Llena</option>
+            <option value="Cancelada">Cancelada</option>
+            <option value="Finalizada">Finalizada</option>
+        </select>
+        </div>
+
+        <div class="campo">
+        <label for="filtroFecha">Fecha</label>
+        <input type="date" id="filtroFecha" onchange="mostrarActividades()" />
+        </div>
+
+        <div class="campo">
+        <label for="filtroLugar">Lugar</label>
+        <input type="text" id="filtroLugar" placeholder="Filtrar por lugar" oninput="mostrarActividades()" />
+        </div>
+
+        <button class="btn-secundario" onclick="limpiarFiltros()">Limpiar filtros</button>
+
+            </div>
             </div>
         </section>
     </main>
