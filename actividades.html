@@ -108,6 +108,69 @@
                     <button type="button" id="btnLimpiar" class="secundario">Limpiar</button>
                 </form>
 
+    <div id="seccionEdicion" style="display: none;">
+
+    <h3>Editar actividad</h3>
+    <p class="texto-ayuda">El ID de la actividad no puede modificarse.</p>
+
+    <div>
+        <label>ID de la actividad</label>
+        <input type="text" id="editId" disabled />
+    </div>
+
+    <form class="formulario" id="formEdicionActividad">
+
+        <label for="editNombre">Nombre de la actividad</label>
+        <input type="text" id="editNombre" placeholder="Ej: Charla de tecnologia" />
+        <p class="mensaje-error" id="errorEditNombre"></p>
+
+        <label for="editCategoria">Categoria</label>
+        <select id="editCategoria">
+            <option value="">Seleccione una categoria</option>
+            <option value="Cultural">Cultural</option>
+            <option value="Deportiva">Deportiva</option>
+            <option value="Tecnologica">Tecnologica</option>
+            <option value="Artistica">Artistica</option>
+            <option value="Recreativa">Recreativa</option>
+            <option value="Voluntariado">Voluntariado</option>
+            <option value="Conferencia">Conferencia</option>
+            <option value="Taller General">Taller General</option>
+        </select>
+        <p class="mensaje-error" id="errorEditCategoria"></p>
+
+        <label for="editDescripcion">Descripcion</label>
+        <textarea id="editDescripcion" rows="4" placeholder="Descripcion de la actividad"></textarea>
+        <p class="mensaje-error" id="errorEditDescripcion"></p>
+
+        <label for="editFecha">Fecha</label>
+        <input type="date" id="editFecha" />
+        <p class="mensaje-error" id="errorEditFecha"></p>
+
+        <label for="editHoraInicio">Hora inicio</label>
+        <input type="time" id="editHoraInicio" />
+        <p class="mensaje-error" id="errorEditHoraInicio"></p>
+
+        <label for="editHoraFin">Hora fin</label>
+        <input type="time" id="editHoraFin" />
+        <p class="mensaje-error" id="errorEditHoraFin"></p>
+
+        <label for="editCupo">Cupo maximo</label>
+        <input type="number" id="editCupo" min="1" />
+        <!-- Mensaje de restricción RF-13 -->
+        <p class="mensaje-error" id="errorEditCupo"></p>
+
+        <label for="editResponsable">Responsable</label>
+        <select id="editResponsable">
+            <option value="">Seleccione un responsable</option>
+        </select>
+        <p class="mensaje-error" id="errorEditResponsable"></p>
+
+        <button type="submit">Guardar cambios</button>
+        <button type="button" onclick="cerrarEdicionActividad()">Cancelar</button>
+
+    </form>
+</div>
+
                 <div class="busqueda">
                     <label for="buscarActividad">Buscar actividad</label>
                     <input type="search" id="buscarActividad" placeholder="Buscar por nombre, lugar, responsable o descripcion">

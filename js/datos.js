@@ -3,6 +3,7 @@ const CLAVE_RESPONSABLES = "cenfotec_responsables";
 const CLAVE_ACTIVIDADES = "cenfotec_actividades";
 const CLAVE_SESION = "cenfotec_sesion";
 
+
 function crearId() {
     return Date.now().toString();
 }
