@@ -446,6 +446,7 @@ function mostrarActividades() {
 tipoLugar.addEventListener("change", cambiarTipoLugar);
 formActividad.addEventListener("submit", guardarActividad);
 buscarActividad.addEventListener("input", mostrarActividades);
+document.getElementById('formEdicionActividad').addEventListener('submit', guardarEdicionActividad);
 
 cargarEspacios();
 cargarResponsables();
