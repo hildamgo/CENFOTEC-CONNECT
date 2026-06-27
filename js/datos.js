@@ -118,4 +118,4 @@ function validarSesion() {
     return true;
 }
 
-validarSesion();
+
