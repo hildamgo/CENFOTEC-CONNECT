@@ -98,6 +98,13 @@
                     <input type="number" id="cupoActividad" min="1" placeholder="Ej: 30">
                     <p class="mensaje-error" id="errorCupoActividad"></p>
 
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: -8px;">
+                    <input type="checkbox" id="entradaLibre" onchange="toggleEntradaLibre()" />
+                    <label for="entradaLibre" style="font-size: 13px; font-weight: normal;">
+                    Entrada libre (sin límite de cupo)
+                    </label>
+                    </div>
+
                     <label for="responsableActividad">Responsable</label>
                     <select id="responsableActividad">
                         <option value="">Seleccione un responsable</option>
@@ -156,8 +163,14 @@
 
         <label for="editCupo">Cupo maximo</label>
         <input type="number" id="editCupo" min="1" />
-        <!-- ESTE MENSAJE ESTA IMPORTANTE PARA TENER EN CUENTA -->
         <p class="mensaje-error" id="errorEditCupo"></p>
+
+        <div style="display: flex; align-items: center; gap: 8px; margin-top: -8px;">
+        <input type="checkbox" id="editEntradaLibre" onchange="toggleEditEntradaLibre()" />
+        <label for="editEntradaLibre" style="font-size: 13px; font-weight: normal;">
+        Entrada libre (sin límite de cupo)
+        </label>
+        </div>
 
         <label for="editResponsable">Responsable</label>
         <select id="editResponsable">
