@@ -144,16 +144,18 @@ function validarActividad() {
         valido = false;
     }
 
-    const cupo = document.getElementById("cupoActividad").value;
-    if (cupo === "" || Number(cupo) <= 0) {
-        mostrarError("errorCupoActividad", "El cupo debe ser mayor a 0.");
+    const esEntradaLibre = document.getElementById('entradaLibre').checked;
+    const cupo           = document.getElementById("cupoActividad").value;
+
+    if (!esEntradaLibre && (cupo === "" || Number(cupo) <= 0)) {
+        mostrarError("errorCupoActividad", "El cupo debe ser mayor a 0, o marque entrada libre.");
         marcarCampo("cupoActividad", false);
         valido = false;
-    } else {
+        } else {
         limpiarError("errorCupoActividad");
         marcarCampo("cupoActividad", true);
-    }
-
+        }
+        
     if (responsableActividad.value === "") {
         mostrarError("errorResponsableActividad", "Seleccione un responsable.");
         marcarCampo("responsableActividad", false);
@@ -201,12 +203,15 @@ function guardarActividad(evento) {
         tipoLugar: tipoLugar.value,
         espacioId: espacioActividad.value,
         lugar: lugar,
-        cupoMaximo: Number(document.getElementById("cupoActividad").value),
+        cupoMaximo:    esEntradaLibre ? null : Number(document.getElementById("cupoActividad").value),
+        entradaLibre:  esEntradaLibre,
         cuposOcupados: 0,
         responsableId: responsableActividad.value,
         responsableNombre: responsableSeleccionado.nombre + " " + responsableSeleccionado.primerApellido,
         estado: "Disponible"
     };
+
+    const esEntradaLibre = document.getElementById('entradaLibre').checked;
 
     const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
     actividades.push(actividad);
@@ -231,9 +236,9 @@ function actualizarEstado(actividad) {
         return actividad;
     }
 
-    if (actividad.cuposOcupados >= actividad.cupoMaximo) {
-        actividad.estado = 'Llena';
-        return actividad;  
+    if (!actividad.entradaLibre && actividad.cuposOcupados >= actividad.cupoMaximo) {
+    actividad.estado = 'Llena';
+    return actividad;
     }
 
     actividad.estado = 'Disponible';
@@ -554,6 +559,30 @@ function limpiarFiltros() {
     document.getElementById('filtroLugar').value     = '';
     buscarActividad.value                            = '';
     mostrarActividades();
+}
+
+function toggleEntradaLibre() {
+    const checkbox = document.getElementById('entradaLibre');
+    const campoCupo = document.getElementById('cupoActividad');
+
+    if (checkbox.checked) {
+        campoCupo.value    = '';
+        campoCupo.disabled = true;
+    } else {
+        campoCupo.disabled = false;
+    }
+}
+
+function toggleEditEntradaLibre() {
+    const checkbox  = document.getElementById('editEntradaLibre');
+    const campoCupo = document.getElementById('editCupo');
+
+    if (checkbox.checked) {
+        campoCupo.value    = '';
+        campoCupo.disabled = true;
+    } else {
+        campoCupo.disabled = false;
+    }
 }
 
 tipoLugar.addEventListener("change", cambiarTipoLugar);
