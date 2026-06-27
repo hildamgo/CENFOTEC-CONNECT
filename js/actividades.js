@@ -401,30 +401,7 @@ function guardarEdicionActividad(evento) {
 }
 
 function verDetalleActividad(id) {
-    const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
-
-    const actividad = actividades.find(function(a) {
-        return a.id === id;
-    });
-
-    if (!actividad) return;
-
-    const cuposDisponibles = actividad.cupoMaximo - actividad.cuposOcupados;
-
-    alert(
-        'ID: '           + actividad.id               + '\n' +
-        'Nombre: '       + actividad.nombre            + '\n' +
-        'Categoría: '    + actividad.categoria         + '\n' +
-        'Descripción: '  + actividad.descripcion       + '\n' +
-        'Fecha: '        + actividad.fecha             + '\n' +
-        'Horario: '      + actividad.horaInicio + ' - ' + actividad.horaFin + '\n' +
-        'Lugar: '        + actividad.lugar             + '\n' +
-        'Cupo máximo: '  + actividad.cupoMaximo        + '\n' +
-        'Ocupados: '     + actividad.cuposOcupados     + '\n' +
-        'Disponibles: '  + cuposDisponibles            + '\n' +
-        'Responsable: '  + actividad.responsableNombre + '\n' +
-        'Estado: '       + actividad.estado
-    );
+    window.location.href = 'detalle-actividad.html?id=' + id;
 }
 
 function mostrarActividades() {
