@@ -598,3 +598,11 @@ td .btn-editar:hover {
   font-size: 28px;
   margin: 0;
 }
+
+.filtros {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    gap: 16px;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+}
