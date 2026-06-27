@@ -9,20 +9,31 @@
     </head>
 
 <body>
+<header class="site-header" role="banner">
+    <div class="header-inner">
+        <div class="brand">
+            <img src="assets/Images/Logo Oficial.jpeg" alt="Logo CENFOTEC Connect" />
+            <div>
+                <h1>CENFOTEC Connect</h1>
+            </div>
+        </div>
+        <nav class="menu">
+            <a href="index.html">Inicio</a>
+            <a href="login.html">Iniciar sesión</a>
+            <a href="usuarios.html">Usuarios</a>
+            <a href="actividades.html">Actividades</a>
+            <a href="espacios.html">Espacios</a>
+            <a href="responsables.html">Responsables</a>
+            <a href="participantes.html">Participantes</a>
+            <a href="inscripciones.html">Inscripciones</a>
+        </nav>
+    </div>
+</header>
 
-<div class="barra-superior">
-    <a href="index.html" class="enlace-olvide">← Inicio</a>
-    <span id="saludo-usuario"></span>
-    <button class="btn-cerrar-sesion" onclick="cerrarSesion()">
-        Cerrar sesion
-    </button>
-</div>
-
-<div class = "page">
+<div class="page">
 
     <h1>Registrar administrador</h1>
-    <p> Solo el Administrador General puede crear nuevos usuarios en el sistema.</p>
-
+    <p>Solo el Administrador General puede crear nuevos usuarios en el sistema.</p>
 <!-- SUPER NECESARIO PARA CERRAR SESION-->
 <div class="barra-superior">
     <span id="saludo-usuario"></span>
@@ -143,7 +154,8 @@
 
 </div>
 
-<script src="sesion.js"></script>
-<script src="usuarios.js"></script>
+<script src="js/datos.js"></script>
+<script src="js/sesion.js"></script>
+<script src="js/usuarios.js"></script>
 </body>
 </html>
