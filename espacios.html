@@ -32,27 +32,63 @@
   <main>
     <section class="hero">
         <div class="contenedor">
-            <h2> Gestion adminisrativa de Actividades</h2>
-            <p>
-                Modulos para registrar espacios fisicos, responsables y lugares
-                de actividades dentro o fuera del campus universitario.
-            </p>
-            <a class="boton" href="espacios.html">Gestionar espacios</a>
-        </div>
-    </section>
-    <section class="seleccion">
-        <div class="contenedor">
-            <h2>Modulos Incluidos</h2>
-        <div class="tarjeta">
-            <h3>Lugares / Espacios</h3>
-            <p>Registro por sede y validacion de duplicados.</p>
-        </div>
-        <div class="tarjeta">
-            <h3>Responsables</h3>
-            <p>Registro de expositores o moderadores con busqueda y edicion.</p>
-        </div>
-        </div>
-    </section>
+            <h2>Gestión de Espacios</h2>
+            <form id="formEspacios">
+                <label> Nombre del espacio</label>
+                <input type="text" id="nombreEspacio" required>
+
+                <label>Plaza / Sede</label
+                <select id="sede">
+                    <option value="">Seleccione</option>
+                    <option>Universidad CENFOTEC</option>
+                    <option>Lugar Externo</option>
+                </select>
+
+                <label>Tipo</label>
+                <select id="Tipo">
+                    <option>Laboratorio</option>
+                    <option>Auditorio</option>
+                    <option>Parqueo</option>
+                    <option>Otro</option>
+                </select>
+
+                <label>Capacidad</label>
+                <input type="number" id="capacidad" required>
+
+                <label>Descripcion</label>
+                <textarea id="descripcion"></textarea>
+
+                <Label>Estado</Label>
+                <select id="estado">
+                    <option>Disponible</option>
+                    <option>Mantenimiento</option>
+                    <option>No Disponible</option>
+                </select>
+
+                <button type="submit">Guardar Espacio</button>
+                <button type="button" id="btnLimpiar" class="secundario">Limpiar</button>
+            </form>
+            <hr>
+            <h2>Buscar Espacio</h2>
+            <input type="text" id="buscarEspacio" placeholder="Buscar....">
+            <hr>
+
+            <h2>Lista de Espacios</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Sede</th>
+                        <th>Tipo</th>
+                        <th>Capacidad</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaEspacios"></tbody>
+            </table>
+            <script src="js/espacios.js"></script>
+            <script src="js/datos.js"></script>
   </main>
   <footer>
     <p>&copy; 2026 CENFOTEC Connect.</p>
