@@ -405,50 +405,85 @@ function verDetalleActividad(id) {
 }
 
 function mostrarActividades() {
-    const textoBusqueda = buscarActividad.value.toLowerCase();
+    const textoBusqueda   = buscarActividad.value.toLowerCase();
+    const filtroCategoria = document.getElementById('filtroCategoria').value;
+    const filtroEstado    = document.getElementById('filtroEstado').value;
+    const filtroFecha     = document.getElementById('filtroFecha').value;
+    const filtroLugar     = document.getElementById('filtroLugar').value.toLowerCase();
+
     const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
 
     const filtradas = actividades.filter(function(actividad) {
-        const texto = actividad.nombre + " " +
-            actividad.lugar + " " +
-            actividad.responsableNombre + " " +
-            actividad.descripcion;
-        return texto.toLowerCase().includes(textoBusqueda);
+        const texto = actividad.nombre            + ' ' +
+                      actividad.lugar             + ' ' +
+                      actividad.responsableNombre + ' ' +
+                      actividad.descripcion;
+
+        if (textoBusqueda && !texto.toLowerCase().includes(textoBusqueda)) {
+            return false;
+        }
+        if (filtroCategoria && actividad.categoria !== filtroCategoria) {
+            return false;
+        }
+        if (filtroEstado && actividad.estado !== filtroEstado) {
+            return false;
+        }
+        if (filtroFecha && actividad.fecha !== filtroFecha) {
+            return false;
+        }
+        if (filtroLugar && !actividad.lugar.toLowerCase().includes(filtroLugar)) {
+            return false;
+        }
+        return true;
     });
 
-    tablaActividades.innerHTML = "";
+    tablaActividades.innerHTML = '';
+
+    if (filtradas.length === 0) {
+        tablaActividades.innerHTML = '<tr><td colspan="12" style="text-align:center; color:#888; padding:1rem;">No se encontraron actividades con los criterios seleccionados.</td></tr>';
+        return;
+    }
 
     filtradas.forEach(function(actividad) {
         actividad = actualizarEstado(actividad);
 
-        const fila = document.createElement("tr");
-
         const cuposDisponibles = actividad.cupoMaximo - actividad.cuposOcupados;
 
-fila.innerHTML = `
-    <td><span style="font-family: monospace; font-size: 11px; color: #888;">${actividad.id}</span></td>
-    <td>${actividad.nombre}</td>
-    <td>${actividad.categoria}</td>
-    <td>${actividad.fecha}</td>
-    <td>${actividad.horaInicio} - ${actividad.horaFin}</td>
-    <td>${actividad.lugar}</td>
-    <td>${actividad.cupoMaximo}</td>
-    <td>${actividad.cuposOcupados}</td>
-    <td>${cuposDisponibles}</td>
-    <td>${actividad.responsableNombre}</td>
-    <td>${actividad.estado}</td>
-    <td>
-        ${actividad.estado !== 'Cancelada' && actividad.estado !== 'Finalizada'
-            ? `<button onclick="abrirEdicionActividad('${actividad.id}')">Editar</button>
-               <button onclick="verDetalleActividad('${actividad.id}')">Ver</button>
-               <button onclick="cancelarActividad('${actividad.id}')">Cancelar</button>`
-            : `<button onclick="verDetalleActividad('${actividad.id}')">Ver</button>`
-        }
-    </td>
-`;
+        const fila = document.createElement('tr');
+
+        fila.innerHTML = `
+            <td><span style="font-family: monospace; font-size: 11px; color: #888;">${actividad.id}</span></td>
+            <td>${actividad.nombre}</td>
+            <td>${actividad.categoria}</td>
+            <td>${actividad.fecha}</td>
+            <td>${actividad.horaInicio} - ${actividad.horaFin}</td>
+            <td>${actividad.lugar}</td>
+            <td>${actividad.cupoMaximo}</td>
+            <td>${actividad.cuposOcupados}</td>
+            <td>${cuposDisponibles}</td>
+            <td>${actividad.responsableNombre}</td>
+            <td>${actividad.estado}</td>
+            <td>
+                ${actividad.estado !== 'Cancelada' && actividad.estado !== 'Finalizada'
+                    ? `<button onclick="abrirEdicionActividad('${actividad.id}')">Editar</button>
+                       <button onclick="verDetalleActividad('${actividad.id}')">Ver</button>
+                       <button onclick="cancelarActividad('${actividad.id}')">Cancelar</button>`
+                    : `<button onclick="verDetalleActividad('${actividad.id}')">Ver</button>`
+                }
+            </td>
+        `;
 
         tablaActividades.appendChild(fila);
     });
+}
+
+function limpiarFiltros() {
+    document.getElementById('filtroCategoria').value = '';
+    document.getElementById('filtroEstado').value    = '';
+    document.getElementById('filtroFecha').value     = '';
+    document.getElementById('filtroLugar').value     = '';
+    buscarActividad.value                            = '';
+    mostrarActividades();
 }
 
 tipoLugar.addEventListener("change", cambiarTipoLugar);
