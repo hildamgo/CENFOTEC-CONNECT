@@ -280,6 +280,127 @@ function cerrarEdicionActividad() {
     idEditandot = null;
 }
 
+function guardarEdicionActividad(evento) {
+    evento.preventDefault();
+
+    document.getElementById('errorEditNombre').textContent          = '';
+    document.getElementById('errorEditCategoria').textContent       = '';
+    document.getElementById('errorEditDescripcion').textContent     = '';
+    document.getElementById('errorEditFecha').textContent           = '';
+    document.getElementById('errorEditHoraFin').textContent         = '';
+    document.getElementById('errorEditCupo').textContent            = '';
+    document.getElementById('errorEditResponsable').textContent     = '';
+
+    const nombre        = document.getElementById('editNombre').value.trim();
+    const categoria     = document.getElementById('editCategoria').value;
+    const descripcion   = document.getElementById('editDescripcion').value.trim();
+    const fecha         = document.getElementById('editFecha').value;
+    const horaInicio    = document.getElementById('editHoraInicio').value;
+    const horaFin       = document.getElementById('editHoraFin').value;
+    const cupo          = Number(document.getElementById('editCupo').value);
+    const responsable   = document.getElementById('editResponsable').value;
+
+    let esValido = true;
+
+    if (nombre === '') {
+        mostrarError('errorEditNombre', 'El nombre de la actividad es obligatoria.');
+        marcarCampo('editNombre', false);
+        esValido = false;
+    } else {
+        marcarCampo('editNombre', true);
+    }
+
+    if (categoria === '') {
+        mostrarError('errorEditCaetegoria', 'Seleccione una categoria.');
+        marcarCampo('editCategoria', false);
+        esValido = false;
+    } else {
+        marcarCampo('editCategoria', true);
+    }
+
+    if (descripcion.length < 10) {
+        mostrarError('errorEditDescripcion', 'La descripcion debe tener al menos 10 caracteres.');
+        marcarCampo('editDescripcion', false);
+        esValido = false;
+    } else {
+        marcarCampo('editDescripcion', true);
+    }
+
+    if (fecha === '') {
+        mostrarError('errorEditFecha', 'Seleccione una fecha.');
+        marcarCampo('editFecha', false);
+        esValido = false;
+    } else {
+        marcarCampo('editFecha', true);
+    }
+
+    if (horaInicio === '') {
+        mostrarError('errorEditHoraInicio', 'Seleccione la hora de inicio.');
+        marcarCampo('editHoraInicio', false);
+        esValido = false;
+    } else {
+        marcarCampo('editHoraInicio', true);
+    }
+
+    if (horaFin === '') {
+        mostrarError('errorEditHoraFin', 'Seleccione la hora de fin.');
+        marcarCampo('editHoraFin', false);
+        esValido = false;
+    } else {
+        marcarCampo('editHoraFin', true);
+    }
+
+    const actividades   = obtenerDatos(CLAVE_ACTIVIDADES);
+    const indice        = actividades.findIndex(function(a) { return a.id === idEditando; });
+    const cuposOcupados = actividades[indice].cuposOcupados;
+
+    if (cupo <= 0) {
+        mostrarError('errorEditCupo', 'El cupo debe ser mayor a 0.');
+        marcarCampo('editCupo', false);
+        esValido = false;
+    }
+    else if (cupo < cuposOcupados) {
+        mostrarError('errorEditCupo',
+            'El cupo no puede ser menor a los cupos ya ocupados (' + cuposOcupados + ' inscritos).'
+        );
+        marcarCampo('editCupo', false);
+        esValido = false;
+    } else {
+        marcarCampo('editCupo', true);
+    }
+
+    if (responsable === '') {
+        mostrarError('errorEditResponsable', 'Seleccione un responsable.');
+        marcarCampo('editResponsable', false);
+        esValido = false;
+    } else {
+        marcarCampo('editResponsable', true);
+    }
+
+    if (!esValido) return;
+
+    const responsables = obtenerDatos(CLAVE_RESPONSABLES);
+    const responsableSeleccionado = responsables.find(function(r) {
+        return r.id === responsable;
+    });
+
+    actividades[indice].nombre            = nombre;
+    actividades[indice].categoria         = categoria;
+    actividades[indice].descripcion       = descripcion;
+    actividades[indice].fecha             = fecha;
+    actividades[indice].horaInicio        = horaInicio;
+    actividades[indice].horaFin           = horaFin;
+    actividades[indice].cupoMaximo        = cupo;
+    actividades[indice].responsableId     = responsable;
+    actividades[indice].responsableNombre = responsableSeleccionado.nombre + ' ' + responsableSeleccionado.primerApellido;
+
+    guardarDatos(CLAVE_ACTIVIDADES, actividades);
+    cerrarEdicionActividad();
+    mostrarActividades();
+    alert('Actividad actualizada correctamente.');
+}
+
+
 function mostrarActividades() {
     const textoBusqueda = buscarActividad.value.toLowerCase();
     const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
