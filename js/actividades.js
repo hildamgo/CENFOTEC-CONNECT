@@ -228,6 +228,42 @@ function cancelarActividad(id) {
     alert('Actividad cancelada correctamente.');
 }
 
+function eliminarActividad(id) {
+    const actividades   = obtenerDatos(CLAVE_ACTIVIDADES);
+    const inscripciones = obtenerDatos(CLAVE_INSCRIPCIONES);
+
+    const indice = actividades.findIndex(function(a) {
+        return a.id === id;
+    });
+
+    if (indice === -1) return;
+
+    const actividad = actividades[indice];
+
+    if (actividad.estado === 'Finalizada') {
+        alert('No es posible eliminar una actividad finalizada. El registro se conserva para trazabilidad histórica.');
+        return;
+    }
+
+    const tieneInscritos = inscripciones.some(function(inscripcion) {
+        return inscripcion.actividadId === id && inscripcion.estado === 'Activa';
+    });
+
+    if (tieneInscritos) {
+        alert('No es posible eliminar esta actividad porque tiene inscripciones activas. Cancele la actividad primero.');
+        return;
+    }
+
+    if (!confirm('¿Está seguro de eliminar esta actividad? Esta acción no se puede deshacer.')) {
+        return;
+    }
+
+    actividades.splice(indice, 1);
+    guardarDatos(CLAVE_ACTIVIDADES, actividades);
+    mostrarActividades();
+    alert('Actividad eliminada correctamente.');
+}
+
 let idEditando = null;
 
 function abrirEdicionActividad(id) {
@@ -465,11 +501,13 @@ function mostrarActividades() {
             <td>${actividad.estado}</td>
             <td>
                 ${actividad.estado !== 'Cancelada' && actividad.estado !== 'Finalizada'
-                    ? `<button onclick="abrirEdicionActividad('${actividad.id}')">Editar</button>
-                       <button onclick="verDetalleActividad('${actividad.id}')">Ver</button>
-                       <button onclick="cancelarActividad('${actividad.id}')">Cancelar</button>`
-                    : `<button onclick="verDetalleActividad('${actividad.id}')">Ver</button>`
-                }
+                ? `<button onclick="abrirEdicionActividad('${actividad.id}')">Editar</button>
+                <button onclick="verDetalleActividad('${actividad.id}')">Ver</button>
+                <button onclick="cancelarActividad('${actividad.id}')">Cancelar</button>
+                <button onclick="eliminarActividad('${actividad.id}')">Eliminar</button>`
+                : `<button onclick="verDetalleActividad('${actividad.id}')">Ver</button>
+                <button onclick="eliminarActividad('${actividad.id}')">Eliminar</button>`
+        }
             </td>
         `;
 
