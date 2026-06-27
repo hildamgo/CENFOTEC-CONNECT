@@ -1,14 +1,21 @@
 // Esta lista de administradores registrador es una mini base de datos temporal para contener esa info
-let admins = [
-    {
-        nombre:         'Administrador General',
-        correo:         'admin@connect.com',
-        password:       'cenfotec123',
-        rol:            'GA',
-        estado:         'activo',
-        fechaCreacion:  '20/06/2026'
+function inicializarAdmins() {
+    const admins = obtenerDatos(CLAVE_ADMINS);
+
+    if (admins.length === 0) {
+        const adminInicial = {
+            nombre:        'Administrador General',
+            correo:        'admin@sistema.com',
+            password:      'Admin1234',
+            rol:           'GA',
+            estado:        'activo',
+            fechaCreacion: '01/01/2026'
+        };
+        guardarDatos(CLAVE_ADMINS, [adminInicial]);
     }
-];
+}
+
+inicializarAdmins();
 
 function verificarSesion(){
     const sesionActiva = sessionStorage.getItem('sesionActiva');
@@ -51,7 +58,7 @@ else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)){
     esValido = false;
 }
 
-else if (admins.find(function(a) { return a.correo.toLowerCase() === correo.toLowerCase();})) {
+else if (obtenerDatos(CLAVE_ADMINS).find(function(a) { return a.correo.toLowerCase() === correo.toLowerCase(); })) {
     mostrarError('correo', 'El correo ya está registrado.');
     esValido = false;
 }
@@ -96,28 +103,31 @@ function guardarAdmin() {
     const password  = document.getElementById('password').value;
     const confirmar = document.getElementById('confirmar').value;
 
-    limpiarErrores ();
+    limpiarErrores();
 
-    if(!validarFormulario(nombre, correo, rol, password, confirmar)){
+    if (!validarFormulario(nombre, correo, rol, password, confirmar)) {
         return;
     }
 
+    const admins = obtenerDatos(CLAVE_ADMINS);
+
     admins.push({
-        nombre:         nombre,
-        correo:         correo,
-        rol:            rol,
-        estado:         'activo',
-        fechaCreacion:  new Date().toLocaleDateString('es-CR', {
-                            day:    '2-digit',
-                            month:  '2-digit',
-                            year:   'numeric'
-        })
+        nombre:        nombre,
+        correo:        correo,
+        password:      password,
+        rol:           rol,
+        estado:        'activo',
+        fechaCreacion: new Date().toLocaleDateString('es-CR', {
+                            day:   '2-digit',
+                            month: '2-digit',
+                            year:  'numeric'
+                        })
     });
 
+    guardarDatos(CLAVE_ADMINS, admins);
+
     renderizarTabla();
-
     limpiarFormulario();
-
     alert('Administrador "' + nombre + '" registrado correctamente.');
 }
 
@@ -126,6 +136,8 @@ function renderizarTabla() {
     const sinDatos      = document.getElementById('sin-datos');
     const tabla         = document.getElementById('admin-tabla');
     const contadorEl    = document.getElementById('contador');
+
+    const admins = obtenerDatos(CLAVE_ADMINS);
     
     contadorEl.textContent = admins.length;
 
@@ -170,35 +182,36 @@ function renderizarTabla() {
 }
 
 function eliminarAdmin(indice) {
-    const nombre = admins[indice];
+    const admins = obtenerDatos(CLAVE_ADMINS);
+    const admin  = admins[indice];
 
     if (admin.estado === 'activo') {
-        alert('No es posible eleminar a "' + admin.nombre + '" porque está activo. Si desea restringir su acceso, use la opcion Desactivar.');
+        alert('No es posible eliminar a "' + admin.nombre + '" porque está activo. Si desea restringir su acceso, use la opción Desactivar.');
         return;
     }
 
-    alert('No es posible eliminar administradores del sistema para conservar la trazabilidad historica. Si desea restringir su acceso, use la opcion Desactivar.');
+    alert('No es posible eliminar administradores del sistema para conservar la trazabilidad histórica. Si desea restringir su acceso, use la opción Desactivar.');
 }
 
 let indiceEditando = null;
 
-function abrirEdicion (indice){
+function abrirEdicion(indice) {
     indiceEditando = indice;
 
-    const admin = admins [indice];
+    const admins = obtenerDatos(CLAVE_ADMINS);
+    const admin  = admins[indice];
 
     document.getElementById('edit-nombre').value = admin.nombre;
     document.getElementById('edit-correo').value = admin.correo;
-    document.getElementById('edit-rol').value = admin.rol;
+    document.getElementById('edit-rol').value    = admin.rol;
 
     document.getElementById('err-edit-nombre').textContent = '';
-    document.getElementById('err-edit-rol').textContent = '';
+    document.getElementById('err-edit-rol').textContent    = '';
     document.getElementById('edit-nombre').classList.remove('error');
     document.getElementById('edit-rol').classList.remove('error');
 
-    document.getElementById ('seccion-edicion').style.display = 'block';
-
-    document.getElementById('seccion-edicion').scrollIntoView({ behavior: 'smooth'});
+    document.getElementById('seccion-edicion').style.display = 'block';
+    document.getElementById('seccion-edicion').scrollIntoView({ behavior: 'smooth' });
 }
 
 function cerrarEdicion() {
@@ -207,49 +220,49 @@ function cerrarEdicion() {
     indiceEditando = null;
 }
 
-function guardarEdicion(){
+function guardarEdicion() {
     const nombre = document.getElementById('edit-nombre').value.trim();
     const rol    = document.getElementById('edit-rol').value;
 
     document.getElementById('err-edit-nombre').textContent = '';
-    document.getElementById('err-edit-rol').textContent = '';
+    document.getElementById('err-edit-rol').textContent    = '';
     document.getElementById('edit-nombre').classList.remove('error');
     document.getElementById('edit-rol').classList.remove('error');
 
     let esValido = true;
 
-    if (nombre === ''){
+    if (nombre === '') {
         document.getElementById('edit-nombre').classList.add('error');
         document.getElementById('err-edit-nombre').textContent = 'El nombre es obligatorio';
         esValido = false;
     }
 
-    if (rol === ''){
+    if (rol === '') {
         document.getElementById('edit-rol').classList.add('error');
         document.getElementById('err-edit-rol').textContent = 'Seleccione un rol';
         esValido = false;
     }
 
-    if (!esValido) {
-        return;
-    }
+    if (!esValido) return;
 
+    const admins = obtenerDatos(CLAVE_ADMINS);
     admins[indiceEditando].nombre = nombre;
     admins[indiceEditando].rol    = rol;
+    guardarDatos(CLAVE_ADMINS, admins);
 
     renderizarTabla();
-
     cerrarEdicion();
-
-    alert ('Administrador "' +  nombre + '" actualizado correctamente');
+    alert('Administrador "' + nombre + '" actualizado correctamente');
 }
 
-function toggleEstado(indice){
-    const admin = admins [indice];
+function toggleEstado(indice) {
+    const admins = obtenerDatos(CLAVE_ADMINS);
+    const admin  = admins[indice];
     const accion = admin.estado === 'activo' ? 'desactivar' : 'activar';
 
-    if (confirm ('¿Desea ' + accion + ' a "' + admin.nombre + '"?')) {
-        admins[indice].estado = admin.estado === 'activo' ?  'inactivo':"activo";
+    if (confirm('¿Desea ' + accion + ' a "' + admin.nombre + '"?')) {
+        admins[indice].estado = admin.estado === 'activo' ? 'inactivo' : 'activo';
+        guardarDatos(CLAVE_ADMINS, admins);
         renderizarTabla();
-        }
+    }
 }
