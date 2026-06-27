@@ -400,6 +400,32 @@ function guardarEdicionActividad(evento) {
     alert('Actividad actualizada correctamente.');
 }
 
+function verDetalleActividad(id) {
+    const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
+
+    const actividad = actividades.find(function(a) {
+        return a.id === id;
+    });
+
+    if (!actividad) return;
+
+    const cuposDisponibles = actividad.cupoMaximo - actividad.cuposOcupados;
+
+    alert(
+        'ID: '           + actividad.id               + '\n' +
+        'Nombre: '       + actividad.nombre            + '\n' +
+        'Categoría: '    + actividad.categoria         + '\n' +
+        'Descripción: '  + actividad.descripcion       + '\n' +
+        'Fecha: '        + actividad.fecha             + '\n' +
+        'Horario: '      + actividad.horaInicio + ' - ' + actividad.horaFin + '\n' +
+        'Lugar: '        + actividad.lugar             + '\n' +
+        'Cupo máximo: '  + actividad.cupoMaximo        + '\n' +
+        'Ocupados: '     + actividad.cuposOcupados     + '\n' +
+        'Disponibles: '  + cuposDisponibles            + '\n' +
+        'Responsable: '  + actividad.responsableNombre + '\n' +
+        'Estado: '       + actividad.estado
+    );
+}
 
 function mostrarActividades() {
     const textoBusqueda = buscarActividad.value.toLowerCase();
@@ -420,24 +446,29 @@ function mostrarActividades() {
 
         const fila = document.createElement("tr");
 
-        fila.innerHTML = `
-            <td><span style="font-family: monospace; font-size: 11px; color: #888;">${actividad.id}</span></td>
-            <td>${actividad.nombre}</td>
-            <td>${actividad.categoria}</td>
-            <td>${actividad.fecha}</td>
-            <td>${actividad.horaInicio} - ${actividad.horaFin}</td>
-            <td>${actividad.lugar}</td>
-            <td>${actividad.cuposOcupados}/${actividad.cupoMaximo}</td>
-            <td>${actividad.responsableNombre}</td>
-            <td>${actividad.estado}</td>
-            <td>
-                ${actividad.estado !== 'Cancelada' && actividad.estado !== 'Finalizada'
-                    ? ` <button onclick="abrirEdicionActividad('${actividad.id}')">Editar</button>
-                        <button onclick="cancelarActividad('${actividad.id}')">Cancelar</button>`
-                    : '-'
-                }
-            </td>
-        `;
+        const cuposDisponibles = actividad.cupoMaximo - actividad.cuposOcupados;
+
+fila.innerHTML = `
+    <td><span style="font-family: monospace; font-size: 11px; color: #888;">${actividad.id}</span></td>
+    <td>${actividad.nombre}</td>
+    <td>${actividad.categoria}</td>
+    <td>${actividad.fecha}</td>
+    <td>${actividad.horaInicio} - ${actividad.horaFin}</td>
+    <td>${actividad.lugar}</td>
+    <td>${actividad.cupoMaximo}</td>
+    <td>${actividad.cuposOcupados}</td>
+    <td>${cuposDisponibles}</td>
+    <td>${actividad.responsableNombre}</td>
+    <td>${actividad.estado}</td>
+    <td>
+        ${actividad.estado !== 'Cancelada' && actividad.estado !== 'Finalizada'
+            ? `<button onclick="abrirEdicionActividad('${actividad.id}')">Editar</button>
+               <button onclick="verDetalleActividad('${actividad.id}')">Ver</button>
+               <button onclick="cancelarActividad('${actividad.id}')">Cancelar</button>`
+            : `<button onclick="verDetalleActividad('${actividad.id}')">Ver</button>`
+        }
+    </td>
+`;
 
         tablaActividades.appendChild(fila);
     });
