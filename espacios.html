@@ -30,44 +30,42 @@
       </div>
   </header>
   <main>
-    <section class="hero">
+    <section class="Seccion">
         <div class="contenedor">
             <h2>Gestión de Espacios</h2>
-            <form id="formEspacios">
-                <label> Nombre del espacio</label>
-                <input type="text" id="nombreEspacio" required>
+            <p class="texto-ayuda">indicar si la actividad se realiza dentro o fuera del campus.</p>
 
-                <label>Plaza / Sede</label
-                <select id="sede">
-                    <option value="">Seleccione</option>
-                    <option>Universidad CENFOTEC</option>
-                    <option>Lugar Externo</option>
-                </select>
+            <form id="FormLugarActividad" class="formulario">
+                <label for="nombreActividad">Nombre de la Actividad</label>
+                <input type="text" id="nombreActividad" placeholder="Charla de Tecnologia">
+                <p class="mensaje-error" id="errorNombreActividad"></p>
 
-                <label>Tipo</label>
-                <select id="Tipo">
-                    <option>Laboratorio</option>
-                    <option>Auditorio</option>
-                    <option>Parqueo</option>
-                    <option>Otro</option>
+                <label for="tipoLugar">Tipo de Lugar</label>
+                <select id="tipoLugar">
+                    <option value="">Seleccione una opcion</option>
+                    <option value="interno">Dentro de la Universidad</option>
+                    <option value="externo">Fuera de la Universidad</option>
                 </select>
+                <p class="mensaje-error" id="errorTipoLugar"></p>
+
+                <div id="grupoEspacioInterno" class="grupo-oculto">
+                    <label for="lugarExterno">Lugar Externo</label>
+                    <input type="text" id="lugarExterno" placeholder="Hotel, empresa, auditorio externo">
+                </div>
 
                 <label>Capacidad</label>
-                <input type="number" id="capacidad" required>
+            <input type="number" id="capacidad" required>
 
-                <label>Descripcion</label>
-                <textarea id="descripcion"></textarea>
+            <label>Descripcion</label>
+            <textarea id="descripcion"></textarea>
 
-                <Label>Estado</Label>
-                <select id="estado">
-                    <option>Disponible</option>
-                    <option>Mantenimiento</option>
-                    <option>No Disponible</option>
-                </select>
-
-                <button type="submit">Guardar Espacio</button>
-                <button type="button" id="btnLimpiar" class="secundario">Limpiar</button>
-            </form>
+            <Label>Estado</Label>
+            <select id="estado">
+                <option>Disponible</option>
+                <option>Mantenimiento</option>
+                <option>No Disponible</option>
+            </select>
+            
             <hr>
             <h2>Buscar Espacio</h2>
             <input type="text" id="buscarEspacio" placeholder="Buscar....">
@@ -87,11 +85,24 @@
                 </thead>
                 <tbody id="tablaEspacios"></tbody>
             </table>
-            <script src="js/espacios.js"></script>
-            <script src="js/datos.js"></script>
-  </main>
-  <footer>
+
+            <button type="submit">Guardar Espacio</button>
+            <button type="button" id="btnLimpiar" class="secundario">Limpiar</button>
+            </form>
+
+            <div class="tarjeta resultado">
+                <h3>Ultimo Registro</h3>
+                <p id="resultadoLugar">No hay datos guardados.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
     <p>&copy; 2026 CENFOTEC Connect.</p>
-  </footer>
+</footer>
+
+<script src="js/espacios.js"></script>
+<script src="js/datos.js"></script>
 </body>
 </html>
