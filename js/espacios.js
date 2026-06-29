@@ -102,6 +102,9 @@ function editarEspacio(id) {
     document.getElementById("nombreEspacio").value = espacio.nombre;
     document.getElementById("sedeEspacio").value = espacio.sede;
     document.getElementById("estadoEspacio").value = espacio.estado;
+
+    // Scroll automatico al formulario
+    document.getElementById("formEspacio").scrollIntoView({ behaviour: "smooth"});
 }
 
 function eliminarEspacio(id) {
