@@ -2,6 +2,7 @@ const CLAVE_ESPACIOS = "cenfotec_espacios";
 const CLAVE_RESPONSABLES = "cenfotec_responsables";
 const CLAVE_ACTIVIDADES = "cenfotec_actividades";
 const CLAVE_SESION = "cenfotec_sesion";
+const CLAVE_INSCRIPCIONES = "cenfotec_inscripciones";
 
 function crearId() {
     return Date.now().toString();
@@ -169,6 +170,7 @@ function validarActividad() {
 }
 
 function guardarActividad(evento) {
+    const esEntradaLibre = document.getElementById('entradaLibre').checked;
     evento.preventDefault();
 
     if (!validarActividad()) {
@@ -211,7 +213,7 @@ function guardarActividad(evento) {
         estado: "Disponible"
     };
 
-    const esEntradaLibre = document.getElementById('entradaLibre').checked;
+
 
     const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
     actividades.push(actividad);
@@ -350,7 +352,7 @@ function abrirEdicionActividad(id) {
 
 function cerrarEdicionActividad() {
     document.getElementById('seccionEdicion').style.display = 'none';
-    idEditandot = null;
+    idEditando = null;
 }
 
 function guardarEdicionActividad(evento) {
