@@ -1,5 +1,3 @@
-// parrte dee inscripciones. — RF-29, RF-30, RF-31, RF-32- parte de geiner 
-
 const CLAVE_INSCRIPCIONES = "cenfotec_inscripciones";
 const CLAVE_PARTICIPANTES = "cenfotec_participantes";
 const CLAVE_ACTIVIDADES   = "cenfotec_actividades";
@@ -23,7 +21,7 @@ function setError(id, msg) {
     campo.classList.toggle("campo-valido", !msg);
 }
 
-// ── aqui cargo los selects 
+//aqui cargam los selects 
 function cargarSelects() {
     // Participantes activos
     const sp = document.getElementById("selectParticipante");
@@ -32,7 +30,7 @@ function cargarSelects() {
         sp.innerHTML += `<option value="${p.id}">${p.nombre} — ${p.identificacion}</option>`;
     });
 
-    // Actividades disponibles y se ven las activiidases 
+    // se ven acytividades 
     const sa = document.getElementById("selectActividad");
     sa.innerHTML = '<option value="">— Seleccione una actividad —</option>';
     obtener(CLAVE_ACTIVIDADES).filter(a => a.estado === "Disponible").forEach(a => {
@@ -46,7 +44,7 @@ function cargarSelects() {
     cats.forEach(c => { fc.innerHTML += `<option value="${c}">${c}</option>`; });
 }
 
-// ── Tabla (RF-30) 
+// Tabla 
 function mostrarInscripciones() {
     const texto  = document.getElementById("buscarInscripcion").value.toLowerCase().trim();
     const estado = document.getElementById("filtroEstado").value;
