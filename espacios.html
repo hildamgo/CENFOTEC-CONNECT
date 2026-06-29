@@ -33,42 +33,34 @@
     <section class="Seccion">
         <div class="contenedor">
             <h2>Gestión de Espacios</h2>
-            <p class="texto-ayuda">indicar si la actividad se realiza dentro o fuera del campus.</p>
+            <p class="texto-ayuda">Registre los espacios disponibles para actividades dentro o fuera del campus</p>
 
-            <form id="FormLugarActividad" class="formulario">
-                <label for="nombreActividad">Nombre de la Actividad</label>
-                <input type="text" id="nombreActividad" placeholder="Charla de Tecnologia">
-                <p class="mensaje-error" id="errorNombreActividad"></p>
+            <!--Campo oculto necesario para edicion-->
+            <form id="formEspacio" class="formulario">
+                <input type="hidden" id="espacioId">
 
-                <label for="tipoLugar">Tipo de Lugar</label>
-                <select id="tipoLugar">
-                    <option value="">Seleccione una opcion</option>
-                    <option value="interno">Dentro de la Universidad</option>
-                    <option value="externo">Fuera de la Universidad</option>
+                <label for="nombreEspacio">Nombre del Espacio</label>
+                <input type="text" id="nombreEspacio" placeholder="Sala de conferencias A">
+                <p class="mensaje-error" id="errorNombreEspacio"></p>
+
+                <label for="sedeEspacio">Sede</label>
+                <input type="text" id="sedeEspacio" placeholder="Campus Central">
+                <p class="mensaje-error" id="errorSedeEspacio"></p>
+
+                <Label for="estadoEspacio">Estado</Label>
+                <select id="estadoEspacio">
+                    <option value="Disponible">Disponible</option>
+                    <option value="Mantenimiento">Mantenimiento</option>
+                    <option value="No Disponible">No Disponible</option>
                 </select>
-                <p class="mensaje-error" id="errorTipoLugar"></p>
 
-                <div id="grupoEspacioInterno" class="grupo-oculto">
-                    <label for="lugarExterno">Lugar Externo</label>
-                    <input type="text" id="lugarExterno" placeholder="Hotel, empresa, auditorio externo">
-                </div>
+                <button type="submit">Guardar Espacio</button>
+                <button type="button" id="btnLimpiarEspacio" class="secundario">Limpiar</button>
+            </form>
 
-                <label>Capacidad</label>
-            <input type="number" id="capacidad" required>
-
-            <label>Descripcion</label>
-            <textarea id="descripcion"></textarea>
-
-            <Label>Estado</Label>
-            <select id="estado">
-                <option>Disponible</option>
-                <option>Mantenimiento</option>
-                <option>No Disponible</option>
-            </select>
-            
             <hr>
             <h2>Buscar Espacio</h2>
-            <input type="text" id="buscarEspacio" placeholder="Buscar....">
+            <input type="text" id="buscarEspacio" placeholder="Buscar por nombre o sede...">
             <hr>
 
             <h2>Lista de Espacios</h2>
@@ -77,23 +69,13 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Sede</th>
-                        <th>Tipo</th>
-                        <th>Capacidad</th>
                         <th>Estado</th>
+                        <th>Fecha de Registro</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="tablaEspacios"></tbody>
             </table>
-
-            <button type="submit">Guardar Espacio</button>
-            <button type="button" id="btnLimpiar" class="secundario">Limpiar</button>
-            </form>
-
-            <div class="tarjeta resultado">
-                <h3>Ultimo Registro</h3>
-                <p id="resultadoLugar">No hay datos guardados.</p>
-            </div>
         </div>
     </section>
 </main>
@@ -102,7 +84,7 @@
     <p>&copy; 2026 CENFOTEC Connect.</p>
 </footer>
 
-<script src="js/espacios.js"></script>
 <script src="js/datos.js"></script>
+<script src="js/espacios.js"></script>
 </body>
 </html>

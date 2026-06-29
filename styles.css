@@ -606,3 +606,10 @@ td .btn-editar:hover {
     align-items: flex-end;
     margin-bottom: 1rem;
 }
+.mensaje-error{
+  display: block !important;
+  color: #CC0000 !important;
+  font-size: 14px !important;
+  min-height: 20px !important;
+  visibility: visible !important;
+}
