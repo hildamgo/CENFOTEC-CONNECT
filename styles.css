@@ -150,11 +150,11 @@ footer{
     max-width: 560px;
     margin: 25px auto;
     background-color: #FFFFFF;
-    padding: 30px;
+    padding: 15px;
     border: 1px solid #dddddd;
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+    
 }
 
 .formulario label,
@@ -606,6 +606,7 @@ td .btn-editar:hover {
     align-items: flex-end;
     margin-bottom: 1rem;
 }
+
 .mensaje-error{
   display: block !important;
   color: #CC0000 !important;
