@@ -1,4 +1,4 @@
-// Aqui voy a poner las variables en general
+// Variables globales
 const formActividad = document.getElementById("formActividad");
 const formEdicionActividad = document.getElementById("formEdicionActividad");
 const tipoLugar = document.getElementById("tipoLugar");
@@ -11,30 +11,7 @@ const tablaActividades = document.getElementById("tablaActividades");
 
 let idEditando = null;
 
-// Esto seria las funciones de los espacios
-function cargarEspacios() {
-    const espacios = obtenerDatos(CLAVE_ESPACIOS);
-    espacioActividad.innerHTML = '<option value="">Seleccione un espacio</option>';
-
-    for (let i = 0; i < espacios.length; i++) {
-        if (espacios[i].estado === "Disponible") {
-            espacioActividad.innerHTML += '<option value="' + espacios[i].id + '">' + espacios[i].nombre + ' - ' + espacios[i].sede + '</option>';
-        }
-    }
-}
-
-// Aqui va lo de los responsables responsables
-function cargarResponsables() {
-    const responsables = obtenerDatos(CLAVE_RESPONSABLES);
-    responsableActividad.innerHTML = '<option value="">Seleccione un responsable</option>';
-
-    for (let i = 0; i < responsables.length; i++) {
-        const nombreCompleto = responsables[i].nombre + " " + responsables[i].primerApellido + " " + responsables[i].segundoApellido;
-        responsableActividad.innerHTML += '<option value="' + responsables[i].id + '">' + nombreCompleto + '</option>';
-    }
-}
-
-// Aqui iria funcion de lugares
+// Cambia entre lugar interno o externo
 function cambiarTipoLugar() {
     grupoEspacioInterno.style.display = "none";
     grupoLugarExterno.style.display = "none";
@@ -46,7 +23,7 @@ function cambiarTipoLugar() {
     }
 }
 
-// Entrada libre, sin cupo limitado
+// Entrada libre (RF-18)
 function toggleEntradaLibre() {
     const campo = document.getElementById('cupoActividad');
     if (document.getElementById('entradaLibre').checked) {
@@ -67,7 +44,7 @@ function toggleEditEntradaLibre() {
     }
 }
 
-// Validación del formulario de registro
+// Valida el formulario de registro
 function validarActividad() {
     let valido = true;
 
@@ -109,16 +86,11 @@ function validarActividad() {
         limpiarError("errorTipoLugar");
     }
 
-    if (tipoLugar.value === "interno" && espacioActividad.value === "") {
-        mostrarError("errorEspacioActividad", "Seleccione un espacio.");
-        valido = false;
-    }
-
     if (tipoLugar.value === "externo" && !validarTexto("lugarExterno", "errorLugarExterno", "El lugar externo", 3)) {
         valido = false;
     }
 
-    // Espacio que respeta lo de la entrada libre
+    // Cupo respeta entrada libre (RF-18)
     const esEntradaLibre = document.getElementById('entradaLibre').checked;
     const cupo = document.getElementById("cupoActividad").value;
 
@@ -129,33 +101,22 @@ function validarActividad() {
         limpiarError("errorCupoActividad");
     }
 
-    if (responsableActividad.value === "") {
-        mostrarError("errorResponsableActividad", "Seleccione un responsable.");
-        valido = false;
-    } else {
-        limpiarError("errorResponsableActividad");
-    }
-
     return valido;
 }
 
-// Funcion para guardar la actividad
+// Guarda una nueva actividad (RF-10, RF-11, RF-12)
 function guardarActividad(evento) {
     evento.preventDefault();
     if (!validarActividad()) return;
 
-    const espacios = obtenerDatos(CLAVE_ESPACIOS);
-    const responsables = obtenerDatos(CLAVE_RESPONSABLES);
-
-    const espacio = espacios.find(function(e) { return e.id === espacioActividad.value; });
-    const responsable = responsables.find(function(r) { return r.id === responsableActividad.value; });
-
-    let lugar = document.getElementById("lugarExterno").value.trim();
-    if (tipoLugar.value === "interno") {
-        lugar = espacio.nombre + " - " + espacio.sede;
-    }
-
     const esEntradaLibre = document.getElementById('entradaLibre').checked;
+
+    let lugar = "";
+    if (tipoLugar.value === "interno") {
+        lugar = "Interno";
+    } else if (tipoLugar.value === "externo") {
+        lugar = document.getElementById("lugarExterno").value.trim();
+    }
 
     const actividad = {
         id: crearId(),
@@ -169,8 +130,7 @@ function guardarActividad(evento) {
         cupoMaximo: esEntradaLibre ? null : Number(document.getElementById("cupoActividad").value),
         entradaLibre: esEntradaLibre,
         cuposOcupados: 0,
-        responsableId: responsableActividad.value,
-        responsableNombre: responsable.nombre + " " + responsable.primerApellido,
+        responsableNombre: "Pendiente",
         estado: "Disponible"
     };
 
@@ -184,7 +144,7 @@ function guardarActividad(evento) {
     alert("Actividad guardada correctamente.");
 }
 
-// Funcion para actualizar el estado de la actividad
+// Actualiza el estado de la actividad (RF-12)
 function actualizarEstado(actividad) {
     if (actividad.estado === 'Cancelada') return actividad;
 
@@ -203,9 +163,9 @@ function actualizarEstado(actividad) {
     return actividad;
 }
 
-//Funcion para cancelar actividades
+// Cancela una actividad (RF-12, RF-17)
 function cancelarActividad(id) {
-    if (!confirm('¿Cancelar esta actividad? Las inscripciones activas serán canceladas.')) return;
+    if (!confirm('¿Cancelar esta actividad?')) return;
 
     const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
     const indice = actividades.findIndex(function(a) { return a.id === id; });
@@ -218,10 +178,9 @@ function cancelarActividad(id) {
     alert('Actividad cancelada.');
 }
 
-// Funcion para eliminar las actividades
+// Elimina una actividad si cumple las reglas (RF-17)
 function eliminarActividad(id) {
     const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
-    const inscripciones = obtenerDatos(CLAVE_INSCRIPCIONES);
 
     const indice = actividades.findIndex(function(a) { return a.id === id; });
     if (indice === -1) return;
@@ -233,15 +192,6 @@ function eliminarActividad(id) {
         return;
     }
 
-    const tieneInscritos = inscripciones.some(function(i) {
-        return i.actividadId === id && i.estado === 'Activa';
-    });
-
-    if (tieneInscritos) {
-        alert('No se puede eliminar. La actividad tiene inscripciones activas.');
-        return;
-    }
-
     if (!confirm('¿Eliminar esta actividad? Esta acción no se puede deshacer.')) return;
 
     actividades.splice(indice, 1);
@@ -250,12 +200,12 @@ function eliminarActividad(id) {
     alert('Actividad eliminada.');
 }
 
-// Funcion para ver el detalle de la actividad
+// Ver detalle (RF-15)
 function verDetalleActividad(id) {
     window.location.href = 'detalle-actividad.html?id=' + id;
 }
 
-// Con esta opcion abrimos el formulario de edicion
+// Abrir formulario de edición (RF-13, RF-17)
 function abrirEdicionActividad(id) {
     const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
     const actividad = actividades.find(function(a) { return a.id === id; });
@@ -285,29 +235,17 @@ function abrirEdicionActividad(id) {
         campoCupo.disabled = false;
     }
 
-    // Para poder cargar los responsables
-    const responsables = obtenerDatos(CLAVE_RESPONSABLES);
-    const selectResp = document.getElementById('editResponsable');
-    selectResp.innerHTML = '<option value="">Seleccione un responsable</option>';
-
-    for (let i = 0; i < responsables.length; i++) {
-        const nombre = responsables[i].nombre + " " + responsables[i].primerApellido + " " + responsables[i].segundoApellido;
-        selectResp.innerHTML += '<option value="' + responsables[i].id + '">' + nombre + '</option>';
-    }
-
-    selectResp.value = actividad.responsableId;
-
     document.getElementById('seccionEdicion').style.display = 'block';
     document.getElementById('seccionEdicion').scrollIntoView({ behavior: 'smooth' });
 }
 
-// Funcion de cerrar la edicion que hacemos a la actividad
+// Cierra edición
 function cerrarEdicionActividad() {
     document.getElementById('seccionEdicion').style.display = 'none';
     idEditando = null;
 }
 
-// Aqui para guardar edicion
+// Guarda cambios de edición (RF-13)
 function guardarEdicionActividad(evento) {
     evento.preventDefault();
 
@@ -319,7 +257,6 @@ function guardarEdicionActividad(evento) {
     const horaFin = document.getElementById('editHoraFin').value;
     const esEntradaLibre = document.getElementById('editEntradaLibre').checked;
     const cupo = Number(document.getElementById('editCupo').value);
-    const responsable = document.getElementById('editResponsable').value;
 
     let esValido = true;
 
@@ -341,10 +278,7 @@ function guardarEdicionActividad(evento) {
     if (horaFin === '') { mostrarError('errorEditHoraFin', 'Seleccione la hora fin.'); esValido = false; }
     else limpiarError('errorEditHoraFin');
 
-    if (responsable === '') { mostrarError('errorEditResponsable', 'Seleccione un responsable.'); esValido = false; }
-    else limpiarError('errorEditResponsable');
-
-    // El cupo aca no puede ser menor a los inscritos
+    // RF-13: cupo no puede ser menor a los inscritos
     const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
     const indice = actividades.findIndex(function(a) { return a.id === idEditando; });
     const cuposOcupados = actividades[indice].cuposOcupados;
@@ -365,9 +299,6 @@ function guardarEdicionActividad(evento) {
 
     if (!esValido) return;
 
-    const responsables = obtenerDatos(CLAVE_RESPONSABLES);
-    const respSel = responsables.find(function(r) { return r.id === responsable; });
-
     actividades[indice].nombre = nombre;
     actividades[indice].categoria = categoria;
     actividades[indice].descripcion = descripcion;
@@ -376,8 +307,6 @@ function guardarEdicionActividad(evento) {
     actividades[indice].horaFin = horaFin;
     actividades[indice].cupoMaximo = esEntradaLibre ? null : cupo;
     actividades[indice].entradaLibre = esEntradaLibre;
-    actividades[indice].responsableId = responsable;
-    actividades[indice].responsableNombre = respSel.nombre + ' ' + respSel.primerApellido;
 
     guardarDatos(CLAVE_ACTIVIDADES, actividades);
     cerrarEdicionActividad();
@@ -385,7 +314,7 @@ function guardarEdicionActividad(evento) {
     alert('Actividad actualizada.');
 }
 
-// Aqui añadi lo que es el filtro de busqueda y para poder ver las actividades
+// Muestra la tabla con búsqueda y filtros (RF-14, RF-16)
 function mostrarActividades() {
     const busqueda = buscarActividad.value.toLowerCase();
     const fCategoria = document.getElementById('filtroCategoria').value;
@@ -401,7 +330,7 @@ function mostrarActividades() {
         let actividad = actualizarEstado(actividades[i]);
 
         // Aplicar búsqueda
-        const texto = (actividad.nombre + ' ' + actividad.lugar + ' ' + actividad.responsableNombre + ' ' + actividad.descripcion).toLowerCase();
+        const texto = (actividad.nombre + ' ' + actividad.lugar + ' ' + actividad.descripcion).toLowerCase();
         if (busqueda && texto.indexOf(busqueda) === -1) continue;
 
         // Aplicar filtros
@@ -436,7 +365,6 @@ function mostrarActividades() {
             '<td>' + cupoMax + '</td>' +
             '<td>' + actividad.cuposOcupados + '</td>' +
             '<td>' + cupoDisp + '</td>' +
-            '<td>' + actividad.responsableNombre + '</td>' +
             '<td>' + actividad.estado + '</td>' +
             '<td>' + botones + '</td>' +
         '</tr>';
@@ -455,12 +383,12 @@ function limpiarFiltros() {
     mostrarActividades();
 }
 
+// Eventos
 tipoLugar.addEventListener("change", cambiarTipoLugar);
 formActividad.addEventListener("submit", guardarActividad);
 formEdicionActividad.addEventListener("submit", guardarEdicionActividad);
 buscarActividad.addEventListener("input", mostrarActividades);
 
-cargarEspacios();
-cargarResponsables();
+// Carga inicial
 cambiarTipoLugar();
 mostrarActividades();
