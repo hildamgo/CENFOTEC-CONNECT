@@ -105,17 +105,4 @@ function validarSesion() {
         localStorage.setItem(CLAVE_SESION, JSON.stringify(sesion));
     }
 
-    const minutosInactivo = (Date.now() - sesion.ultimaActividad) / 60000;
-    if (minutosInactivo > 30) {
-        localStorage.removeItem(CLAVE_SESION);
-        alert("La sesion expiro por inactividad.");
-        location.href = "index.html";
-        return false;
-    }
-
-    sesion.ultimaActividad = Date.now();
-    localStorage.setItem(CLAVE_SESION, JSON.stringify(sesion));
-    return true;
-}
-
 validarSesion();
