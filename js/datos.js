@@ -92,17 +92,3 @@ function validarUrl(idCampo, idError) {
     marcarCampo(idCampo, true);
     return true;
 }
-
-function validarSesion() {
-    let sesion = JSON.parse(localStorage.getItem(CLAVE_SESION));
-
-    if (!sesion) {
-        sesion = {
-            usuario: "admin@ucenfotec.ac.cr",
-            rol: "Administrador General",
-            ultimaActividad: Date.now()
-        };
-        localStorage.setItem(CLAVE_SESION, JSON.stringify(sesion));
-    }
-
-validarSesion();
