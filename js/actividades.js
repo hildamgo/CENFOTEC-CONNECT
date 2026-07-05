@@ -460,6 +460,24 @@ function limpiarFiltros() {
     mostrarActividades();
 }
 
+document.getElementById("btnLimpiar").addEventListener("click", function() {
+    formActividad.reset();
+    cambiarTipoLugar();
+    
+    // Limpia mensajes de error para el boton de registro
+    limpiarError("errorNombreActividad");
+    limpiarError("errorCategoriaActividad");
+    limpiarError("errorDescripcionActividad");
+    limpiarError("errorFechaActividad");
+    limpiarError("errorHoraInicio");
+    limpiarError("errorHoraFin");
+    limpiarError("errorTipoLugar");
+    limpiarError("errorEspacioActividad");
+    limpiarError("errorLugarExterno");
+    limpiarError("errorCupoActividad");
+    limpiarError("errorResponsableActividad");
+});
+
 tipoLugar.addEventListener("change", cambiarTipoLugar);
 formActividad.addEventListener("submit", guardarActividad);
 formEdicionActividad.addEventListener("submit", guardarEdicionActividad);
