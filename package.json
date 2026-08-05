@@ -1,0 +1,29 @@
+{
+  "name": "cenfotec-connect",
+  "version": "1.0.0",
+  "description": "CENFOTEC CONNECT is a web platform designed to facilitate the management, promotion, and participation in university activities within Universidad CENFOTEC. The system allows administrators to manage events, participants, speakers, and university spaces, strengthening communication and integration within the academic community.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hildamgo/CENFOTEC-CONNECT.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/hildamgo/CENFOTEC-CONNECT/issues"
+  },
+  "homepage": "https://github.com/hildamgo/CENFOTEC-CONNECT#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongodb": "^7.5.0"
+  }
+}
