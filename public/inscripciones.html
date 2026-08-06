@@ -34,7 +34,7 @@
 <div class="contenedor">
 
     <h2>Gestión de Inscripciones</h2>
-    <p class="texto-ayuda">Inscribir participantes a actividades, cancelar y gestionar inscripciones.</p>
+    <p class="texto-ayuda">Inscribir participantes a actividades, buscar y filtrar inscripciones.</p>
 
     <!-- Formulario de inscripción RF-29 -->
     <form id="formInscripcion" class="formulario" novalidate>
@@ -86,6 +86,8 @@
         <input type="date" id="filtroFecha">
     </div>
 
+    <button type="button" id="btnVerInscripciones">Ver Inscripciones</button>
+
     <!-- Tabla RF-30 -->
     <div class="tabla-contenedor">
         <table>
@@ -98,7 +100,6 @@
                     <th>Fecha Actividad</th>
                     <th>Fecha Inscripción</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody id="tablaInscripciones"></tbody>

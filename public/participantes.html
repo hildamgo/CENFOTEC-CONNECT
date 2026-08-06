@@ -34,7 +34,7 @@
 <div class="contenedor">
 
     <h2>Gestión de Participantes</h2>
-    <p class="texto-ayuda">Registrar, editar, eliminar, buscar y filtrar participantes.</p>
+    <p class="texto-ayuda">Registrar, buscar y filtrar participantes.</p>
 
     <!-- Formulario RF-25, RF-26, RF-27 -->
     <form id="formParticipante" class="formulario" novalidate>
@@ -115,6 +115,8 @@
         <input type="text" id="filtroProfesion" placeholder="Filtrar por profesión">
     </div>
 
+    <button type="button" id="btnVerParticipantes">Ver Participantes</button>
+
     <!-- Tabla RF-28 -->
     <div class="tabla-contenedor">
         <table>
@@ -127,7 +129,6 @@
                     <th>Edad</th>
                     <th>Profesión</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody id="tablaParticipantes"></tbody>

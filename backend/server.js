@@ -1,371 +1,175 @@
 // ======================================================
-// CONFIGURACIÓN DE VARIABLES DE ENTORNO
+// CONFIGURACIÓN INICIAL
+// server.js SOLO define rutas. Toda la lógica de negocio
+// (validaciones, reglas, acceso a datos) vive en /models.
 // ======================================================
-
 const express = require("express");
-const { MongoClient } = require("mongodb");
-
 require("dotenv").config();
 
-const app = express();
+const { conectarBD } = require("./database/conexion");
+const { crearParticipante, buscarParticipantes } = require("./models/Participante");
+const { crearInscripcion, buscarInscripciones } = require("./models/Inscripcion");
+const { crearActividad, buscarActividades, buscarActividadPorId } = require("./models/Actividad");
 
+const app = express();
 const puerto = process.env.PORT || 3000;
 
-const uri = process.env.MONGODB_URI;
-
-const clienteMongo = new MongoClient(uri);
-
-
-// Permitir recibir JSON
 app.use(express.json());
-
-// Publicar carpeta public
 app.use(express.static("public"));
-
-
-// ======================================================
-// OBJETOS DE NEGOCIO
-// ======================================================
-
-let participantes;
-let responsables;
-let actividades;
-let espacios;
-let administradores;
-let inscripciones;
-
-
-// ======================================================
-// FUNCIÓN PARA CONECTAR CON MONGODB
-// ======================================================
-
-async function conectarBD(){
-
-    try{
-
-        console.log(process.env.MONGODB_URI);
-
-        await clienteMongo.connect();
-
-
-        const dataBase = clienteMongo.db("CENFOTEC-CONNECT");
-
-
-        participantes = dataBase.collection("participantes");
-        responsables = dataBase.collection("responsables");
-        actividades = dataBase.collection("actividades");
-        espacios = dataBase.collection("espacios");
-        administradores = dataBase.collection("administradores");
-        inscripciones = dataBase.collection("inscripciones");
-
-
-        console.log("Conexión exitosa a la base de datos CENFOTEC-CONNECT");
-
-
-    }catch(error){
-
-        console.error("Error conectando con MongoDB:");
-        console.error(error);
-
-        process.exit(1);
-
-    }
-
-}
-
 
 // ======================================================
 // ENDPOINT DE PRUEBA
 // ======================================================
-
-
-app.get("/api/prueba", function(req,res){
-
-    res.json({
-
-        mensaje:"El API está funcionando correctamente."
-
-    });
-
+app.get("/api/prueba", function (req, res) {
+    res.json({ mensaje: "El API está funcionando correctamente." });
 });
 
-
-
 // ======================================================
-// ENDPOINT REGISTRO DE PARTICIPANTES
-// ======================================================
-
-
-// POST http://localhost:3000/api/participantes
-// ======================================================
-// ENDPOINT REGISTRO DE PARTICIPANTES
+// PARTICIPANTES
 // ======================================================
 
 // POST http://localhost:3000/api/participantes
-
-app.post("/api/participantes", async function(req, res) {
-
+app.post("/api/participantes", async function (req, res) {
     try {
+        const resultado = await crearParticipante(req.body);
 
-        const datosParticipante = req.body;
-
-        // ==================================================
-        // VALIDAR CAMPOS OBLIGATORIOS
-        // ==================================================
-
-        if (!datosParticipante.nombre || datosParticipante.nombre.trim() === "") {
-            return res.status(400).json({
-                mensaje: "El nombre del participante es obligatorio"
-            });
+        if (resultado.error) {
+            return res.status(400).json({ mensaje: resultado.error });
         }
-
-        if (!datosParticipante.identificacion || datosParticipante.identificacion.trim() === "") {
-            return res.status(400).json({
-                mensaje: "La identificación del participante es obligatoria"
-            });
-        }
-
-        if (!datosParticipante.correo || datosParticipante.correo.trim() === "") {
-            return res.status(400).json({
-                mensaje: "El correo del participante es obligatorio"
-            });
-        }
-
-        if (!datosParticipante.telefono || datosParticipante.telefono.trim() === "") {
-            return res.status(400).json({
-                mensaje: "El teléfono del participante es obligatorio"
-            });
-        }
-
-        if (datosParticipante.edad === undefined || datosParticipante.edad === null || datosParticipante.edad === "") {
-            return res.status(400).json({
-                mensaje: "La edad del participante es obligatoria"
-            });
-        }
-
-        if (!datosParticipante.profesion || datosParticipante.profesion.trim() === "") {
-            return res.status(400).json({
-                mensaje: "La profesión del participante es obligatoria"
-            });
-        }
-
-        // ==================================================
-        // LIMPIAR Y PREPARAR DATOS
-        // ==================================================
-
-        const nombre = datosParticipante.nombre.trim();
-        const identificacion = datosParticipante.identificacion.trim();
-        const correo = datosParticipante.correo.trim().toLowerCase();
-        const telefono = datosParticipante.telefono.trim();
-        const profesion = datosParticipante.profesion.trim();
-        const edad = parseInt(datosParticipante.edad);
-
-        // ==================================================
-        // VALIDAR FORMATO DEL CORREO
-        // ==================================================
-
-        const formatoCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!formatoCorreo.test(correo)) {
-            return res.status(400).json({
-                mensaje: "El correo electrónico no es válido"
-            });
-        }
-
-        // ==================================================
-        // VALIDAR EDAD
-        // ==================================================
-
-        if (isNaN(edad) || edad < 1 || edad > 120) {
-            return res.status(400).json({
-                mensaje: "La edad debe estar entre 1 y 120 años"
-            });
-        }
-
-        // ==================================================
-        // VALIDAR IDENTIFICACIÓN ÚNICA
-        // ==================================================
-
-        const participantePorIdentificacion =
-            await participantes.findOne({
-                identificacion: identificacion
-            });
-
-        if (participantePorIdentificacion) {
-            return res.status(400).json({
-                mensaje: "La identificación ya está registrada"
-            });
-        }
-
-        // ==================================================
-        // VALIDAR CORREO ÚNICO
-        // ==================================================
-
-        const participantePorCorreo =
-            await participantes.findOne({
-                correo: correo
-            });
-
-        if (participantePorCorreo) {
-            return res.status(400).json({
-                mensaje: "El correo ya está registrado"
-            });
-        }
-
-        // ==================================================
-        // CREAR DOCUMENTO
-        // ==================================================
-
-        const nuevoParticipante = {
-
-            nombre: nombre,
-
-            identificacion: identificacion,
-
-            correo: correo,
-
-            telefono: telefono,
-
-            edad: edad,
-
-            profesion: profesion,
-
-            estado: "Activo",
-
-            fechaRegistro: new Date()
-
-        };
-
-        // ==================================================
-        // GUARDAR EN MONGODB
-        // ==================================================
-
-        const resultado =
-            await participantes.insertOne(nuevoParticipante);
-
-        // ==================================================
-        // RESPUESTA
-        // ==================================================
 
         res.status(201).json({
-
             mensaje: "El participante se registró correctamente",
-
-            id: resultado.insertedId,
-
-            participante: nuevoParticipante
-
+            id: resultado.id,
+            participante: resultado.participante
         });
 
     } catch (error) {
-
         console.error("Error al guardar participante:");
-
         console.error(error);
-
-        res.status(500).json({
-
-            mensaje: "Ocurrió un error al guardar el participante"
-
-        });
-
+        res.status(500).json({ mensaje: "Ocurrió un error al guardar el participante" });
     }
-
 });
 
-// ======================================================
-// ENDPOINT CONSULTAR PARTICIPANTES
-// ======================================================
-
-
 // GET http://localhost:3000/api/participantes
-
-app.get("/api/participantes", async function(req, res) {
-
+app.get("/api/participantes", async function (req, res) {
     try {
-
-        const { buscar, estado, profesion } = req.query;
-
-        const filtro = {};
-
-        // ==============================
-        // BUSCADOR
-        // ==============================
-
-        if (buscar && buscar.trim() !== "") {
-
-            const texto = buscar.trim();
-
-            filtro.$or = [
-                { nombre: { $regex: texto, $options: "i" } },
-                { identificacion: { $regex: texto, $options: "i" } },
-                { correo: { $regex: texto, $options: "i" } },
-                { profesion: { $regex: texto, $options: "i" } }
-            ];
-
-        }
-
-        // ==============================
-        // FILTRO ESTADO
-        // ==============================
-
-        if (estado && estado.trim() !== "") {
-
-            filtro.estado = estado;
-
-        }
-
-        // ==============================
-        // FILTRO PROFESIÓN
-        // ==============================
-
-        if (profesion && profesion.trim() !== "") {
-
-            filtro.profesion = {
-                $regex: profesion.trim(),
-                $options: "i"
-            };
-
-        }
-
-        // ==============================
-        // CONSULTAR MONGODB
-        // ==============================
-
-        const lista = await participantes
-            .find(filtro)
-            .toArray();
-
+        const lista = await buscarParticipantes(req.query);
         res.json(lista);
 
     } catch (error) {
-
         console.error("Error al consultar participantes:");
         console.error(error);
+        res.status(500).json({ mensaje: "Ocurrió un error al consultar participantes" });
+    }
+});
 
-        res.status(500).json({
-            mensaje: "Ocurrió un error al consultar participantes"
+// ======================================================
+// INSCRIPCIONES
+// ======================================================
+
+// POST http://localhost:3000/api/inscripciones
+app.post("/api/inscripciones", async function (req, res) {
+    try {
+        const resultado = await crearInscripcion(req.body);
+
+        if (resultado.error) {
+            const codigo = resultado.error === "El participante no existe" ? 404 : 400;
+            return res.status(codigo).json({ mensaje: resultado.error });
+        }
+
+        res.status(201).json({
+            mensaje: "Inscripción registrada correctamente",
+            id: resultado.id,
+            inscripcion: resultado.inscripcion
         });
 
+    } catch (error) {
+        console.error("Error al guardar inscripción:");
+        console.error(error);
+        res.status(500).json({ mensaje: "Ocurrió un error al guardar la inscripción" });
     }
-
 });
+
+// GET http://localhost:3000/api/inscripciones
+app.get("/api/inscripciones", async function (req, res) {
+    try {
+        const lista = await buscarInscripciones(req.query);
+        res.json(lista);
+
+    } catch (error) {
+        console.error("Error al consultar inscripciones:");
+        console.error(error);
+        res.status(500).json({ mensaje: "Ocurrió un error al consultar inscripciones" });
+    }
+});
+
+// ======================================================
+// ACTIVIDADES
+// ======================================================
+
+// POST http://localhost:3000/api/actividades
+app.post("/api/actividades", async function (req, res) {
+    try {
+        const resultado = await crearActividad(req.body);
+
+        if (resultado.error) {
+            return res.status(400).json({ mensaje: resultado.error });
+        }
+
+        res.status(201).json({
+            mensaje: "La actividad se registró correctamente",
+            id: resultado.id,
+            actividad: resultado.actividad
+        });
+
+    } catch (error) {
+        console.error("Error al guardar actividad:");
+        console.error(error);
+        res.status(500).json({ mensaje: "Ocurrió un error al guardar la actividad" });
+    }
+});
+
+// GET http://localhost:3000/api/actividades
+app.get("/api/actividades", async function (req, res) {
+    try {
+        const lista = await buscarActividades(req.query);
+        res.json(lista);
+
+    } catch (error) {
+        console.error("Error al consultar actividades:");
+        console.error(error);
+        res.status(500).json({ mensaje: "Ocurrió un error al consultar actividades" });
+    }
+});
+
+// GET http://localhost:3000/api/actividades/:id
+app.get("/api/actividades/:id", async function (req, res) {
+    try {
+        const actividad = await buscarActividadPorId(req.params.id);
+
+        if (!actividad) {
+            return res.status(404).json({ mensaje: "La actividad no existe" });
+        }
+
+        res.json(actividad);
+
+    } catch (error) {
+        console.error("Error al consultar la actividad:");
+        console.error(error);
+        res.status(500).json({ mensaje: "Ocurrió un error al consultar la actividad" });
+    }
+});
+
 // ======================================================
 // INICIAR APLICACIÓN
 // ======================================================
-
-async function iniciarAplicacion(){
-
+async function iniciarAplicacion() {
     await conectarBD();
 
-    app.listen(puerto, function(){
-
+    app.listen(puerto, function () {
         console.log("Servidor disponible en:");
-
         console.log("http://localhost:" + puerto);
-
     });
-
 }
 
 iniciarAplicacion();
