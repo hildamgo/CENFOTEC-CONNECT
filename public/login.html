@@ -3,66 +3,146 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Iniciar sesion</title>
+        <title>Iniciar sesión | CENFOTEC Connect</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/styles.css" />
     </head>
 
-    <body>
-        <div class="page-login">
-
-            <div class="login-card">
-
-                <!--Esta vendria siendo el saludo inicial a los que se van a logear-->
-                <div class="login-header">
-                    <h1>¡Bienvenido!</h1>
-                    <p>Ingrese sus datos para acceder al sistema.</p>
-                </div>
-                <!--Este espacio será para ingresar el correo de usuario :D-->
-                <div class="campo">
-                    <label for="login-correo">Correo electronico <span class="req">*</span></label>
-                    <input type="email" id="login-correo" placeholder="correo@ejemplo.com" />
-                    <span class="error-msg" id="err-login-correo"></span>
-                </div>
-
-                <!--Por acá para no irnos perdiendo, ponemos el espacio de contraseña-->
-
-                <div class="campo">
-                    <label for="login-password">Contraseña <span class="req">*</span></label>
-                    <input type="password" id="login-password" placeholder="Ingrese su contraseña" />
-                    <span class="error-msg" id="err-login-password"></span>
-                </div>
-
-                <!--En uno de los requerimientos se solicita restablecer la contraseña entonces lo agregamos acá-->
-
-                <div style="text-align: right; margin-top: -8px;">
-                    <a href="restablecer.html" class="enlace-olvide">¿Olvidaste tu contraseña?</a>
-                </div>
-
-                <!--Este seria el mensaje si los datos ingresados no estan relacionados con los que ya se encuentran en el sistema-->
-                <div id="error-login" class="error-login" style="display: none;">
-                    Datos incorrectos. Verifique su correo y contraseña.
-                </div>
-                <!--Para cuando se logueen varias veces, como base de seguridad, que se bloquee temporalmente-->
-                <div id="error-bloqueo" class="error-bloqueo" style="display: none;">
-                    Su cuenta ha sido bloqueada temporalmente por multiples intentos fallido.
-                    Intente nuevamente en <span id="tiempo-restante"></span> segundos.
-                </div>
-                <!--Y ya aqui esta el botoncito para el login-->
-                <div class="acciones" style="justify-content: center;">
-                    <button class="btn-primario" style="width: 100%" onclick="iniciarSesion()">
-                        Iniciar sesión
-                    </button>
-                </div>
-
-                <div style="text-align: center; margin-top: 8px;">
-                    <a href="index.html" class="enlace-olvide">← Volver al inicio</a>
-                </div>
-
+    <body class="bg-light">
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container">
+                <a 
+                    class="navbar-brand d-flex align-items-center"
+                    href="index.html"
+                    >
+                    <img 
+                        src="Images/Logo Oficial.jpeg"
+                        alt="Logo CENFOTEC Connect"
+                        width="45"
+                        height="45"
+                        class="rounded me-2"
+                        >
+                        CENFOTEC Connect
+                </a>
             </div>
+        </nav>
+        <main class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-body p-4 p-md-5">
+                            <div class="text-center mb-4">
+                                <img
+                                    src="Images/Logo Oficial.jpeg"
+                                    alt="Logo CENFOTEC Connect"
+                                    width="80"
+                                    height="80"
+                                    class="rounded mb-3"
+                                >
+                                <h1 class="h3 fw-bold">
+                                    ¡Bienvenido!
+                                </h1>
+                                <p class="text-muted">
+                                    Ingrese sus datos para acceder el sistema.
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <label
+                                    for="login-correo"
+                                    class="form-label"
+                                    >
+                                    Correo electrónico
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    id="login-correo"
+                                    class="form-control"
+                                    placeholder="correo@ejemplo.com"
+                                >
+                                <span
+                                    id="err-login-correo"
+                                    class="text-danger small"
+                                ></span>
+                            </div>
+                            <div class="mb-3">
+                                <label
+                                    for="login-password"
+                                    class="form-label"
+                                >
+                                    Contraseña
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    id="login-password"
+                                    class="form-control"
+                                    placeholder="Ingrese su contraseña"
+                                >
+                                <span
+                                    id="err-login-password"
+                                    class="text-danger small"
+                                ></span>
+                            </div>
+                            <!-- RECUPERAR CONTRASEÑA -->
+                            <div class="text-end mb-3">
+                                <a
+                                    href="restablecer.html"
+                                    class="text-decoration-none"
+                                >
+                                ¿Olvidaste tu contraseña?
+                                </a>
+                            </div>
+                            <!-- ERROR LOGIN -->
+                            <div
+                                id="error-login"
+                                class="alert alert-danger"
+                                style="display: none;"
+                            >
+                            Datos incorrectos.
+                            Verifique su correo y contraseña.
+                            </div>
+                            <!-- BLOQUEO -->
+                            <div
+                                id="error-bloqueo"
+                                class="alert alert-warning"
+                                style="display: none;"
+                            >
+                            Su cuenta ha sido bloqueada temporalmente
+                            por múltiples intentos fallidos.
 
-        </div>
-
-        <script src="sesion.js"></script>
-        <script src="login.js"></script>
+                            Intente nuevamente en
+                            <span id="tiempo-restante"></span>
+                            segundos.
+                            </div>
+                            <!-- BOTÓN -->
+                            <div class="d-grid">
+                                <button 
+                                    type="button"
+                                    class="btn btn-primary btn-lg"
+                                    onclick="iniciarSesion()"
+                                >
+                                    Iniciar sesión
+                                </button>
+                            </div>
+                            <!-- REGRESAR -->
+                            <div class="text-center mt-4">
+                                <a
+                                    href="index.html"
+                                    class="text-decoration-none"
+                                >
+                                ← Volver al inicio
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script
+            src="https://cdn.jsdelivr.net/npm.bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+        </script> 
+        <script src="js/sesion.js"></script>
+        <script src="js/login.js"></script>
     </body>
 </html>
