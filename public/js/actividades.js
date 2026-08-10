@@ -3,16 +3,12 @@
 // ======================================================
 const API_ACTIVIDADES = "/api/actividades";
 
-// Espacios y Responsables siguen en localStorage (esos módulos no son míos todavía)
 const formActividad        = document.getElementById("formActividad");
 const tipoLugar             = document.getElementById("tipoLugar");
 const grupoEspacioInterno   = document.getElementById("grupoEspacioInterno");
 const grupoLugarExterno     = document.getElementById("grupoLugarExterno");
 const espacioActividad      = document.getElementById("espacioActividad");
 const responsableActividad  = document.getElementById("responsableActividad");
-const buscarActividad       = document.getElementById("buscarActividad");
-const tablaActividades      = document.getElementById("tablaActividades");
-const btnVerActividades     = document.getElementById("btnVerActividades");
 
 // ── Cargar espacios disponibles (localStorage, módulo de Espacios)
 function cargarEspacios() {
@@ -171,7 +167,6 @@ async function guardarActividad(evento) {
         formActividad.reset();
         cambiarTipoLugar();
         alert("Actividad guardada correctamente.");
-        await mostrarActividades();
 
     } catch (error) {
         console.error("Error al guardar actividad:", error);
@@ -179,82 +174,6 @@ async function guardarActividad(evento) {
     } finally {
         botonGuardar.disabled = false;
     }
-}
-
-// ── Ver el detalle de la actividad
-function verDetalleActividad(id) {
-    window.location.href = "detalle-actividad.html?id=" + id;
-}
-
-// ======================================================
-// CONSULTAR ACTIVIDADES DESDE LA API (HUGA-14, HUGA-16)
-// ======================================================
-async function mostrarActividades() {
-    const busqueda  = buscarActividad.value.trim();
-    const fCategoria = document.getElementById("filtroCategoria").value;
-    const fEstado    = document.getElementById("filtroEstado").value;
-    const fFecha     = document.getElementById("filtroFecha").value;
-    const fLugar     = document.getElementById("filtroLugar").value.trim();
-
-    const params = new URLSearchParams();
-    if (busqueda)   params.append("buscar", busqueda);
-    if (fCategoria) params.append("categoria", fCategoria);
-    if (fEstado)    params.append("estado", fEstado);
-    if (fFecha)     params.append("fecha", fFecha);
-    if (fLugar)     params.append("lugar", fLugar);
-
-    tablaActividades.innerHTML = '<tr><td colspan="11" style="text-align:center;color:#888;padding:20px;">Cargando...</td></tr>';
-
-    try {
-        const respuesta = await fetch(API_ACTIVIDADES + "?" + params.toString());
-        if (!respuesta.ok) throw new Error("Respuesta no válida del servidor");
-
-        const actividades = await respuesta.json();
-
-        if (!actividades.length) {
-            tablaActividades.innerHTML = '<tr><td colspan="11" style="text-align:center;color:#888;padding:20px;">Sin resultados.</td></tr>';
-            return;
-        }
-
-        // Guarda las actividades "Disponibles" en localStorage para que
-        // Inscripciones (y este mismo formulario) puedan usarlas mientras
-        // ese flujo de datos no esté 100% migrado.
-        guardarDatos(CLAVE_ACTIVIDADES, actividades.map(a => ({
-            id: a._id,
-            nombre: a.nombre,
-            categoria: a.categoria,
-            fecha: a.fecha,
-            cupoMaximo: a.cupoMaximo,
-            cuposOcupados: a.cuposOcupados,
-            estado: a.estado
-        })));
-
-        tablaActividades.innerHTML = actividades.map(a => {
-            const cupoMax  = a.entradaLibre ? "Libre" : a.cupoMaximo;
-            const cupoDisp = a.entradaLibre ? "Libre" : (a.cupoMaximo - a.cuposOcupados);
-            return `<tr>
-                <td>${a.nombre}</td><td>${a.categoria}</td><td>${a.fecha}</td>
-                <td>${a.horaInicio} - ${a.horaFin}</td><td>${a.lugar}</td>
-                <td>${cupoMax}</td><td>${a.cuposOcupados}</td><td>${cupoDisp}</td>
-                <td>${a.responsableNombre}</td><td>${a.estado}</td>
-                <td><button onclick="verDetalleActividad('${a._id}')">Ver</button></td>
-            </tr>`;
-        }).join("");
-
-    } catch (error) {
-        console.error("Error al consultar actividades:", error);
-        tablaActividades.innerHTML = '<tr><td colspan="11" style="text-align:center;color:#c0392b;padding:20px;">No se pudo conectar con el servidor.</td></tr>';
-    }
-}
-
-// ── Limpiar filtros
-function limpiarFiltros() {
-    document.getElementById("filtroCategoria").value = "";
-    document.getElementById("filtroEstado").value = "";
-    document.getElementById("filtroFecha").value = "";
-    document.getElementById("filtroLugar").value = "";
-    buscarActividad.value = "";
-    mostrarActividades();
 }
 
 // ── Eventos y arranque
@@ -268,14 +187,7 @@ document.getElementById("btnLimpiar").addEventListener("click", function () {
 
 tipoLugar.addEventListener("change", cambiarTipoLugar);
 formActividad.addEventListener("submit", guardarActividad);
-btnVerActividades.addEventListener("click", mostrarActividades);
-buscarActividad.addEventListener("input", mostrarActividades);
-document.getElementById("filtroCategoria").addEventListener("change", mostrarActividades);
-document.getElementById("filtroEstado").addEventListener("change", mostrarActividades);
-document.getElementById("filtroFecha").addEventListener("change", mostrarActividades);
-document.getElementById("filtroLugar").addEventListener("input", mostrarActividades);
 
 cargarEspacios();
 cargarResponsables();
 cambiarTipoLugar();
-tablaActividades.innerHTML = '<tr><td colspan="11" style="text-align:center;color:#888;padding:20px;">Presioná "Ver Actividades" para cargar la lista.</td></tr>';
