@@ -10,7 +10,7 @@ const express = require("express");
 require("dotenv").config();
 
 const { conectarBD } = require("./database/conexion");
-const { crearParticipante, buscarParticipantes } = require("./models/Participante");
+const { crearParticipante, buscarParticipantes } = require("./models/participante");
 const { crearInscripcion, buscarInscripciones } = require("./models/Inscripcion");
 const { crearActividad, buscarActividades, buscarActividadPorId } = require("./models/actividad");
 
