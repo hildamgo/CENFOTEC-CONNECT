@@ -4,182 +4,393 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Cenfotec Connect — Administración</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <header class="site-header" role="banner">
-    <div class="header-inner">
-        <div class="brand">
-          <img src = "Images/Logo Oficial.jpeg" alt="Logo CENFOTEC Connect"/>
-          <div>
-            <h1>CENFOTEC Connect</h1>
-          </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a 
+                class="navbar-brand d-flex align-items-center"
+                href="index.html"
+                >
+                    <img
+                        src="Images/Logo Oficial.jpeg"
+                        alt="Logo CENFOTEC Connect"
+                        width="45"
+                        height="45"
+                        class="rounded me-2"
+                        >
+                    <span>CENFOTEC Connect</span>
+            </a>
+            <button 
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#menuPrincipal"
+                aria-controls="menuPrincipal"
+                aria-expanded="false"
+                aria-label="Mostrar navegación"
+                >
+                    <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+                class="collapse navbar-collapse"
+                id="menuPrincipal"
+                >
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link active"
+                            href="index.html"
+                            >
+                                Inicio
+                            </a>
+                    </li>
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link active"
+                            href="index.html"
+                            >
+                                Iniciar sesión
+                            </a>
+                    </li>
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link active"
+                            href="index.html"
+                            >
+                                Actividades
+                            </a>
+                    </li>
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link active"
+                            href="index.html"
+                            >
+                                Participantes
+                            </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div>
-            <nav class="menu">
-              <a href="index.html">Inicio</a>
-              <a href="login.html">Iniciar sesión</a>
-              <a href="usuarios.html">Usuarios</a>
-              <a href="actividades.html">Actividades</a>
-              <a href="espacios.html">Espacios</a>
-              <a href="responsables.html">Responsables</a>
-              <a href="participantes.html">Participantes</a>
-              <a href="inscripciones.html">Inscripciones</a>
-            </nav>
-          </div>
-      </div>
-  </header>
-  <section class="hero-imagen">
-    <img src="Images/Banner CENFOTEC Connect.png" alt="Banner de CENFOTEC Connect">
-  </section>
-  <main>
-    <section class="hero">
-        <div class="contenedor">
-            <h2>Bienvenido a CENFOTEC Connect</h2>
-            <p>
-                Plataforma academica para gestionar actividades universitarias,
-                espacios, responsables, participantes e inscripciones desde un solo lugar.
-            </p>
-            <a class="boton" href="login.html">Ingresar al sistema</a>
+    </nav>
+    <section class="hero-imagen">
+        <img
+            src="Images/Banner CENFOTEC Connect.png"
+            alt="Banner de CENFOTEC Connect"
+            class="img-fluid w-100"
+            >
+    </section>
+    <main>
+        <section class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9 text-center">
+                    <h1 class="display-5 fw-bold">
+                        Bienvenido a CENFOTEC Connect
+                    </h1>
+                    <p class="lead mt-3">
+                        Plataforma académica para gestionar
+                        actividades universitarias, espacios,
+                        responsables, participantes e inscripciones
+                        desde un solo lugar.
+                    </p>
+                    <a
+                        href="login.html"
+                        class="btn btn-primary btn-lg mt-3"
+                    >
+                    Ingresar al sistema
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section class="container py-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                Misión
+                            </h2>
+                            <p class="card-text">
+                                Facilitar la gestión de actividades
+                                universitarias mediante una plataforma
+                                web clara, organizada y accesible,
+                                que permita centralizar la administración
+                                de espacios, responsables, participantes
+                                e inscripciones.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="container py-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                Visión
+                            </h2>
+                            <p class="card-text">
+                                Convertirse en una herramienta académica
+                                confiable para apoyar la organización de
+                                eventos universitarios, mejorando la
+                                comunicación, el control de cupos y la
+                                experiencia de participación dentro de la
+                                comunidad CENFOTEC.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <section class="container py-5">
+        <div class="text-center mb-4">
+            <h2>
+                Nuestros valores
+            </h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="h5">
+                            Organización
+                        </h3>
+                        <p class="card-text">
+                            Promover una gestión ordenada
+                            de actividades, espacios y registros.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="h5">
+                            Transparencia
+                        </h3>
+                        <p class="card-text">
+                            Brindar información clara sobre
+                            horarios, lugares, cupos y responsables.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="h5">
+                            Accesibilidad
+                        </h3>
+                        <p class="card-text">
+                            Facilitar el acceso a la información
+                            desde una interfaz simple y comprensible.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="h5">
+                            Responsabilidad
+                        </h3>
+                        <p class="card-text">
+                            Mantener datos confiables para apoyar
+                            la toma de decisiones administrativas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="h5">
+                            Innovación
+                        </h3>
+                        <p class="card-text">
+                            Aplicar tecnología web para mejorar
+                            procesos académicos y administrativos.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-    <section class="Seccion">
-        <div class="contenedor">
-            <h2>Mision</h2>
-            <div class="tarjeta tarjeta-grande">
-                <p>
-                    Facilitar la gestion de actividades universitarias mediante una
-                    plataforma web clara, organizada y accesible, que permita centralizar
-                    la administracion de espacios, responsables, participantes e
-                    inscripciones.
-                </p>
+    <section class="container py-5">
+        <div class="text-center mb-4">
+            <h2>
+                Módulos del sistema
+            </h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h5">
+                            Usuarios
+                        </h3>
+                        <p class="card-text">
+                            Registro y administración de usuarios
+                            administradores, roles, estados y acceso.
+                        </p>
+                        <a 
+                            href="usuarios.html"
+                            class="btn btn-primary ms-auto"
+                            >
+                            Abrir
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h5">
+                            Actividades
+                        </h3>
+                        <p class="card-text">
+                            Creación, consulta, búsqueda y control
+                            de cupos de actividades universitarias.
+                        </p>
+                        <a 
+                            href="actividades.html"
+                            class="btn btn-primary ms-auto"
+                            >
+                            Abrir
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h5">
+                            Lugares / Espacios
+                        </h3>
+                        <p class="card-text">
+                            Registro de espacios físicos por sede
+                            y selección de lugares.
+                        </p>
+                        <a 
+                            href="espacios.html"
+                            class="btn btn-primary ms-auto"
+                            >
+                            Abrir
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h5">
+                            Responsables
+                        </h3>
+                        <p class="card-text">
+                            Administración de expositores y
+                            responsables asignables a actividades.
+                        </p>
+                        <a 
+                            href="responsables.html"
+                            class="btn btn-primary ms-auto"
+                            >
+                            Abrir
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h5">
+                            Participantes
+                        </h3>
+                        <p class="card-text">
+                            Registro, consulta y búsqueda de
+                            personas participantes.
+                        </p>
+                        <a 
+                            href="participantes.html"
+                            class="btn btn-primary ms-auto"
+                            >
+                            Abrir
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h5">
+                            Inscripciones
+                        </h3>
+                        <p class="card-text">
+                            Control de inscripciones y
+                            disponibilidad de cupos.
+                        </p>
+                        <a 
+                            href="inscripciones.html"
+                            class="btn btn-primary ms-auto"
+                            >
+                            Abrir
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-    <section class="Seccion">
-        <div class="contenedor">
-            <h2>Vision</h2>
-            <div class="tarjeta tarjeta-grande">
-                <p>
-                    Convertirse en una herramienta academica confiable para apoyar la
-                    organizacion de eventos universitarios, mejorando la comunicacion,
-                    el control de cupos y la experiencia de participacion dentro de la
-                    comunidad CENFOTEC.
-                </p>
+    <section class="container py-5">
+        <div class="text-center mb-4">
+            <h2>
+                Equipo del proyecto
+            </h2>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4">
+                <img
+                    src="Images/Geiner-profile.jpeg"
+                    class="card-img-top"
+                    alt="Geiner Andrey Esquivel Otarola"
+                >
+                <div class="card-body">
+                    <h3 class="h5">
+                        Geiner Andrey Esquivel Otarola
+                    </h3>
+                    <p class="card-text">
+                        Líder de calidad, integridad y estilos
+                        de CENFOTEC Connect.
+                    </p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <img
+                    src="Images/Hilda Gonzalez Jara.jpeg"
+                    class="card-img-top"
+                    alt="Hilda María González Jara"
+                >
+                <div class="card-body">
+                    <h3 class="h5">
+                        Hilda María González Jara
+                    </h3>
+                    <p class="card-text">
+                        Encargada de infraestructura de
+                        CENFOTEC Connect.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
-    <section class="Seccion">
-        <div class="contenedor">
-            <h2>Valores</h2>
-            <div class="tarjeta">
-                <h3>Organizacion</h3>
-                <p>
-                    Promover una gestion ordenada de actividades, espacios y registros.
-                </p>
-            </div>
-            <div class="tarjeta">
-                <h3>Transparencia</h3>
-                <p>
-                    Brindar informacion clara sobre horarios, lugares, cupos y responsables.
-                </p>
-            </div>
-            <div class="tarjeta">
-                <h3>Accesibilidad</h3>
-                <p>
-                    Facilitar el acceso a la informacion desde una interfaz simple y comprensible.
-                </p>
-            </div>
-            <div class="tarjeta">
-                <h3>Responsabilidad</h3>
-                <p>
-                    Mantener datos confiables para apoyar la toma de decisiones administrativas.
-                </p>
-            </div>
-            <div class="tarjeta">
-                <h3>Innovacion</h3>
-                <p>
-                    Aplicar tecnologia web para mejorar procesos academicos y administrativos.
-                </p>
-            </div>
-        </div>
-    </section>
-    <section class="Seccion">
-        <div class="contenedor">
-            <h2>Modulos del sistema</h2>
-            <div class="tarjeta">
-                <h3>Usuarios</h3>
-                <p>
-                    Registro y administracion de usuarios administradores,
-                    roles, estados y acceso al sistema.
-                </p>
-                <a class="boton" href="usuarios.html">Abrir</a>
-            </div>
-            <div class="tarjeta">
-                <h3>Actividades</h3>
-                <p>
-                    Creacion, consulta, edicion, busqueda y control de cupos
-                    de actividades universitarias.
-                </p>
-                <a class="boton" href="actividades.html">Abrir</a>
-            </div>
-            <div class="tarjeta">
-                <h3>Lugares / Espacios</h3>
-                <p>
-                    Registro de espacios fisicos por sede y seleccion de lugares
-                    dentro o fuera del campus.
-                </p>
-                <a class="boton" href="espacios.html">Abrir</a>
-            </div>
-            <div class="tarjeta">
-                <h3>Responsables</h3>
-                <p>
-                    Administracion de expositores y moderadores asignables
-                    a las actividades.
-                </p>
-                <a class="boton" href="responsables.html">Abrir</a>
-            </div>
-            <div class="tarjeta">
-                <h3>Participantes</h3>
-                <p>
-                    Registro, consulta y busqueda de personas participantes
-                    en actividades.
-                </p>
-                <a class="boton" href="participantes.html">Abrir</a>
-            </div>
-            <div class="tarjeta">
-                <h3>Inscripciones</h3>
-                <p>
-                    Control de inscripciones, cancelaciones y disponibilidad
-                    de cupos.
-                </p>
-                <a class="boton" href="inscripciones.html">Abrir</a>
-            </div>
-        </div>
-    </section>
-    <section class="Seccion">
-        <div class="contenedor">
-            <h2>Equipo del proyecto</h2>
-            <div class="tarjeta">
-                <img class="foto-integrante" src="Images/Geiner-profile.jpeg" alt="Foto de Geiner Andrey Esquivel Otarola">
-                <h3>Geiner Andrey Esquivel Otarola</h3>
-                <p>
-                    Lider de calidad, integridad y estilos de CENFOTEC Connect.
-                </p>
-            </div>
-            <div class="tarjeta">
-                <img class="foto-integrante" src="Images/Hilda Gonzalez Jara.jpeg" alt="Foto de Hilda Maria Gonzalez Jara">
-                <h3>Hilda Maria Gonzalez Jara</h3>
-                <p>
-                    Encargada de infraestructura de CENFOTEC Connect.
-                </p>
-            </div>
-        </div>
-    </section>
-</main>
-
-<footer>
-    <p>&copy; 2026 CENFOTEC Connect.</p>
+    </main>
+<footer class="bg-dark text-white text-center py-3">
+    <p class="mb-0">&copy; 2026 CENFOTEC Connect.</p>
 </footer>
+<script
+    src="https://cdn.jsdelivr.net/npm.bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
 </body>
 </html>
