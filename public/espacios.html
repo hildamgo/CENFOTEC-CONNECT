@@ -166,30 +166,64 @@
               </select>
               <p id="errorEstadoEspacio" class="mensaje-error"></p>
           </div>
-            <!-- BOTONES -->
-            <div class="d-flex flex-wrap gap-2 mt-4">
-                <button type="submit" class="btn btn-primary">
-                    Registrar espacio
-                </button>
-                <button type="button" id="btnLimpiar" class="btn btn-secondary">
-                    Limpiar
-                </button>
-                <a
-                    href="lista-actividades.html"
-                    class="btn btn-primary"
-                >
-                    Ver espacios
-                </a>
-            </div>
-        </form>
-    </main>
-    <footer class="bg-dark text-white text-center py-3">
-        <p class="mb-0">&copy; 2026 CENFOTEC Connect.</p>
-    </footer>
-    <script
-        src="https://cdn.jsdelivr.net/npm.bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-    </script>
-    <script src="js/datos.js"></script>
-    <script src="js/espacios.js"></script>
+      </div>
+  </header>
+  <main>
+    <section class="Seccion">
+        <div class="contenedor">
+            <h2>Gestión de Espacios</h2>
+            <p class="texto-ayuda">Registre los espacios disponibles para actividades dentro o fuera del campus</p>
+
+            <!--Campo oculto necesario para edicion-->
+            <form id="formEspacio" class="formulario">
+                <input type="hidden" id="espacioId">
+
+                <label for="nombreEspacio">Nombre del Espacio</label>
+                <input type="text" id="nombreEspacio" placeholder="Sala de conferencias A">
+                <p class="mensaje-error" id="errorNombreEspacio"></p>
+
+                <label for="sedeEspacio">Sede</label>
+                <input type="text" id="sedeEspacio" placeholder="Campus Central">
+                <p class="mensaje-error" id="errorSedeEspacio"></p>
+
+                <Label for="estadoEspacio">Estado</Label>
+                <select id="estadoEspacio">
+                    <option value="Disponible">Disponible</option>
+                    <option value="Mantenimiento">Mantenimiento</option>
+                    <option value="No Disponible">No Disponible</option>
+                </select>
+
+                <button type="submit">Guardar Espacio</button>
+                <button type="button" id="btnLimpiarEspacio" class="secundario">Limpiar</button>
+            </form>
+
+            <hr>
+            <h2>Buscar Espacio</h2>
+            <input type="text" id="buscarEspacio" placeholder="Buscar por nombre o sede...">
+            <hr>
+
+            <h2>Lista de Espacios</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Sede</th>
+                        <th>Estado</th>
+                        <th>Fecha de Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaEspacios"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 CENFOTEC Connect.</p>
+</footer>
+
+<script src="js/datos.js"></script>
+<script src="js/espacios.js"></script>
 </body>
 </html>
