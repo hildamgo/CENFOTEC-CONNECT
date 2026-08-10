@@ -1,30 +1,60 @@
-// ======================================================
-// CONFIGURACIÓN DE LA API
-// ======================================================
-const API_ESPACIOS = "/api/espacios";
-
-function mostrarError(id, mensaje) { const el = document.getElementById(id); if (el) el.textContent = mensaje; }
-function limpiarError(id) { mostrarError(id, ""); }
-function marcarCampo(id, esValido) {
-    const campo = document.getElementById(id);
-    if (!campo) return;
-    campo.classList.remove("campo-error", "campo-valido");
-    campo.classList.add(esValido ? "campo-valido" : "campo-error");
-}
-function validarTexto(idCampo, idError, nombreCampo, minimo) {
-    const valor = document.getElementById(idCampo).value.trim();
-    if (!valor) { mostrarError(idError, nombreCampo + " es obligatorio."); marcarCampo(idCampo, false); return false; }
-    if (valor.length < minimo) { mostrarError(idError, nombreCampo + " debe tener al menos " + minimo + " caracteres."); marcarCampo(idCampo, false); return false; }
-    limpiarError(idError); marcarCampo(idCampo, true); return true;
-}
-
-const formEspacio      = document.getElementById("formEspacio");
-const tablaEspacios    = document.getElementById("tablaEspacios");
-const buscarEspacio    = document.getElementById("buscarEspacio");
+const formEspacio = document.getElementById("formEspacio");
+const tablaEspacios = document.getElementById("tablaEspacios");
+const buscarEspacio = document.getElementById("buscarEspacio");
 const btnLimpiarEspacio = document.getElementById("btnLimpiarEspacio");
 const btnVerEspacios   = document.getElementById("btnVerEspacios");
 
-function obtenerFormularioEspacio() {
+// ======================================================
+// REGISTRAR ESPACIO
+// ======================================================
+formEspacio.addEventListener("submit", async function (evento) {
+        evento.preventDefault();
+        limpiarErrores();
+        const espacio = obtenerDatosFormulario();
+
+        if (!validarEspacio(espacio)
+        ) {
+            return;
+        }
+        try {
+            const respuesta = await fetch(API_ESPACIOS,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+                        body: JSON.stringify(espacio)
+                    }
+                );
+            const datos = await respuesta.json();
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    datos.mensaje ||
+                    "No se pudo registrar el espacio."
+                );
+            }
+            alert(
+                "Espacio registrado correctamente."
+            );
+            formEspacio.reset();
+        } catch (error) {
+            console.error("Error al registrar espacio:",
+                error
+            );
+            alert(
+                error.message ||
+                "Ocurrió un error al registrar el espacio."
+            );
+        }
+    }
+);
+
+// ======================================================
+// OBTENER DATOS
+// ======================================================
+function obtenerDatosFormulario() {
     return {
         nombre: document.getElementById("nombreEspacio").value.trim(),
         sede: document.getElementById("sedeEspacio").value.trim(),
@@ -38,104 +68,115 @@ function validarEspacio() {
     return nombreValido && sedeValida;
 }
 
-// ======================================================
-// REGISTRAR ESPACIO EN LA API (HUGL-19)
-// ======================================================
-async function guardarEspacio(evento) {
-    evento.preventDefault();
-
-    if (!validarEspacio()) return;
-
-    const nuevoEspacio = obtenerFormularioEspacio();
-    const botonGuardar = formEspacio.querySelector('button[type="submit"]');
-    botonGuardar.disabled = true;
-
-    try {
-        const respuesta = await fetch(API_ESPACIOS, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(nuevoEspacio)
-        });
-
-        const resultado = await respuesta.json();
-
-        if (!respuesta.ok) {
-            mostrarError("errorNombreEspacio", resultado.mensaje || "Ocurrió un error al guardar el espacio.");
-            marcarCampo("nombreEspacio", false);
-            return;
-        }
-
-        alert("Espacio guardado correctamente.");
-        limpiarFormularioEspacio();
-        await mostrarEspacios();
-
-    } catch (error) {
-        console.error("Error al guardar espacio:", error);
-        alert("No se pudo conectar con el servidor. Intente de nuevo.");
-    } finally {
-        botonGuardar.disabled = false;
-    }
+function existeEspacioDuplicado(espacio, espacios) {
+    return espacios.some(function(item) {
+        const mismoNombre = item.nombre.toLowerCase() === espacio.nombre.toLowerCase();
+        const mismaSede = item.sede.toLowerCase() === espacio.sede.toLowerCase();
+        const otroRegistro = item.id !== espacio.id;
+        return mismoNombre && mismaSede && otroRegistro;
+    });
 }
 
-// ======================================================
-// CONSULTAR ESPACIOS DESDE LA API
-// ======================================================
-async function mostrarEspacios() {
-    const texto = buscarEspacio.value.trim();
-    const params = new URLSearchParams();
-    if (texto) params.append("buscar", texto);
+function guardarEspacio(evento) {
+    evento.preventDefault();
 
-    tablaEspacios.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888;padding:20px;">Cargando...</td></tr>';
-
-    try {
-        const respuesta = await fetch(API_ESPACIOS + "?" + params.toString());
-        if (!respuesta.ok) throw new Error("Respuesta no válida del servidor");
-
-        const espacios = await respuesta.json();
-
-        if (!espacios.length) {
-            tablaEspacios.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888;padding:20px;">Sin resultados.</td></tr>';
-            return;
-        }
-
-        // Guarda los espacios "Disponibles" en localStorage para que
-        // Actividades pueda seguir usándolos en su select mientras
-        // ese flujo no esté 100% conectado directo a la API.
-        guardarDatos(CLAVE_ESPACIOS, espacios.map(e => ({
-            id: e._id,
-            nombre: e.nombre,
-            sede: e.sede,
-            estado: e.estado
-        })));
-
-        tablaEspacios.innerHTML = espacios.map(function (e) {
-            const fecha = new Date(e.fechaRegistro).toLocaleDateString("es-CR");
-            return `<tr>
-                <td>${e.nombre}</td>
-                <td>${e.sede}</td>
-                <td>${e.estado}</td>
-                <td>${fecha}</td>
-            </tr>`;
-        }).join("");
-
-    } catch (error) {
-        console.error("Error al consultar espacios:", error);
-        tablaEspacios.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#c0392b;padding:20px;">No se pudo conectar con el servidor.</td></tr>';
+    if (!validarEspacio()) {
+        return;
     }
+
+    const espacio = obtenerFormularioEspacio();
+    const espacios = obtenerDatos(CLAVE_ESPACIOS);
+
+    if (existeEspacioDuplicado(espacio, espacios)) {
+        mostrarError("errorNombreEspacio", "Ya existe un espacio con ese nombre en la misma sede.");
+        marcarCampo("nombreEspacio", false);
+        return;
+    }
+
+    if (espacio.id) {
+        const posicion = espacios.findIndex(function(item) {
+            return item.id === espacio.id;
+        });
+        espacios[posicion] = {
+            ...espacios[posicion],
+            nombre: espacio.nombre,
+            sede: espacio.sede,
+            estado: espacio.estado
+        };
+    } else {
+        espacio.id = crearId();
+        espacio.fechaRegistro = obtenerFechaActual();
+        espacios.push(espacio);
+    }
+
+    guardarDatos(CLAVE_ESPACIOS, espacios);
+    limpiarFormularioEspacio();
+    mostrarEspacios();
+    alert("Espacio guardado correctamente.");
+}
+
+function mostrarEspacios() {
+    const textoBusqueda = buscarEspacio.value.toLowerCase();
+    const espacios = obtenerDatos(CLAVE_ESPACIOS);
+
+    const filtrados = espacios.filter(function(espacio) {
+        return espacio.nombre.toLowerCase().includes(textoBusqueda) ||
+               espacio.sede.toLowerCase().includes(textoBusqueda);
+    });
+
+    tablaEspacios.innerHTML = "";
+
+    filtrados.forEach(function(espacio) {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+            <td>${espacio.nombre}</td>
+            <td>${espacio.sede}</td>
+            <td>${espacio.estado}</td>
+            <td>${espacio.fechaRegistro}</td>
+            <td>
+                <button class="boton secundario" onclick="editarEspacio('${espacio.id}')">Editar</button>
+                <button class="boton peligro" onclick="eliminarEspacio('${espacio.id}')">Eliminar</button>
+            </td>
+        `;
+        tablaEspacios.appendChild(fila);
+    });
+}
+
+function editarEspacio(id) {
+    const espacios = obtenerDatos(CLAVE_ESPACIOS);
+    const espacio = espacios.find(function(item) {
+        return item.id === id;
+    });
+
+    document.getElementById("espacioId").value = espacio.id;
+    document.getElementById("nombreEspacio").value = espacio.nombre;
+    document.getElementById("sedeEspacio").value = espacio.sede;
+    document.getElementById("estadoEspacio").value = espacio.estado;
+
+    // Scroll automatico al formulario
+    document.getElementById("formEspacio").scrollIntoView({ behaviour: "smooth"});
+}
+
+function eliminarEspacio(id) {
+    const espacios = obtenerDatos(CLAVE_ESPACIOS);
+    const nuevosEspacios = espacios.filter(function(item) {
+        return item.id !== id;
+    });
+
+    guardarDatos(CLAVE_ESPACIOS, nuevosEspacios);
+    mostrarEspacios();
 }
 
 function limpiarFormularioEspacio() {
     formEspacio.reset();
+    document.getElementById("espacioId").value = "";
     limpiarError("errorNombreEspacio");
     limpiarError("errorSedeEspacio");
     document.getElementById("nombreEspacio").classList.remove("campo-error", "campo-valido");
     document.getElementById("sedeEspacio").classList.remove("campo-error", "campo-valido");
 }
 
-// ── Eventos y arranque
 formEspacio.addEventListener("submit", guardarEspacio);
-btnVerEspacios.addEventListener("click", mostrarEspacios);
 buscarEspacio.addEventListener("input", mostrarEspacios);
 btnLimpiarEspacio.addEventListener("click", limpiarFormularioEspacio);
-
-tablaEspacios.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888;padding:20px;">Presioná "Ver Espacios" para cargar la lista.</td></tr>';
+mostrarEspacios();
