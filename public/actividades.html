@@ -97,50 +97,197 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- SIDEBAR -->
-            <aside class="col-12 col-md-3 col-lg-2 sidebar">
-                <h5>
-                    Administración
-                </h5>
-                <a href="index.html">
-                    Inicio
-                </a>
-                <a href="usuarios.html">
-                    Usuarios
-                </a>
-                <a href="actividades.html">
-                    Actividades
-                </a>
-                <a href="espacios.html">
-                    Espacios
-                </a>
-                <a href="responsables.html">
-                    Responsables
-                </a>
-                <a href="participantes.html">
-                    Participantes
-                </a>
-                <a href="inscripciones.html">
-                    Inscripciones
-                </a>
-            </aside>
-            <!-- MAIN -->
-            <main class="col-12 col-md-9 col-lg-10 py-4">
-                <div class="container-fluid">
-                    <div class="mb-4">
-                        <h1 class="h2">
-                            Gestión de Actividades
-                        </h1>
-                        <p class="text-muted">
-                            Registrar, buscar y filtrar actividades.
-                        </p>
-                    </div>
-                </div>
-            </main>
+    <main class="container py-4">
+        <div class="page-header mb-4">
+            <h1 class="h2">
+                Registrar actividad
+            </h1>
+            <p class="text-muted">
+                Complete el formulario para registrar una nueva actividad.
+            </p>
         </div>
-    </div>
+        <form
+            id="formActividad"
+            class="formulario"
+            novalidate
+        >
+            <!-- NOMBRE -->
+            <div class="mb-3">
+                <label
+                    for="nombreActividad"
+                    class="form-label"
+                >
+                    Nombre de la actividad
+                </label>
+                <input
+                    type="text"
+                    id="nombreActividad"
+                    class="form-control"
+                    placeholder="Ej. Feria de Tecnología"
+                >
+                <p
+                    id="errorNombreActividad"
+                    class="mensaje-error"
+                ></p>
+            </div>
+            <!-- CATEGORÍA + FECHA -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="categoriaActividad" class="form-label">
+                        Categoría
+                    </label>
+                    <select id="categoriaActividad" class="form-select">
+                        <option value="">
+                            Seleccione una categoría
+                        </option>
+                        <option value="Cultural">
+                            Cultural
+                        </option>
+                        <option value="Deportiva">
+                            Deportiva
+                        </option>
+                        <option value="Tecnologica">
+                            Tecnológica
+                        </option>
+                        <option value="Artistica">
+                            Artística
+                        </option>
+                        <option value="Recreativa">
+                            Recreativa
+                        </option>
+                        <option value="Voluntariado">
+                            Voluntariado
+                        </option>
+                        <option value="Conferencia">
+                            Conferencia
+                        </option>
+                        <option value="Taller General">
+                            Taller General
+                        </option>
+                    </select>
+                    <p id="errorCategoriaActividad" class="mensaje-error"></p>
+                </div>
+                <div class="col-md-6 mb-3">    
+                    <label for="fechaActividad" class="form-label">
+                        Fecha
+                    </label>
+                    <input type="date" id="fechaActividad"class="form-control">
+                    <p id="errorFechaActividad" class="mensaje-error"></p>
+                </div>
+            </div>
+            <!-- HORAS -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="horaInicio" class="form-label">
+                        Hora de inicio
+                    </label>
+                    <input type="time" id="horaInicio" class="form-control">
+                    <p id="errorHoraInicio" class="mensaje-error"></p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="horaFin" class="form-label">
+                        Hora de finalización
+                    </label>
+                    <input type="time" id="horaFin" class="form-control">
+                    <p id="errorHoraFin" class="mensaje-error"></p>
+                </div>
+            </div>
+            <!-- TIPO DE LUGAR + CUPO -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="tipoLugar" class="form-label">
+                        Tipo de lugar
+                    </label>
+                    <select id="tipoLugar" class="form-select">
+                        <option value="">
+                            Seleccione una opción
+                        </option>
+                        <option value="interno">
+                            Dentro de la universidad
+                        </option>
+                        <option value="externo">
+                            Fuera de la universidad
+                        </option>
+                    </select>
+                    <p id="errorTipoLugar" class="mensaje-error"></p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="cupoActividad" class="form-label">
+                        Cupo máximo
+                    </label>
+                    <input type="number" id="cupoActividad" class="form-control" min="1" placeholder="Ej. 30">
+                    <p id="errorCupoActividad" class="mensaje-error"></p>
+                </div>
+            </div>
+            <!-- ESPACIO INTERNO -->
+            <div id="grupoEspacioInterno" class="mb-3" style="display: none;">
+                <label for="espacioActividad" class="form-label">
+                    Espacio registrado
+                </label>
+                <select id="espacioActividad" class="form-select">
+                    <option value="">
+                        Seleccione un espacio
+                    </option>
+                </select>
+                <p id="errorEspacioActividad" class="mensaje-error"></p>
+            </div>
+            <!-- LUGAR EXTERNO -->
+            <div id="grupoLugarExterno" class="mb-3" style="display: none;">
+                <label for="lugarExterno" class="form-label">
+                    Lugar externo
+                </label>
+                <input type="text" id="lugarExterno" class="form-control" placeholder="Ej. Auditorio externo">
+                <p id="errorLugarExterno" class="mensaje-error"></p>
+            </div>
+            <!-- RESPONSABLE -->
+            <div class="mb-3">
+                <label for="responsableActividad" class="form-label">
+                    Responsable
+                </label>
+                <select id="responsableActividad" class="form-select">
+                    <option value="">
+                        Seleccione un responsable
+                    </option>
+                </select>
+                <p id="errorResponsableActividad" class="mensaje-error"></p>
+            </div>
+            <!-- DESCRIPCIÓN -->
+            <div class="mb-3">
+                <label for="descripcionActividad" class="form-label">
+                    Descripción
+                </label>
+                <textarea
+                    id="descripcionActividad"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Describa la actividad"
+                ></textarea>
+                <p id="errorDescripcionActividad" class="mensaje-error"></p>
+            </div>
+            <!-- ENTRADA LIBRE -->
+            <div class="form-check mb-3">
+                <input type="checkbox" id="entradaLibre" class="form-check-input">
+                <label for="entradaLibre" class="form-check-label">
+                    Entrada libre (sin límite de cupo)
+                </label>
+            </div>
+            <!-- BOTONES -->
+            <div class="d-flex flex-wrap gap-2">
+                <button type="submit" class="btn btn-primary">
+                    Registrar actividad
+                </button>
+                <button type="button" id="btnLimpiar" class="btn btn-secondary">
+                    Limpiar
+                </button>
+                <a
+                    href="lista-actividades.html"
+                    class="btn btn-primary"
+                >
+                    Ver actividades
+                </a>
+            </div>
+        </form>
+    </main>
     <footer class="bg-dark text-white text-center py-3">
         <p class="mb-0">&copy; 2026 CENFOTEC Connect.</p>
     </footer>

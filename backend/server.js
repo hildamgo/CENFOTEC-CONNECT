@@ -9,7 +9,7 @@ require("dotenv").config();
 const { conectarBD } = require("./database/conexion");
 const { crearParticipante, buscarParticipantes } = require("./models/Participante");
 const { crearInscripcion, buscarInscripciones } = require("./models/Inscripcion");
-const { crearActividad, buscarActividades, buscarActividadPorId } = require("./models/Actividad");
+const { crearActividad, buscarActividades, buscarActividadPorId } = require("./models/actividad");
 
 const app = express();
 const puerto = process.env.PORT || 3000;
