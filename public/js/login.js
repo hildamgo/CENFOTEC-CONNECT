@@ -41,7 +41,7 @@ function mostrarBloqueo() {
             intentosFallidos    = 0;
 
             document.getElementById('error-bloqueo').style.display = 'none';
-            document.getElementById('.btn-primario').disabled = false;
+            document.getElementById('btn-primario').disabled = false;
         }
     }, 1000);
 }
@@ -50,8 +50,8 @@ function iniciarSesion() {
 
     if (bloqueado) return;
 
-    const correo    = document.getElementById('login-correo').ariaValueMax.trim();
-    const password  = document.getElementById('login-password').ariaValueMax;
+    const correo    = document.getElementById('login-correo').value.trim();
+    const password  = document.getElementById('login-password').value;
 
     document.getElementById('err-login-correo').textContent     = '';
     document.getElementById('err-login-password').textContent   = '';
@@ -63,7 +63,7 @@ function iniciarSesion() {
 
     if (correo === '') {
         document.getElementById('login-correo').classList.add('error');
-        document.getElementById('err-login-password').textContent = 'El correo es obligatorio.';
+        document.getElementById('err-login-correo').textContent = 'El correo es obligatorio.';
         esValido = false;
     }
     if (password === '') {
