@@ -33,11 +33,9 @@
     <section class="Seccion">
       <div class="contenedor">
         <h2>Gestión de Responsables</h2>
-        <p class="texto-ayuda">Registrar, editar, eliminar y buscar responsables.</p>
+        <p class="texto-ayuda">Registrar y buscar responsables.</p>
 
         <form id="formResponsable" class="formulario" novalidate>
-            <input type="hidden" id="responsableId">
-
             <label for="identificacion">Identificación *</label>
             <input type="text" id="identificacion" placeholder="Ej: 1-1111-1111">
             <p class="mensaje-error" id="errorIdentificacion"></p>
@@ -90,6 +88,8 @@
             <input type="search" id="buscarResponsable" placeholder="Escribe para buscar...">
         </div>
 
+        <button type="button" id="btnVerResponsables">Ver Responsables</button>
+
         <div class="tabla-contenedor">
             <table>
                 <thead>
@@ -99,7 +99,6 @@
                         <th>Correo</th>
                         <th>Especialidad</th>
                         <th>Fecha de Registro</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="tablaResponsables"></tbody>

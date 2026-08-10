@@ -35,10 +35,7 @@
             <h2>Gestión de Espacios</h2>
             <p class="texto-ayuda">Registre los espacios disponibles para actividades dentro o fuera del campus</p>
 
-            <!--Campo oculto necesario para edicion-->
             <form id="formEspacio" class="formulario">
-                <input type="hidden" id="espacioId">
-
                 <label for="nombreEspacio">Nombre del Espacio</label>
                 <input type="text" id="nombreEspacio" placeholder="Sala de conferencias A">
                 <p class="mensaje-error" id="errorNombreEspacio"></p>
@@ -64,6 +61,7 @@
             <hr>
 
             <h2>Lista de Espacios</h2>
+            <button type="button" id="btnVerEspacios">Ver Espacios</button>
             <table>
                 <thead>
                     <tr>
@@ -71,7 +69,6 @@
                         <th>Sede</th>
                         <th>Estado</th>
                         <th>Fecha de Registro</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="tablaEspacios"></tbody>

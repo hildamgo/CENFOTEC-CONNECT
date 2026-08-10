@@ -23,14 +23,21 @@ function cargarEspacios() {
     });
 }
 
-// ── Cargar responsables (localStorage, módulo de Responsables)
-function cargarResponsables() {
-    const responsables = obtenerDatos(CLAVE_RESPONSABLES);
+// ── Cargar responsables (ya migrado a Mongo — viene de la API)
+async function cargarResponsables() {
     responsableActividad.innerHTML = '<option value="">Seleccione un responsable</option>';
-    responsables.forEach(r => {
-        const nombreCompleto = `${r.nombre} ${r.primerApellido} ${r.segundoApellido}`;
-        responsableActividad.innerHTML += `<option value="${r.id}">${nombreCompleto}</option>`;
-    });
+
+    try {
+        const respuesta = await fetch("/api/responsables");
+        const responsables = await respuesta.json();
+
+        responsables.forEach(r => {
+            const nombreCompleto = `${r.nombre} ${r.primerApellido} ${r.segundoApellido}`;
+            responsableActividad.innerHTML += `<option value="${nombreCompleto}">${nombreCompleto}</option>`;
+        });
+    } catch (error) {
+        console.error("Error al cargar responsables:", error);
+    }
 }
 
 // ── Mostrar/ocultar espacio interno vs lugar externo
@@ -122,10 +129,7 @@ async function guardarActividad(evento) {
     if (!validarActividad()) return;
 
     const espacios = obtenerDatos(CLAVE_ESPACIOS);
-    const responsables = obtenerDatos(CLAVE_RESPONSABLES);
-
     const espacio = espacios.find(e => e.id === espacioActividad.value);
-    const responsable = responsables.find(r => r.id === responsableActividad.value);
 
     let lugar = document.getElementById("lugarExterno").value.trim();
     if (tipoLugar.value === "interno") {
@@ -144,7 +148,7 @@ async function guardarActividad(evento) {
         lugar: lugar,
         entradaLibre: esEntradaLibre,
         cupoMaximo: esEntradaLibre ? null : Number(document.getElementById("cupoActividad").value),
-        responsableNombre: `${responsable.nombre} ${responsable.primerApellido}`
+        responsableNombre: responsableActividad.value
     };
 
     const botonGuardar = formActividad.querySelector('button[type="submit"]');
