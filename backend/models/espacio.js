@@ -1,137 +1,75 @@
 // ======================================================
 // MODELO: ESPACIOS
+// Valida y guarda/busca espacios en MongoDB.
 // ======================================================
-// Aquí vive la lógica de negocio de los espacios:
-// validaciones y acceso a MongoDB.
-//
-// server.js solamente recibe las peticiones y llama
-// estas funciones.
-// ======================================================
-const { conectarBD } =
-    require("../database/conexion");
-    
-// ======================================================
-// COLECCIÓN
-// ======================================================
+const { conectarBD } = require("../database/conexion");
+
 async function coleccionEspacios() {
     const db = await conectarBD();
     return db.collection("espacios");
 }
-// ======================================================
-// VALIDAR DATOS
-// ======================================================
+
+// ── Validaciones de campos obligatorios (HUGL-19)
 function validarDatosEspacio(datos) {
-    if (
-        !datos.nombre ||
-        datos.nombre.trim() === ""
-    ) {
+    if (!datos.nombre || datos.nombre.trim().length < 2) {
         return "El nombre del espacio es obligatorio";
     }
-    if (
-        datos.nombre.trim().length < 2
-    ) {
-        return "El nombre del espacio debe tener al menos 2 caracteres";
-    }
-    if (
-        !datos.sede ||
-        datos.sede.trim() === ""
-    ) {
+    if (!datos.sede || datos.sede.trim().length < 2) {
         return "La sede es obligatoria";
     }
-    if (
-        datos.sede.trim().length < 2
-    ) {
-        return "La sede debe tener al menos 2 caracteres";
-    }
-    if (
-        !datos.estado ||
-        datos.estado.trim() === ""
-    ) {
-        return "El estado es obligatorio";
-    }
-    return null;
+    return null; // sin errores
 }
-// ======================================================
-// CREAR ESPACIO
-// ======================================================
+
+// ── Crear un espacio nuevo (HUGL-19)
 async function crearEspacio(datos) {
-    const errorValidacion =
-        validarDatosEspacio(datos);
+    const errorValidacion = validarDatosEspacio(datos);
     if (errorValidacion) {
-        return {
-            error: errorValidacion
-        };
+        return { error: errorValidacion };
     }
-    const espacios =
-        await coleccionEspacios();
-    // ==============================================
-    // EVITAR DUPLICADOS
-    // ==============================================
-    const espacioExistente =
-        await espacios.findOne({
-            nombre: {
-                $regex:
-                    `^${escaparRegex(datos.nombre.trim())}$`,
-                $options: "i"
-            },
-            sede: {
-                $regex:
-                    `^${escaparRegex(datos.sede.trim())}$`,
-                $options: "i"
-            }
-        });
-    if (espacioExistente) {
-        return {
-            error:
-                "Ya existe un espacio con ese nombre en la misma sede."
-        };
+
+    const espacios = await coleccionEspacios();
+
+    const nombre = datos.nombre.trim();
+    const sede = datos.sede.trim();
+    const estado = datos.estado && datos.estado.trim() !== "" ? datos.estado.trim() : "Disponible";
+
+    // No se puede repetir el mismo nombre en la misma sede
+    const yaExiste = await espacios.findOne({
+        nombre: { $regex: `^${nombre}$`, $options: "i" },
+        sede: { $regex: `^${sede}$`, $options: "i" }
+    });
+
+    if (yaExiste) {
+        return { error: "Ya existe un espacio con ese nombre en la misma sede" };
     }
-    // ==============================================
-    // NUEVO DOCUMENTO
-    // ==============================================
+
     const nuevoEspacio = {
-        nombre: datos.nombre.trim(),
-        sede: datos.sede.trim(),
-        estado: datos.estado.trim(),
+        nombre: nombre,
+        sede: sede,
+        estado: estado,
         fechaRegistro: new Date()
     };
-    const resultado =
-        await espacios.insertOne(
-            nuevoEspacio
-        );
-    return {
-        id: resultado.insertedId,
-        espacio: nuevoEspacio
-    };
+
+    const resultado = await espacios.insertOne(nuevoEspacio);
+
+    return { id: resultado.insertedId, espacio: nuevoEspacio };
 }
-// ======================================================
-// OBTENER TODOS LOS ESPACIOS
-// ======================================================
-async function buscarEspacios() {
+
+// ── Buscar espacios con filtro de texto opcional
+async function buscarEspacios(filtrosQuery) {
     const espacios = await coleccionEspacios();
-    return espacios
-        .find({})
-        .sort({
-            nombre: 1
-        })
-        .toArray();
+    const { buscar } = filtrosQuery;
+    const filtro = {};
+
+    if (buscar && buscar.trim() !== "") {
+        const texto = buscar.trim();
+        filtro.$or = [
+            { nombre: { $regex: texto, $options: "i" } },
+            { sede: { $regex: texto, $options: "i" } }
+        ];
+    }
+
+    return espacios.find(filtro).toArray();
 }
-// ======================================================
-// ESCAPAR REGEX
-// ======================================================
-function escaparRegex(
-    texto
-) {
-    return texto.replace(
-        /[.*+?^${}()|[\]\\]/g,
-        "\\$&"
-    );
-}
-// ======================================================
-// EXPORTAR
-// ======================================================
-module.exports = {
-    coleccionEspacios,
-    crearEspacio,
-    buscarEspacios
-};
+
+module.exports = { coleccionEspacios, crearEspacio, buscarEspacios };
