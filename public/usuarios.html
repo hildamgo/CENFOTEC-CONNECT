@@ -1,103 +1,284 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cenfotec Connect — Usuarios</title>
-  <link rel="stylesheet" href="css/styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios | CENFOTEC Connect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <header class="site-header" role="banner">
-    <div class="header-inner">
-        <div class="brand">
-          <img src = "Images/Logo Oficial.jpeg" alt="Logo CENFOTEC Connect"/>
-          <div>
-            <h1>CENFOTEC Connect</h1>
-          </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a 
+                class="navbar-brand d-flex align-items-center"
+                href="index.html"
+            >
+            <img
+            src="Images/Logo Oficial.jpeg"
+            alt="Logo CENFOTEC Connect"
+            width="45"
+            height="45"
+            class="rounded me-2"
+            >
+            CENFOTEC Connect
+            </a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#menuPrincipal"
+                aria-expanded="false"
+                aria-label="Mostrar navegación"
+            >
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+                class="collapse navbar-collapse"
+                id="menuPrincipal"
+            >
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link"
+                            href="index.html"
+                        >
+                        Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            href="actividades.html"
+                        >
+                        Actividades
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link"
+                            href="espacios.html"
+                        >
+                        Espacios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link"
+                            href="responsables.html"
+                        >
+                        Responsables
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link"
+                            href="participantes.html"
+                        >
+                        Participantes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link"
+                            href="inscripciones.html"
+                        >
+                        Inscripciones
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link"
+                            href="dashboard.html"
+                        >
+                        Panel Principal
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div>
-            <nav class="menu">
-              <a href="index.html">Inicio</a>
-              <a href="usuarios.html">Usuarios</a>
-              <a href="actividades.html">Actividades</a>
-              <a href="espacios.html">Espacios</a>
-              <a href="responsables.html">Responsables</a>
-              <a href="participantes.html">Participantes</a>
-              <a href="inscripciones.html">Inscripciones</a>
-              <a href="#" id="btnCerrarSesion">Cerrar sesión</a>
-            </nav>
+    </nav>
+    <main class="container py-5">
+      <div class="row justify-content-center">
+          <div class="col-12 col-md-10 col-lg-8">
+              <div class="card shadow-sm">
+                  <div class="card-body p-4">
+                      <h1 class="h2 text-center mb-2">
+                          Gestión de usuarios
+                      </h1>
+                      <p
+                          class="text-muted text-center mb-4"
+                          id="bienvenida"
+                      >
+                          Cargando...
+                      </p>
+                      <!-- REGISTRO -->
+                      <h2 class="h5 mb-3">
+                          Registrar nuevo administrador
+                      </h2>
+                      <form
+                          id="formRegistroAdmin"
+                          novalidate
+                      >
+                          <div class="mb-3">
+                              <label
+                                  for="nombre"
+                                  class="form-label"
+                              >
+                                  Nombre completo
+                              </label>
+                              <input
+                                  type="text"
+                                  id="nombre"
+                                  class="form-control"
+                                  placeholder="Nombre completo"
+                              >
+                              <div
+                                  id="err-nombre"
+                                  class="text-danger small"
+                              ></div>
+                          </div>
+                          <div class="mb-3">
+                              <label
+                                  for="correo"
+                                  class="form-label"
+                              >
+                                  Correo electrónico
+                              </label>
+                              <input
+                                  type="email"
+                                  id="correo"
+                                  class="form-control"
+                                  placeholder="correo@ejemplo.com"
+                              >
+                              <div
+                                  id="err-correo"
+                                  class="text-danger small"
+                              ></div>
+                          </div>
+                          <div class="mb-3">
+                              <label
+                                  for="contrasena"
+                                  class="form-label"
+                              >
+                                  Contraseña
+                              </label>
+                              <input
+                                  type="password"
+                                  id="contrasena"
+                                  class="form-control"
+                                  placeholder="Mínimo 8 caracteres, 1 mayúscula, 1 número"
+                              >
+                              <div
+                                  id="err-contrasena"
+                                  class="text-danger small"
+                              ></div>
+                          </div>
+                          <div class="mb-3">
+                              <label
+                                  for="confirmarContrasena"
+                                  class="form-label"
+                              >
+                                  Confirmar contraseña
+                              </label>
+                              <input
+                                  type="password"
+                                  id="confirmarContrasena"
+                                  class="form-control"
+                                  placeholder="Repita la contraseña"
+                              >
+                              <div
+                                  id="err-confirmarContrasena"
+                                  class="text-danger small"
+                              ></div>
+                          </div>
+                          <div class="mb-3">
+                              <label
+                                  for="rol"
+                                  class="form-label"
+                              >
+                                  Rol
+                              </label>
+                              <select
+                                  id="rol"
+                                  class="form-select"
+                              >
+                                  <option value="">
+                                      — Seleccione un rol —
+                                  </option>
+                                  <option value="Administrador General">
+                                      Administrador General
+                                  </option>
+                                  <option value="Administrador de Actividades">
+                                      Administrador de Actividades
+                                  </option>
+                              </select>
+                              <div
+                                  id="err-rol"
+                                  class="text-danger small"
+                              ></div>
+                          </div>
+                          <div
+                              id="err-registro"
+                              class="text-danger small mb-2"
+                          ></div>
+                          <div
+                              id="exito-registro"
+                              class="text-success small mb-3"
+                          ></div>
+                          <div class="text-center">
+                              <button
+                                  type="submit"
+                                  class="btn btn-primary"
+                              >
+                                  Registrar administrador
+                              </button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+              <!-- LISTADO -->
+              <div class="card shadow-sm mt-4">
+                  <div class="card-body">
+                      <h2 class="h5 mb-3">
+                          Administradores registrados
+                      </h2>
+                      <div class="table-responsive">
+                          <table
+                              class="table table-striped table-hover align-middle mb-0"
+                          >
+                              <thead>
+                                  <tr>
+                                      <th>
+                                          Nombre
+                                      </th>
+                                      <th>
+                                          Correo
+                                      </th>
+                                      <th>
+                                          Rol
+                                      </th>
+                                      <th>
+                                          Estado
+                                      </th>
+                                  </tr>
+                              </thead>
+                              <tbody id="tablaUsuarios">
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
           </div>
       </div>
-  </header>
-<main>
-<section class="Seccion">
-<div class="contenedor">
-
-    <h2>Gestión de Usuarios</h2>
-    <p class="texto-ayuda" id="bienvenida">Cargando...</p>
-
-    <!-- Formulario de registro (HUGU-01) -->
-    <h3>Registrar Nuevo Administrador</h3>
-    <form id="formRegistroAdmin" class="formulario" novalidate>
-
-        <label for="nombre">Nombre Completo *</label>
-        <input type="text" id="nombre" placeholder="Nombre completo">
-        <span class="mensaje-error" id="err-nombre"></span>
-
-        <label for="correo">Correo Electrónico *</label>
-        <input type="email" id="correo" placeholder="correo@ejemplo.com">
-        <span class="mensaje-error" id="err-correo"></span>
-
-        <label for="contrasena">Contraseña *</label>
-        <input type="password" id="contrasena" placeholder="Mínimo 8 caracteres, 1 mayúscula, 1 número">
-        <span class="mensaje-error" id="err-contrasena"></span>
-
-        <label for="confirmarContrasena">Confirmar Contraseña *</label>
-        <input type="password" id="confirmarContrasena" placeholder="Repita la contraseña">
-        <span class="mensaje-error" id="err-confirmarContrasena"></span>
-
-        <label for="rol">Rol *</label>
-        <select id="rol">
-            <option value="">— Seleccione un rol —</option>
-            <option value="Administrador General">Administrador General</option>
-            <option value="Administrador de Actividades">Administrador de Actividades</option>
-        </select>
-        <span class="mensaje-error" id="err-rol"></span>
-
-        <span class="mensaje-error" id="err-registro"></span>
-        <span class="mensaje-exito" id="exito-registro"></span>
-
-        <button type="submit">Registrar Administrador</button>
-
-    </form>
-
-    <hr>
-
-    <!-- HUGU-03: lista de administradores -->
-    <h3>Administradores Registrados</h3>
-    <div class="tabla-contenedor">
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Rol</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody id="tablaUsuarios"></tbody>
-        </table>
-    </div>
-
-</div>
-</section>
-</main>
-
-<footer>
-    <p>&copy; 2026 CENFOTEC Connect.</p>
+  </main>
+  <footer class="bg-dark text-white text-center py-3">
+    <p class="mb-0">&copy; 2026 CENFOTEC Connect.</p>
 </footer>
-
+<script
+    src="https://cdn.jsdelivr.net/npm.bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+<script src="js/datos.js"></script>
 <script src="js/usuarios.js"></script>
-
 </body>
 </html>
