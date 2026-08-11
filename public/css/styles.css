@@ -651,3 +651,22 @@ td .btn-editar:hover {
   }
 
 }
+/* ── Agregado para módulo de Usuarios/Login ── */
+.mensaje-exito{
+    color: #1a7f37;
+    font-size: 0.9rem;
+    display: block;
+    margin: 6px 0;
+}
+.tarjeta-acceso{
+    display: inline-block;
+    padding: 14px 20px;
+    margin: 6px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+}
+.tarjeta-acceso:hover{
+    background: #f0f0f0;
+}

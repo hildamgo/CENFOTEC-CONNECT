@@ -1,103 +1,75 @@
-// Primeramente configurar la cantidad de intentos por seguridad y el control de estos
-const MAX_INTENTOS      = 3;
-const TIEMPO_BLOQUEO    = 30;    
+// ======================================================
+// CONFIGURACIÓN DE LA API
+// ======================================================
+const API_USUARIOS = "/api/usuarios";
 
-let intentosFallidos    = 0;
-let bloqueado           = false;
-let temporizador        = null;
-
-let admins = [
-    {
-        nombre:         'Administrador General',
-        correo:         'admin@connect.com',
-        password:       'cenfotec123',
-        rol:            'GA',
-        estado:         'activo',
-        fechaCreacion:  '20/06/2026'
-    }
-];
-
-function mostrarErrorLogin(visible){
-    document.getElementById('error-login').style.display = visible ? 'block' : 'none';
+function mostrarError(id, msg) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = msg;
+}
+function limpiarError(id) {
+    mostrarError(id, "");
+}
+function marcarCampo(id, ok) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove("campo-error", "campo-valido");
+    el.classList.add(ok ? "campo-valido" : "campo-error");
 }
 
-function mostrarBloqueo() {
-    mostrarErrorLogin(false);
+const form = document.getElementById("formLogin");
 
-    document.getElementById('error-bloqueo').style.display = 'block';
+form.addEventListener("submit", async function (evento) {
+    evento.preventDefault();
 
-    document.querySelector('.btn-primario').disabled = true;
+    limpiarError("err-correo");
+    limpiarError("err-contrasena");
+    limpiarError("err-login");
 
-    let segundos = TIEMPO_BLOQUEO;
-    document.getElementById('tiempo-restante').textContent = segundos;
+    const correo = document.getElementById("correo").value.trim();
+    const contrasena = document.getElementById("contrasena").value;
 
-    temporizador = setInterval(function() {
-        segundos--;
-        document.getElementById('tiempo-restante').textContent = segundos;
+    let valido = true;
 
-        if(segundos <= 0){
-            clearInterval(temporizador);
-            bloqueado           = false;
-            intentosFallidos    = 0;
+    const formatoCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formatoCorreo.test(correo)) {
+        mostrarError("err-correo", "Ingrese un correo electrónico válido.");
+        marcarCampo("correo", false);
+        valido = false;
+    } else {
+        marcarCampo("correo", true);
+    }
 
-            document.getElementById('error-bloqueo').style.display = 'none';
-            document.getElementById('btn-primario').disabled = false;
+    if (!contrasena) {
+        mostrarError("err-contrasena", "La contraseña es obligatoria.");
+        marcarCampo("contrasena", false);
+        valido = false;
+    } else {
+        marcarCampo("contrasena", true);
+    }
+
+    if (!valido) return;
+
+    try {
+        const respuesta = await fetch(API_USUARIOS + "/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ correo, contrasena })
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            // Mensaje de error genérico a propósito (CP-01): no revelar si el correo existe
+            mostrarError("err-login", datos.mensaje || "No fue posible iniciar sesión.");
+            return;
         }
-    }, 1000);
-}
 
-function iniciarSesion() {
+        window.location.href = "dashboard.html";
 
-    if (bloqueado) return;
-
-    const correo    = document.getElementById('login-correo').value.trim();
-    const password  = document.getElementById('login-password').value;
-
-    document.getElementById('err-login-correo').textContent     = '';
-    document.getElementById('err-login-password').textContent   = '';
-    document.getElementById('login-correo').classList.remove('error');
-    document.getElementById('login-password').classList.remove('error');
-    mostrarErrorLogin(false);
-
-    let esValido = true;
-
-    if (correo === '') {
-        document.getElementById('login-correo').classList.add('error');
-        document.getElementById('err-login-correo').textContent = 'El correo es obligatorio.';
-        esValido = false;
+    } catch (error) {
+        console.error("Error al iniciar sesión:");
+        console.error(error);
+        mostrarError("err-login", "Ocurrió un error de conexión. Intente de nuevo.");
     }
-    if (password === '') {
-        document.getElementById('login-password').classList.add('error');
-        document.getElementById('err-login-password').textContent = 'La contraseña es obligatoria';
-        esValido = false;
-    }
-    if (!esValido) return;
-
-    const admin = admins.find(function(a) {
-        return a.correo.toLowerCase() === correo.toLowerCase();
-    });
-
-    if (!admin || admin.password  !== password || admin.estado === 'inactivo') {
-        intentosFallidos++;
-        mostrarErrorLogin(true);
-
-        if (intentosFallidos >= MAX_INTENTOS){
-            bloqueado = true;
-            mostrarBloqueo();
-        }
-        return;
-
-    }
-
-    intentosFallidos = 0;
-
-    guardarSesion(admin);
-    activarDeteccionInactividad();
-
-    if (admin.rol === 'GA'){
-        window.location.href = 'usuarios.html';
-    } else if (admin.rol === 'AA') {
-        window.location.href = 'usuarios.html';
-    }
-}
-
+});
