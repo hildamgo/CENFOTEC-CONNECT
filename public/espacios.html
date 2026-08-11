@@ -121,10 +121,12 @@
                     Nombre del espacio
                 </label>
                 <input
-                    type="text"
-                    id="nombreEspacio"
-                    class="form-control"
-                    placeholder="Ej. Auditorio Principal"
+                type="text"
+                id="nombreEspacio"
+                name="nombre"
+                class="form-control"
+                placeholder="Ej. Auditorio Principal"
+                required
                 >
                 <p
                     id="errorNombreEspacio"
@@ -137,10 +139,12 @@
                 Sede
               </label>
               <input
-                    type="text"
-                    id="sedeEspacio"
-                    class="form-control"
-                    placeholder="Ej. Sede Central"
+                type="text"
+                id="sedeEspacio"
+                name="sede"
+                class="form-control"
+                placeholder="Ej. Sede Central"
+                required
                 >
                 <p id="errorSedeEspacio" class="mensaje-error"></p>
             </div>
@@ -150,7 +154,7 @@
               <label for="estadoEspacio" class="form-label">
                   Estado
               </label>
-              <select id="estadoEspacio" class="form-select">
+              <select id="estadoEspacio" name="estado" class="form-select" required>
                   <option value="">
                       Seleccione un estado
                   </option>
@@ -167,62 +171,30 @@
               <p id="errorEstadoEspacio" class="mensaje-error"></p>
           </div>
       </div>
-  </header>
-  <main>
-    <section class="Seccion">
-        <div class="contenedor">
-            <h2>Gestión de Espacios</h2>
-            <p class="texto-ayuda">Registre los espacios disponibles para actividades dentro o fuera del campus</p>
+      <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
 
-            <!--Campo oculto necesario para edicion-->
-            <form id="formEspacio" class="formulario">
-                <input type="hidden" id="espacioId">
-
-                <label for="nombreEspacio">Nombre del Espacio</label>
-                <input type="text" id="nombreEspacio" placeholder="Sala de conferencias A">
-                <p class="mensaje-error" id="errorNombreEspacio"></p>
-
-                <label for="sedeEspacio">Sede</label>
-                <input type="text" id="sedeEspacio" placeholder="Campus Central">
-                <p class="mensaje-error" id="errorSedeEspacio"></p>
-
-                <Label for="estadoEspacio">Estado</Label>
-                <select id="estadoEspacio">
-                    <option value="Disponible">Disponible</option>
-                    <option value="Mantenimiento">Mantenimiento</option>
-                    <option value="No Disponible">No Disponible</option>
-                </select>
-
-                <button type="submit">Guardar Espacio</button>
-                <button type="button" id="btnLimpiarEspacio" class="secundario">Limpiar</button>
-            </form>
-
-            <hr>
-            <h2>Buscar Espacio</h2>
-            <input type="text" id="buscarEspacio" placeholder="Buscar por nombre o sede...">
-            <hr>
-
-            <h2>Lista de Espacios</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Sede</th>
-                        <th>Estado</th>
-                        <th>Fecha de Registro</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaEspacios"></tbody>
-            </table>
+            <button type="submit" class="btn btn-primary">
+                Registrar espacio
+            </button>
+            <button
+                type="reset"
+                id="btnLimpiarEspacio"
+                class="btn btn-primary"
+                >
+                Limpiar
+            </button>
+                <a
+                    href="lista-espacios.html"
+                    class="btn btn-primary"
+                    >
+                    Ver espacios
+                </a>
         </div>
-    </section>
+    </form>
 </main>
-
 <footer>
     <p>&copy; 2026 CENFOTEC Connect.</p>
 </footer>
-
 <script src="js/datos.js"></script>
 <script src="js/espacios.js"></script>
 </body>
