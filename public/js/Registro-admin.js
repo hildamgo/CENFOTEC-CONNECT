@@ -17,57 +17,6 @@ function marcarCampo(id, ok) {
     el.classList.add(ok ? "campo-valido" : "campo-error");
 }
 
-// ── Verificar sesión al cargar la página.
-// El formulario de registro queda siempre visible (así se puede crear
-// el primer administrador). La lista solo se carga si hay sesión activa.
-async function verificarSesion() {
-    try {
-        const respuesta = await fetch(API_USUARIOS + "/sesion");
-        const datos = await respuesta.json();
-
-        if (!datos.autenticado) {
-            document.getElementById("bienvenida").textContent =
-                "No hay sesión activa. Podés registrar un administrador abajo, o iniciar sesión.";
-            return;
-        }
-
-        document.getElementById("bienvenida").textContent =
-            "Bienvenido, " + datos.usuario.nombre + " (" + datos.usuario.rol + ")";
-
-        cargarUsuarios();
-
-    } catch (error) {
-        console.error("Error al verificar sesión:");
-        console.error(error);
-    }
-}
-
-// ── Cargar la lista de administradores (HUGU-03)
-async function cargarUsuarios() {
-    try {
-        const respuesta = await fetch(API_USUARIOS);
-        const lista = await respuesta.json();
-
-        const tabla = document.getElementById("tablaUsuarios");
-        tabla.innerHTML = "";
-
-        lista.forEach(function (u) {
-            const fila = document.createElement("tr");
-            fila.innerHTML =
-                "<td>" + u.nombre + "</td>" +
-                "<td>" + u.correo + "</td>" +
-                "<td>" + u.rol + "</td>" +
-                "<td>" + (u.estado || "Activo") + "</td>";
-            tabla.appendChild(fila);
-        });
-
-    } catch (error) {
-        console.error("Error al cargar usuarios:");
-        console.error(error);
-    }
-}
-
-// ── Registrar nuevo administrador (HUGU-01)
 const form = document.getElementById("formRegistroAdmin");
 
 form.addEventListener("submit", async function (evento) {
@@ -144,7 +93,6 @@ form.addEventListener("submit", async function (evento) {
 
         document.getElementById("exito-registro").textContent = "Administrador registrado correctamente.";
         form.reset();
-        cargarUsuarios();
 
     } catch (error) {
         console.error("Error al registrar administrador:");
@@ -152,18 +100,3 @@ form.addEventListener("submit", async function (evento) {
         mostrarError("err-registro", "Ocurrió un error de conexión. Intente de nuevo.");
     }
 });
-
-// ── Cerrar sesión
-document.getElementById("btnCerrarSesion").addEventListener("click", async function (evento) {
-    evento.preventDefault();
-    try {
-        await fetch(API_USUARIOS + "/logout", { method: "POST" });
-    } catch (error) {
-        console.error("Error al cerrar sesión:");
-        console.error(error);
-    } finally {
-        window.location.href = "login.html";
-    }
-});
-
-verificarSesion();

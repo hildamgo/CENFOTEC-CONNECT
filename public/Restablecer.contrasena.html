@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cenfotec Connect — Iniciar Sesión</title>
+  <title>Cenfotec Connect — Restablecer Contraseña</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -33,24 +33,32 @@
 <section class="Seccion">
 <div class="contenedor">
 
-    <h2>Iniciar Sesión</h2>
-    <p class="texto-ayuda">Acceso exclusivo para administradores.</p>
+    <h2>Restablecer Contraseña</h2>
+    <p class="texto-ayuda">
+        Ingrese su correo y la nueva contraseña. <br>
+        <em>Nota: este flujo aún no envía un correo de verificación (ese módulo está pendiente).</em>
+    </p>
 
-    <!-- Formulario RF06 -->
-    <form id="formLogin" class="formulario" novalidate>
+    <!-- Formulario HUGU-09 -->
+    <form id="formRestablecer" class="formulario" novalidate>
 
         <label for="correo">Correo Electrónico *</label>
         <input type="email" id="correo" placeholder="correo@ejemplo.com">
         <span class="mensaje-error" id="err-correo"></span>
 
-        <label for="contrasena">Contraseña *</label>
-        <input type="password" id="contrasena" placeholder="Ingrese su contraseña">
-        <span class="mensaje-error" id="err-contrasena"></span>
+        <label for="contrasenaNueva">Contraseña Nueva *</label>
+        <input type="password" id="contrasenaNueva" placeholder="Mínimo 8 caracteres, 1 mayúscula, 1 número">
+        <span class="mensaje-error" id="err-contrasenaNueva"></span>
 
-        <span class="mensaje-error" id="err-login"></span>
+        <label for="confirmarContrasenaNueva">Confirmar Contraseña Nueva *</label>
+        <input type="password" id="confirmarContrasenaNueva" placeholder="Repita la contraseña">
+        <span class="mensaje-error" id="err-confirmarContrasenaNueva"></span>
 
-        <button type="submit">Ingresar</button>
-        <a href="restablecer-contrasena.html">¿Olvidó su contraseña?</a>
+        <span class="mensaje-error" id="err-restablecer"></span>
+        <span class="mensaje-exito" id="exito-restablecer"></span>
+
+        <button type="submit">Restablecer Contraseña</button>
+        <a href="login.html">Volver a iniciar sesión</a>
 
     </form>
 
@@ -62,7 +70,7 @@
     <p>&copy; 2026 CENFOTEC Connect.</p>
 </footer>
 
-<script src="js/login.js"></script>
+<script src="js/restablecer-contrasena.js"></script>
 
 </body>
 </html>

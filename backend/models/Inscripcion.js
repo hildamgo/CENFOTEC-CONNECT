@@ -6,7 +6,7 @@
 // ======================================================
 const { ObjectId } = require("mongodb");
 const { conectarBD } = require("../database/conexion");
-const { coleccionParticipantes } = require("./participante");
+const { coleccionParticipantes } = require("./Participante");
 
 async function coleccionInscripciones() {
     const db = await conectarBD();
