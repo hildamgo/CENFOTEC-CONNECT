@@ -186,6 +186,7 @@ document.getElementById("btnLimpiar").addEventListener("click", function () {
 });
 
 tipoLugar.addEventListener("change", cambiarTipoLugar);
+document.getElementById("entradaLibre").addEventListener("change", toggleEntradaLibre);
 formActividad.addEventListener("submit", guardarActividad);
 
 cargarEspacios();
