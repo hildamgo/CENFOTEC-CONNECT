@@ -18,7 +18,7 @@ const actividadRoutes = require("./routes/actividadRoutes");
 const responsableRoutes = require("./routes/responsableRoutes");
 const espacioRoutes = require("./routes/EspacioRoutes");
 const usuarioRoutes = require("./routes/usuarioRoutes");
-
+const geminiRoutes = require(".routes/geminiRoutes");
 const app = express();
 const puerto = process.env.PORT || 3000;
 
@@ -49,6 +49,7 @@ app.use("/api/actividades", actividadRoutes);
 app.use("/api/responsables", responsableRoutes);
 app.use("/api/espacios", espacioRoutes);
 app.use("/api/usuarios", usuarioRoutes);
+app.use("/api.gemini", geminiRoutes);
 
 // ======================================================
 // INICIAR APLICACIÓN
