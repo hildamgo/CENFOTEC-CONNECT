@@ -23,17 +23,9 @@ function validarCorreo(idCampo, idError) {
     if (!expresion.test(correo)) { mostrarError(idError, "Ingrese un correo valido."); marcarCampo(idCampo, false); return false; }
     limpiarError(idError); marcarCampo(idCampo, true); return true;
 }
-function validarUrl(idCampo, idError) {
-    const url = document.getElementById(idCampo).value.trim();
-    if (!url.startsWith("http://") && !url.startsWith("https://")) { mostrarError(idError, "Ingrese una URL valida."); marcarCampo(idCampo, false); return false; }
-    limpiarError(idError); marcarCampo(idCampo, true); return true;
-}
 
-const formResponsable       = document.getElementById("formResponsable");
-const tablaResponsable      = document.getElementById("tablaResponsables");
-const buscarResponsable     = document.getElementById("buscarResponsable");
+const formResponsable = document.getElementById("formResponsable");
 const btnLimpiarResponsable = document.getElementById("btnLimpiar");
-const btnVerResponsables    = document.getElementById("btnVerResponsables");
 
 function obtenerFormularioResponsable() {
     return {
@@ -45,8 +37,8 @@ function obtenerFormularioResponsable() {
         telefono:        document.getElementById("telefono").value.trim(),
         especialidad:    document.getElementById("especialidad").value.trim(),
         institucion:     document.getElementById("institucion").value.trim(),
-        biografia:       document.getElementById("biografia").value.trim(),
-        fotografia:      document.getElementById("fotografia").value.trim()
+        biografia:       document.getElementById("biografia").value.trim()
+        // fotografia: pendiente hasta que exista sistema de subida de archivos
     };
 }
 
@@ -60,8 +52,7 @@ function validarResponsable() {
         validarTexto("telefono", "errorTelefono", "El telefono", 8),
         validarTexto("especialidad", "errorEspecialidad", "La especialidad", 3),
         validarTexto("institucion", "errorInstitucion", "La institucion", 2),
-        validarTexto("biografia", "errorBiografia", "La biografia", 2),
-        validarUrl("fotografia", "errorFotografia")
+        validarTexto("biografia", "errorBiografia", "La biografia", 2)
     ];
     return validaciones.every(v => v === true);
 }
@@ -74,15 +65,32 @@ async function guardarResponsable(evento) {
 
     if (!validarResponsable()) return;
 
-    const nuevoResponsable = obtenerFormularioResponsable();
+    // FormData armado a mano (el HTML no tiene name= en todos los campos,
+    // así que no podemos usar "new FormData(formResponsable)" directo)
+    const datosFormulario = new FormData();
+    datosFormulario.append("identificacion", document.getElementById("identificacion").value.trim());
+    datosFormulario.append("correo", document.getElementById("correo").value.trim().toLowerCase());
+    datosFormulario.append("nombre", document.getElementById("nombre").value.trim());
+    datosFormulario.append("primerApellido", document.getElementById("primerApellido").value.trim());
+    datosFormulario.append("segundoApellido", document.getElementById("segundoApellido").value.trim());
+    datosFormulario.append("telefono", document.getElementById("telefono").value.trim());
+    datosFormulario.append("especialidad", document.getElementById("especialidad").value.trim());
+    datosFormulario.append("institucion", document.getElementById("institucion").value.trim());
+    datosFormulario.append("biografia", document.getElementById("biografia").value.trim());
+
+    const archivoFoto = document.getElementById("fotografia").files[0];
+    if (archivoFoto) {
+        datosFormulario.append("fotografia", archivoFoto);
+    }
+
     const botonGuardar = formResponsable.querySelector('button[type="submit"]');
     botonGuardar.disabled = true;
 
     try {
         const respuesta = await fetch(API_RESPONSABLES, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(nuevoResponsable)
+            body: datosFormulario
+            // sin "Content-Type": el navegador lo arma solo con el boundary correcto
         });
 
         const resultado = await respuesta.json();
@@ -102,51 +110,12 @@ async function guardarResponsable(evento) {
 
         alert("Responsable guardado correctamente.");
         limpiarFormularioResponsable();
-        await mostrarResponsables();
 
     } catch (error) {
         console.error("Error al guardar responsable:", error);
         alert("No se pudo conectar con el servidor. Intente de nuevo.");
     } finally {
         botonGuardar.disabled = false;
-    }
-}
-
-// ======================================================
-// CONSULTAR RESPONSABLES DESDE LA API (HUGR-24)
-// ======================================================
-async function mostrarResponsables() {
-    const texto = buscarResponsable.value.trim();
-    const params = new URLSearchParams();
-    if (texto) params.append("buscar", texto);
-
-    tablaResponsable.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;padding:20px;">Cargando...</td></tr>';
-
-    try {
-        const respuesta = await fetch(API_RESPONSABLES + "?" + params.toString());
-        if (!respuesta.ok) throw new Error("Respuesta no válida del servidor");
-
-        const responsables = await respuesta.json();
-
-        if (!responsables.length) {
-            tablaResponsable.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;padding:20px;">Sin resultados.</td></tr>';
-            return;
-        }
-
-        tablaResponsable.innerHTML = responsables.map(function (r) {
-            const fecha = new Date(r.fechaRegistro).toLocaleDateString("es-CR");
-            return `<tr>
-                <td>${r.nombre} ${r.primerApellido} ${r.segundoApellido}</td>
-                <td>${r.identificacion}</td>
-                <td>${r.correo}</td>
-                <td>${r.especialidad}</td>
-                <td>${fecha}</td>
-            </tr>`;
-        }).join("");
-
-    } catch (error) {
-        console.error("Error al consultar responsables:", error);
-        tablaResponsable.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#c0392b;padding:20px;">No se pudo conectar con el servidor.</td></tr>';
     }
 }
 
@@ -162,8 +131,4 @@ function limpiarFormularioResponsable() {
 
 // ── Eventos y arranque
 formResponsable.addEventListener("submit", guardarResponsable);
-btnVerResponsables.addEventListener("click", mostrarResponsables);
-buscarResponsable.addEventListener("input", mostrarResponsables);
 btnLimpiarResponsable.addEventListener("click", limpiarFormularioResponsable);
-
-tablaResponsable.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;padding:20px;">Presioná "Ver Responsables" para cargar la lista.</td></tr>';

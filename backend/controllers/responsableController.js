@@ -5,7 +5,12 @@ const { crearResponsable: crearResponsableModelo, buscarResponsables: buscarResp
 
 async function crearResponsable(req, res) {
     try {
-        const resultado = await crearResponsableModelo(req.body);
+        const datos = { ...req.body };
+        if (req.file) {
+            datos.fotografia = "/uploads/responsables/" + req.file.filename;
+        }
+
+        const resultado = await crearResponsableModelo(datos);
 
         if (resultado.error) {
             return res.status(400).json({ mensaje: resultado.error });

@@ -1,24 +1,12 @@
 // ======================================================
-// CONFIGURACIÓN DE LA API
+// REGISTRO DE PARTICIPANTES (participantes.html)
+// La tabla/búsqueda/filtros viven aparte, en lista-participantes.html
+// (ese usa lista-participantes.js, no este archivo).
 // ======================================================
 const API_PARTICIPANTES = "/api/participantes";
+const API_ACTIVIDADES   = "/api/actividades";
+const API_INSCRIPCIONES = "/api/inscripciones";
 
-// Actividades sigue en localStorage por ahora (ese módulo no es Mongo todavía)
-const CLAVE_ACTIVIDADES   = "cenfotec_actividades";
-const CLAVE_INSCRIPCIONES = "cenfotec_inscripciones";
-
-function obtenerDatos(clave) {
-    return JSON.parse(localStorage.getItem(clave)) || [];
-}
-function guardarDatos(clave, datos) {
-    localStorage.setItem(clave, JSON.stringify(datos));
-}
-function crearId() {
-    return Date.now().toString();
-}
-function obtenerFechaActual() {
-    return new Date().toLocaleDateString("es-CR");
-}
 function mostrarError(id, msg) {
     const el = document.getElementById(id);
     if (el) el.textContent = msg;
@@ -34,14 +22,7 @@ function marcarCampo(id, ok) {
 }
 
 const form            = document.getElementById("formParticipante");
-const tabla           = document.getElementById("tablaParticipantes");
-const buscador        = document.getElementById("buscarParticipante");
-const btnLimpiar      = document.getElementById("btnLimpiar");
-const filtroEstado    = document.getElementById("filtroEstado");
-const filtroProfesion = document.getElementById("filtroProfesion");
-const grupoActividad  = document.getElementById("grupoActividad");
 const selectActividad = document.getElementById("actividadOpcional");
-const btnVer          = document.getElementById("btnVerParticipantes");
 
 // ── Validación (RNF-04)
 const reglas = {
@@ -75,70 +56,39 @@ Object.keys(reglas).forEach(function(id) {
     document.getElementById(id).addEventListener("blur", function() { validarCampo(id); });
 });
 
-// ── Actividades disponibles (RF-25) — todavía locales, se conectan en otro paso
-function cargarActividades() {
+// ======================================================
+// ACTIVIDADES DISPONIBLES (RF-25) — vienen de la API (Mongo)
+// ======================================================
+async function cargarActividades() {
     selectActividad.innerHTML = '<option value="">— Sin actividad —</option>';
-    obtenerDatos(CLAVE_ACTIVIDADES)
-        .filter(function(a) { return a.estado === "Disponible"; })
-        .forEach(function(a) {
-            const op = document.createElement("option");
-            op.value       = a.id;
-            op.textContent = a.nombre + " (" + a.fecha + ")";
-            selectActividad.appendChild(op);
-        });
-}
-
-// ======================================================
-// CONSULTAR PARTICIPANTES DESDE LA API (RF-28)
-// ======================================================
-async function mostrarParticipantes() {
-    const texto     = buscador.value.trim();
-    const estado    = filtroEstado.value;
-    const profesion = filtroProfesion.value.trim();
-
-    const params = new URLSearchParams();
-    if (texto)     params.append("buscar", texto);
-    if (estado)    params.append("estado", estado);
-    if (profesion) params.append("profesion", profesion);
-
-    tabla.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#888;padding:20px;">Cargando...</td></tr>';
 
     try {
-        const respuesta = await fetch(API_PARTICIPANTES + "?" + params.toString());
+        const respuesta = await fetch(API_ACTIVIDADES + "?estado=Disponible");
 
         if (!respuesta.ok) {
-            throw new Error("Respuesta no válida del servidor");
+            throw new Error("No se pudieron obtener las actividades");
         }
 
-        const participantes = await respuesta.json();
+        const actividadesDisponibles = await respuesta.json();
 
-        if (!participantes.length) {
-            tabla.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#888;padding:20px;">Sin resultados.</td></tr>';
-            return;
-        }
-
-        tabla.innerHTML = participantes.map(function(p) {
-            const badge = p.estado === "Activo"
-                ? '<span class="etiqueta-activo">Activo</span>'
-                : '<span class="etiqueta-inactivo">Inactivo</span>';
-            return `<tr>
-                <td>${p.nombre}</td><td>${p.identificacion}</td><td>${p.correo}</td>
-                <td>${p.telefono}</td><td>${p.edad}</td><td>${p.profesion}</td>
-                <td>${badge}</td>
-            </tr>`;
-        }).join("");
+        actividadesDisponibles.forEach(function(a) {
+            const op = document.createElement("option");
+            op.value = a._id;
+            op.textContent = a.nombre + " (" + a.fecha + ")";
+            op.dataset.nombre    = a.nombre;
+            op.dataset.categoria = a.categoria;
+            op.dataset.fecha     = a.fecha;
+            selectActividad.appendChild(op);
+        });
 
     } catch (error) {
-        console.error("Error al consultar participantes:", error);
-        tabla.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#c0392b;padding:20px;">No se pudo conectar con el servidor.</td></tr>';
+        console.error("Error al cargar actividades:", error);
     }
 }
 
 // ── Limpiar formulario
 function limpiarFormulario() {
     form.reset();
-    document.getElementById("participanteId").value = "";
-    grupoActividad.style.display = "block";
     cargarActividades();
     limpiarErrores();
 }
@@ -188,11 +138,12 @@ form.addEventListener("submit", async function(e) {
             return;
         }
 
-        if (actividadId) inscribirEnActividad(resultado.id, actividadId);
+        if (actividadId) {
+            await inscribirEnActividad(resultado.id, selectActividad.selectedOptions[0]);
+        }
 
         alert("Participante registrado correctamente.");
         limpiarFormulario();
-        mostrarParticipantes();
 
     } catch (error) {
         console.error("Error al registrar participante:", error);
@@ -202,42 +153,36 @@ form.addEventListener("submit", async function(e) {
     }
 });
 
-// ── Inscripción opcional al registrar (RF-25, RF-29) — todavía local, se conecta en el siguiente paso
-function inscribirEnActividad(participanteId, actividadId) {
-    const actividades = obtenerDatos(CLAVE_ACTIVIDADES);
-    const i = actividades.findIndex(function(a) { return a.id === actividadId; });
-    if (i === -1) return;
+// ── Inscripción opcional al registrar (RF-25, RF-29) — vía API real
+async function inscribirEnActividad(participanteId, opcionActividad) {
+    if (!opcionActividad) return;
 
-    if (actividades[i].cuposOcupados >= actividades[i].cupoMaximo) {
-        alert("La actividad ya no tiene cupos. Participante registrado sin inscripción.");
-        return;
+    try {
+        const respuesta = await fetch(API_INSCRIPCIONES, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                participanteId: participanteId,
+                actividadId: opcionActividad.value,
+                actividadNombre: opcionActividad.dataset.nombre,
+                actividadCategoria: opcionActividad.dataset.categoria,
+                actividadFecha: opcionActividad.dataset.fecha
+            })
+        });
+
+        const resultado = await respuesta.json();
+
+        if (!respuesta.ok) {
+            alert((resultado.mensaje || "No se pudo inscribir a la actividad") + " (el participante sí quedó registrado).");
+        }
+
+    } catch (error) {
+        console.error("Error al inscribir en la actividad:", error);
+        alert("No se pudo inscribir a la actividad (el participante sí quedó registrado).");
     }
-
-    const inscripciones = obtenerDatos(CLAVE_INSCRIPCIONES);
-    inscripciones.push({
-        id: crearId(),
-        participanteId,
-        actividadId,
-        actividadNombre:    actividades[i].nombre,
-        actividadCategoria: actividades[i].categoria,
-        actividadFecha:     actividades[i].fecha,
-        fechaInscripcion:   obtenerFechaActual(),
-        estado: "Activa"
-    });
-
-    actividades[i].cuposOcupados += 1;
-    if (actividades[i].cuposOcupados >= actividades[i].cupoMaximo) actividades[i].estado = "Llena";
-
-    guardarDatos(CLAVE_INSCRIPCIONES, inscripciones);
-    guardarDatos(CLAVE_ACTIVIDADES, actividades);
 }
 
 // ── Eventos y arranque
-btnVer.addEventListener("click", mostrarParticipantes);
-buscador.addEventListener("input", mostrarParticipantes);
-filtroEstado.addEventListener("change", mostrarParticipantes);
-filtroProfesion.addEventListener("input", mostrarParticipantes);
-btnLimpiar.addEventListener("click", limpiarFormulario);
+document.getElementById("btnLimpiar").addEventListener("click", limpiarFormulario);
 
 cargarActividades();
-tabla.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#888;padding:20px;">Presioná "Ver Participantes" para cargar la lista.</td></tr>';

@@ -38,10 +38,9 @@ async function cargarSelects() {
     const sa = document.getElementById("selectActividad");
     sa.innerHTML = '<option value="">— Seleccione una actividad —</option>';
 
-    let actividadesDisponibles = [];
     try {
         const respuesta = await fetch(API_ACTIVIDADES + "?estado=Disponible");
-        actividadesDisponibles = await respuesta.json();
+        const actividadesDisponibles = await respuesta.json();
 
         actividadesDisponibles.forEach(a => {
             const cuposTexto = a.entradaLibre ? "Libre" : `${a.cupoMaximo - a.cuposOcupados} cupos`;
@@ -51,60 +50,6 @@ async function cargarSelects() {
         });
     } catch (error) {
         console.error("Error al cargar actividades:", error);
-    }
-
-    // Categorías para el filtro, tomadas de las actividades disponibles
-    const fc = document.getElementById("filtroCategoria");
-    const cats = [...new Set(actividadesDisponibles.map(a => a.categoria))];
-    fc.innerHTML = '<option value="">Todas</option>';
-    cats.forEach(c => { fc.innerHTML += `<option value="${c}">${c}</option>`; });
-}
-
-// ======================================================
-// CONSULTAR INSCRIPCIONES DESDE LA API (RF-30)
-// ======================================================
-async function mostrarInscripciones() {
-    const texto  = document.getElementById("buscarInscripcion").value.trim();
-    const estado = document.getElementById("filtroEstado").value;
-    const cat    = document.getElementById("filtroCategoria").value;
-    const fecha  = document.getElementById("filtroFecha").value;
-    const tabla  = document.getElementById("tablaInscripciones");
-
-    const params = new URLSearchParams();
-    if (texto)  params.append("buscar", texto);
-    if (estado) params.append("estado", estado);
-    if (cat)    params.append("categoria", cat);
-    if (fecha)  params.append("fecha", fecha);
-
-    tabla.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#888;padding:20px;">Cargando...</td></tr>';
-
-    try {
-        const respuesta = await fetch(API_INSCRIPCIONES + "?" + params.toString());
-        if (!respuesta.ok) throw new Error("Respuesta no válida del servidor");
-
-        const inscripciones = await respuesta.json();
-
-        if (!inscripciones.length) {
-            tabla.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#888;padding:20px;">Sin resultados.</td></tr>';
-            return;
-        }
-
-        tabla.innerHTML = inscripciones.map(i => {
-            const badge = i.estado === "Activa"
-                ? '<span class="etiqueta-activo">Activa</span>'
-                : '<span class="etiqueta-inactivo">Cancelada</span>';
-            const fechaInscripcion = new Date(i.fechaInscripcion).toLocaleDateString("es-CR");
-            return `<tr>
-                <td>${i.participanteNombre}</td><td>${i.participanteIdentificacion}</td>
-                <td>${i.actividadNombre}</td><td>${i.actividadCategoria}</td>
-                <td>${i.actividadFecha}</td><td>${fechaInscripcion}</td>
-                <td>${badge}</td>
-            </tr>`;
-        }).join("");
-
-    } catch (error) {
-        console.error("Error al consultar inscripciones:", error);
-        tabla.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#c0392b;padding:20px;">No se pudo conectar con el servidor.</td></tr>';
     }
 }
 
@@ -153,7 +98,6 @@ document.getElementById("formInscripcion").addEventListener("submit", async func
         alert("Inscripción registrada correctamente.");
         this.reset();
         await cargarSelects();
-        await mostrarInscripciones();
 
     } catch (error) {
         console.error("Error al registrar inscripción:", error);
@@ -164,16 +108,9 @@ document.getElementById("formInscripcion").addEventListener("submit", async func
 });
 
 // ── Eventos y arranque
-["buscarInscripcion", "filtroEstado", "filtroCategoria", "filtroFecha"]
-    .forEach(id => document.getElementById(id).addEventListener("input", mostrarInscripciones));
-
 document.getElementById("btnLimpiar").addEventListener("click", async function () {
     document.getElementById("formInscripcion").reset();
     await cargarSelects();
 });
 
-document.getElementById("btnVerInscripciones").addEventListener("click", mostrarInscripciones);
-
 cargarSelects();
-document.getElementById("tablaInscripciones").innerHTML =
-    '<tr><td colspan="7" style="text-align:center;color:#888;padding:20px;">Presioná "Ver Inscripciones" para cargar la lista.</td></tr>';

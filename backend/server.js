@@ -18,7 +18,7 @@ const actividadRoutes = require("./routes/actividadRoutes");
 const responsableRoutes = require("./routes/responsableRoutes");
 const espacioRoutes = require("./routes/EspacioRoutes");
 const usuarioRoutes = require("./routes/usuarioRoutes");
-const geminiRoutes = require(".routes/geminiRoutes");
+const geminiRoutes = require("./routes/geminiRoutes");
 const app = express();
 const puerto = process.env.PORT || 3000;
 

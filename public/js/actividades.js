@@ -10,13 +10,22 @@ const grupoLugarExterno     = document.getElementById("grupoLugarExterno");
 const espacioActividad      = document.getElementById("espacioActividad");
 const responsableActividad  = document.getElementById("responsableActividad");
 
-// ── Cargar espacios disponibles (localStorage, módulo de Espacios)
-function cargarEspacios() {
-    const espacios = obtenerDatos(CLAVE_ESPACIOS);
+// ── Cargar espacios disponibles (ya migrado a Mongo — viene de la API)
+async function cargarEspacios() {
     espacioActividad.innerHTML = '<option value="">Seleccione un espacio</option>';
-    espacios.filter(e => e.estado === "Disponible").forEach(e => {
-        espacioActividad.innerHTML += `<option value="${e.id}">${e.nombre} - ${e.sede}</option>`;
-    });
+
+    try {
+        const respuesta = await fetch("/api/espacios");
+        const espacios = await respuesta.json();
+
+        espacios
+            .filter(e => e.estado === "Disponible")
+            .forEach(e => {
+                espacioActividad.innerHTML += `<option value="${e._id}">${e.nombre} - ${e.sede}</option>`;
+            });
+    } catch (error) {
+        console.error("Error al cargar espacios:", error);
+    }
 }
 
 // ── Cargar responsables (ya migrado a Mongo — viene de la API)

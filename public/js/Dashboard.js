@@ -79,16 +79,19 @@ async function cargarUsuarios() {
     }
 }
 
-document.getElementById("btnCerrarSesion").addEventListener("click", async function (evento) {
-    evento.preventDefault();
-    try {
-        await fetch(API_USUARIOS + "/logout", { method: "POST" });
-    } catch (error) {
-        console.error("Error al cerrar sesión:");
-        console.error(error);
-    } finally {
-        window.location.href = "login.html";
-    }
-});
+const btnCerrarSesion = document.getElementById("btnCerrarSesion");
+if (btnCerrarSesion) {
+    btnCerrarSesion.addEventListener("click", async function (evento) {
+        evento.preventDefault();
+        try {
+            await fetch(API_USUARIOS + "/logout", { method: "POST" });
+        } catch (error) {
+            console.error("Error al cerrar sesión:");
+            console.error(error);
+        } finally {
+            window.location.href = "login.html";
+        }
+    });
+}
 
 verificarSesionYCargarPanel();

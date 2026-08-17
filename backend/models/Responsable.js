@@ -1,6 +1,7 @@
 // ======================================================
 // MODELO: RESPONSABLES
-// Valida y guarda/busca responsables en MongoDB.
+// Aquí vive TODA la lógica de negocio de responsables:
+// validaciones, reglas de unicidad y acceso a MongoDB.
 // server.js solo llama estas funciones.
 // ======================================================
 const { conectarBD } = require("../database/conexion");
@@ -10,47 +11,45 @@ async function coleccionResponsables() {
     return db.collection("responsables");
 }
 
-// ── Validaciones de campos obligatorios (HUGR-21)
+// ── Validaciones de campos obligatorios y formato
 function validarDatosResponsable(datos) {
-    if (!datos.identificacion || datos.identificacion.trim().length < 5) {
-        return "La identificación es obligatoria (mínimo 5 caracteres)";
+    if (!datos.identificacion || datos.identificacion.trim() === "") {
+        return "La identificación del responsable es obligatoria";
     }
     if (!datos.correo || datos.correo.trim() === "") {
-        return "El correo es obligatorio";
+        return "El correo del responsable es obligatorio";
     }
+    if (!datos.nombre || datos.nombre.trim() === "") {
+        return "El nombre del responsable es obligatorio";
+    }
+    if (!datos.primerApellido || datos.primerApellido.trim() === "") {
+        return "El primer apellido del responsable es obligatorio";
+    }
+    if (!datos.segundoApellido || datos.segundoApellido.trim() === "") {
+        return "El segundo apellido del responsable es obligatorio";
+    }
+    if (!datos.telefono || datos.telefono.trim() === "") {
+        return "El teléfono del responsable es obligatorio";
+    }
+    if (!datos.especialidad || datos.especialidad.trim() === "") {
+        return "La especialidad del responsable es obligatoria";
+    }
+    if (!datos.institucion || datos.institucion.trim() === "") {
+        return "La institución del responsable es obligatoria";
+    }
+    if (!datos.biografia || datos.biografia.trim() === "") {
+        return "La biografía del responsable es obligatoria";
+    }
+
     const formatoCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formatoCorreo.test(datos.correo.trim().toLowerCase())) {
         return "El correo electrónico no es válido";
-    }
-    if (!datos.nombre || datos.nombre.trim().length < 2) {
-        return "El nombre es obligatorio";
-    }
-    if (!datos.primerApellido || datos.primerApellido.trim().length < 2) {
-        return "El primer apellido es obligatorio";
-    }
-    if (!datos.segundoApellido || datos.segundoApellido.trim().length < 2) {
-        return "El segundo apellido es obligatorio";
-    }
-    if (!datos.telefono || datos.telefono.trim().length < 8) {
-        return "El teléfono es obligatorio (mínimo 8 dígitos)";
-    }
-    if (!datos.especialidad || datos.especialidad.trim().length < 3) {
-        return "La especialidad es obligatoria";
-    }
-    if (!datos.institucion || datos.institucion.trim() === "") {
-        return "La institución es obligatoria";
-    }
-    if (!datos.biografia || datos.biografia.trim() === "") {
-        return "La biografía es obligatoria";
-    }
-    if (!datos.fotografia || (!datos.fotografia.startsWith("http://") && !datos.fotografia.startsWith("https://"))) {
-        return "La URL de la fotografía no es válida";
     }
 
     return null; // sin errores
 }
 
-// ── Crear un responsable nuevo (HUGR-21)
+// ── Crear un responsable nuevo
 async function crearResponsable(datos) {
     const errorValidacion = validarDatosResponsable(datos);
     if (errorValidacion) {
@@ -62,7 +61,7 @@ async function crearResponsable(datos) {
     const identificacion = datos.identificacion.trim();
     const correo = datos.correo.trim().toLowerCase();
 
-    // Unicidad de identificación y correo (RNF-01)
+    // Unicidad de identificación y correo
     const existePorIdentificacion = await responsables.findOne({ identificacion: identificacion });
     if (existePorIdentificacion) {
         return { error: "La identificación ya está registrada" };
@@ -83,7 +82,8 @@ async function crearResponsable(datos) {
         especialidad: datos.especialidad.trim(),
         institucion: datos.institucion.trim(),
         biografia: datos.biografia.trim(),
-        fotografia: datos.fotografia.trim(),
+        fotografia: datos.fotografia || null,
+        estado: "Activo",
         fechaRegistro: new Date()
     };
 
@@ -92,10 +92,10 @@ async function crearResponsable(datos) {
     return { id: resultado.insertedId, responsable: nuevoResponsable };
 }
 
-// ── Buscar responsables con filtro de texto opcional (HUGR-24)
+// ── Buscar responsables con filtros opcionales
 async function buscarResponsables(filtrosQuery) {
     const responsables = await coleccionResponsables();
-    const { buscar } = filtrosQuery;
+    const { buscar, especialidad, estado } = filtrosQuery || {};
     const filtro = {};
 
     if (buscar && buscar.trim() !== "") {
@@ -108,6 +108,14 @@ async function buscarResponsables(filtrosQuery) {
             { correo: { $regex: texto, $options: "i" } },
             { especialidad: { $regex: texto, $options: "i" } }
         ];
+    }
+
+    if (especialidad && especialidad.trim() !== "") {
+        filtro.especialidad = { $regex: especialidad.trim(), $options: "i" };
+    }
+
+    if (estado && estado.trim() !== "") {
+        filtro.estado = estado;
     }
 
     return responsables.find(filtro).toArray();
