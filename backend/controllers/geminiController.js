@@ -3,7 +3,7 @@
 // =======================================
 const {
     mejorarDescripcion: ejecutarMejora
-} = require("../services/geminiService");
+} = require("../services/geminiService.js");
 
 //POST /api/gemini/mejorar-descripcion
 async function mejorarDescripcion(req, res) {
