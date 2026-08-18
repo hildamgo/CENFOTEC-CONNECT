@@ -3,7 +3,7 @@
 // ======================================================
 const API_ACTIVIDADES = "/api/actividades";
 
-onst formActividad        = document.getElementById("formActividad");
+const formActividad        = document.getElementById("formActividad");
 const tipoLugar             = document.getElementById("tipoLugar");
 const grupoEspacioInterno   = document.getElementById("grupoEspacioInterno");
 const grupoLugarExterno     = document.getElementById("grupoLugarExterno");
