@@ -253,18 +253,75 @@
                 <p id="errorResponsableActividad" class="mensaje-error"></p>
             </div>
             <!-- DESCRIPCIÓN -->
-            <div class="mb-3">
+            div class="mb-3">
                 <label for="descripcionActividad" class="form-label">
                     Descripción
                 </label>
                 <textarea
                     id="descripcionActividad"
                     class="form-control"
-                    rows="3"
-                    placeholder="Describa la actividad"
+                    rows="4"
+                    maxlength="1200"
+                    placeholder="Describa la actividad o permita que Gemini la genere"
                 ></textarea>
                 <p id="errorDescripcionActividad" class="mensaje-error"></p>
+
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                    <button
+                        type="button"
+                        id="btnMejorarDescripcion"
+                        class="btn btn-outline-primary"
+                    >
+                        Mejorar descripción con IA
+                    </button>
+                    <small class="text-muted align-self-center">
+                        Gemini puede redactar o mejorar la descripción antes de guardar.
+                    </small>
+                </div>
             </div>
+
+            <!-- SUGERENCIA DE IA, siguiendo el patrón del proyecto de películas -->
+            <section
+                id="panelSugerenciaIA"
+                class="card border-primary mb-3 d-none"
+            >
+                <div class="card-header bg-primary text-white">
+                    Sugerencia de Gemini
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <h6>Descripción original</h6>
+                            <p id="descripcionOriginalIA" class="border rounded p-3 bg-light mb-0"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Descripción sugerida</h6>
+                            <textarea
+                                id="descripcionSugeridaIA"
+                                class="form-control"
+                                rows="6"
+                                maxlength="1200"
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <button
+                            type="button"
+                            id="btnAceptarSugerenciaIA"
+                            class="btn btn-success"
+                        >
+                            Aceptar sugerencia
+                        </button>
+                        <button
+                            type="button"
+                            id="btnRechazarSugerenciaIA"
+                            class="btn btn-outline-danger"
+                        >
+                            Rechazar
+                        </button>
+                    </div>
+                </div>
+            </section>
             <!-- ENTRADA LIBRE -->
             <div class="form-check mb-3">
                 <input type="checkbox" id="entradaLibre" class="form-check-input">
