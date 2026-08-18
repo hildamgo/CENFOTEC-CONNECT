@@ -10,7 +10,7 @@ const grupoLugarExterno     = document.getElementById("grupoLugarExterno");
 const espacioActividad      = document.getElementById("espacioActividad");
 const responsableActividad  = document.getElementById("responsableActividad");
 
-// ── Cargar espacios disponibles (ya migrado a Mongo — viene de la API)
+// ── Cargar espacios disponibles (vienen de Mongo vía la API)
 async function cargarEspacios() {
     espacioActividad.innerHTML = '<option value="">Seleccione un espacio</option>';
 
@@ -21,14 +21,17 @@ async function cargarEspacios() {
         espacios
             .filter(e => e.estado === "Disponible")
             .forEach(e => {
-                espacioActividad.innerHTML += `<option value="${e._id}">${e.nombre} - ${e.sede}</option>`;
+                const opcion = document.createElement("option");
+                opcion.value = e._id;
+                opcion.textContent = `${e.nombre} - ${e.sede}`;
+                espacioActividad.appendChild(opcion);
             });
     } catch (error) {
         console.error("Error al cargar espacios:", error);
     }
 }
 
-// ── Cargar responsables (ya migrado a Mongo — viene de la API)
+// ── Cargar responsables (vienen de Mongo vía la API)
 async function cargarResponsables() {
     responsableActividad.innerHTML = '<option value="">Seleccione un responsable</option>';
 
@@ -38,7 +41,10 @@ async function cargarResponsables() {
 
         responsables.forEach(r => {
             const nombreCompleto = `${r.nombre} ${r.primerApellido} ${r.segundoApellido}`;
-            responsableActividad.innerHTML += `<option value="${nombreCompleto}">${nombreCompleto}</option>`;
+            const opcion = document.createElement("option");
+            opcion.value = nombreCompleto;
+            opcion.textContent = nombreCompleto;
+            responsableActividad.appendChild(opcion);
         });
     } catch (error) {
         console.error("Error al cargar responsables:", error);
@@ -150,12 +156,19 @@ async function guardarActividad(evento) {
 
     if (!validarActividad()) return;
 
-    const espacios = obtenerDatos(CLAVE_ESPACIOS);
-    const espacio = espacios.find(e => e.id === espacioActividad.value);
+    // CORRECCIÓN: antes se buscaba el espacio en localStorage con
+    // obtenerDatos(CLAVE_ESPACIOS) y se comparaba por "id". Los espacios
+    // ya viven en Mongo y llegan por /api/espacios con "_id", así que
+    // ahora se toma directo del <select>, que ya viene poblado desde la API.
+    let lugar = "";
+    let espacioId = "";
 
-    let lugar = document.getElementById("lugarExterno").value.trim();
     if (tipoLugar.value === "interno") {
-        lugar = `${espacio.nombre} - ${espacio.sede}`;
+        const opcionSeleccionada = espacioActividad.selectedOptions[0];
+        lugar = opcionSeleccionada ? opcionSeleccionada.textContent.trim() : "";
+        espacioId = espacioActividad.value;
+    } else {
+        lugar = document.getElementById("lugarExterno").value.trim();
     }
 
     const esEntradaLibre = document.getElementById("entradaLibre").checked;
@@ -168,6 +181,7 @@ async function guardarActividad(evento) {
         horaInicio: document.getElementById("horaInicio").value,
         horaFin: document.getElementById("horaFin").value,
         lugar: lugar,
+        espacioId: tipoLugar.value === "interno" ? espacioId : "",
         entradaLibre: esEntradaLibre,
         cupoMaximo: esEntradaLibre ? null : Number(document.getElementById("cupoActividad").value),
         responsableNombre: responsableActividad.value

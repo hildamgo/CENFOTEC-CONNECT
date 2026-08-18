@@ -2,9 +2,6 @@
 // SERVICIO DE GEMINI - ASISTENCIA PARA ACTIVIDADES
 // Basado en la estructura del proyecto de películas.
 // La API Key permanece en el backend (.env).
-
-const { text } = require("express");
-
 // ===================================================
 function crearError(mensaje, status){
     const error = new Error(mensaje);
@@ -28,7 +25,8 @@ function validarDatos(datos){
     if (typeof datos.horaInicio !== "string" || datos.horaInicio.trim() === ""){
         throw crearError("La hora de inicio es obligatoria.", 400);
     }
-    if (typeof datos.horaFinal !== "string" || datos.horaFinal.trim() === ""){
+    // CORRECCIÓN: el frontend (asistencia-ia.js) manda "horaFin", no "horaFinal".
+    if (typeof datos.horaFin !== "string" || datos.horaFin.trim() === ""){
         throw crearError("La hora de finalización es obligatoria.", 400);
     }
     if (typeof datos.lugar !== "string" || datos.lugar.trim() === ""){
@@ -42,7 +40,7 @@ function validarDatos(datos){
         categoria: datos.categoria.trim(),
         fecha: datos.fecha.trim(),
         horaInicio: datos.horaInicio.trim(),
-        horaFinal: datos.horaFinal.trim(),
+        horaFin: datos.horaFin.trim(),
         lugar: datos.lugar.trim(),
         responsableNombre: datos.responsableNombre.trim(),
         descripcion: typeof datos.descripcion === "string"
@@ -107,10 +105,10 @@ function obtenerTextoRespuesta(resultado){
 async function mejorarDescripcion(datosEntrada) {
     const datos = validarDatos(datosEntrada);
     const apiKey = process.env.GEMINI_API_KEY;
-    const modelo = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+    const modelo = process.env.GEMINI_MODEL || "gemini-1.5-flash";
 
     if (!apiKey){
-        throw crearError("Gemini API no está configurada. Agregue GEMINI_API_KEY al .env.", 
+        throw crearError("Gemini API no está configurada. Agregue GEMINI_API_KEY al .env.",
             503);
     }
     const cuerpo = {
@@ -138,12 +136,15 @@ async function mejorarDescripcion(datosEntrada) {
     let respuesta;
 
     try {
+        // CORRECCIÓN: faltaba enviar el "body" — la petición salía vacía
+        // y Gemini nunca recibía el prompt.
         respuesta = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "x-goog-api-key": apiKey
             },
+            body: JSON.stringify(cuerpo)
         });
     } catch (error){
         throw crearError("No es posible conectarse con Gemini.", 503);

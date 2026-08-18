@@ -49,7 +49,7 @@ app.use("/api/actividades", actividadRoutes);
 app.use("/api/responsables", responsableRoutes);
 app.use("/api/espacios", espacioRoutes);
 app.use("/api/usuarios", usuarioRoutes);
-app.use("/api.gemini", geminiRoutes);
+app.use("/api/gemini", geminiRoutes); // CORRECCIÓN: era "/api.gemini" (punto en vez de barra)
 
 // ======================================================
 // INICIAR APLICACIÓN
