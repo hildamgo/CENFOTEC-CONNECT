@@ -3,7 +3,7 @@
 // ======================================================
 const API_ACTIVIDADES = "/api/actividades";
 
-const formActividad        = document.getElementById("formActividad");
+onst formActividad        = document.getElementById("formActividad");
 const tipoLugar             = document.getElementById("tipoLugar");
 const grupoEspacioInterno   = document.getElementById("grupoEspacioInterno");
 const grupoLugarExterno     = document.getElementById("grupoLugarExterno");
@@ -67,6 +67,23 @@ function toggleEntradaLibre() {
         campo.disabled = false;
     }
 }
+// ======================================================
+// REFERENCIAS DOM - Panel de asistencia IA
+// ======================================================
+const botonMejorarDescripcion = document.getElementById("btnMejorarDescripcion");
+const panelSugerenciaIA = document.getElementById("panelSugerenciaIA");
+const descripcionOriginalIA = document.getElementById("descripcionOriginalIA");
+const descripcionSugeridaIA = document.getElementById("descripcionSugeridaIA");
+
+botonMejorarDescripcion.addEventListener("click", solicitarMejoraDescripcion);
+
+document
+    .getElementById("btnAceptarSugerenciaIA")
+    .addEventListener("click", aceptarSugerenciaDescripcion);
+
+document
+    .getElementById("btnRechazarSugerenciaIA")
+    .addEventListener("click", cerrarSugerenciaDescripcion);
 
 // ── Validación del formulario (en el navegador, antes de mandar a la API)
 function validarActividad() {
