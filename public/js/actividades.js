@@ -91,6 +91,80 @@ document
     .getElementById("btnRechazarSugerenciaIA")
     .addEventListener("click", cerrarSugerenciaDescripcion);
 
+// ======================================================
+// ASISTENTE IA — mejorar descripción con Gemini
+// ======================================================
+async function solicitarMejoraDescripcion() {
+    const campoDescripcion = document.getElementById("descripcionActividad");
+    const textoActual = campoDescripcion.value.trim();
+
+    // El servicio de Gemini (backend) valida nombre, categoría, fecha,
+    // horas, lugar y responsable — no solo la descripción.
+    const nombre    = document.getElementById("nombreActividad").value.trim();
+    const categoria = document.getElementById("categoriaActividad").value;
+    const fecha      = document.getElementById("fechaActividad").value;
+    const horaInicio = document.getElementById("horaInicio").value;
+    const horaFin     = document.getElementById("horaFin").value;
+    const responsableNombre = responsableActividad.value;
+
+    let lugar = "";
+    if (tipoLugar.value === "interno") {
+        const opcionSeleccionada = espacioActividad.selectedOptions[0];
+        lugar = opcionSeleccionada ? opcionSeleccionada.textContent.trim() : "";
+    } else {
+        lugar = document.getElementById("lugarExterno").value.trim();
+    }
+
+    if (!nombre || !categoria || !fecha || !horaInicio || !horaFin || !lugar || !responsableNombre) {
+        alert("Complete nombre, categoría, fecha, horas, lugar y responsable antes de usar la IA.");
+        return;
+    }
+
+    botonMejorarDescripcion.disabled = true;
+    botonMejorarDescripcion.textContent = "Generando...";
+
+    try {
+        const respuesta = await fetch("/api/gemini/mejorar-descripcion", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nombre, categoria, fecha, horaInicio, horaFin, lugar, responsableNombre,
+                descripcion: textoActual
+            })
+        });
+
+        const resultado = await respuesta.json();
+
+        if (!respuesta.ok) {
+            alert(resultado.mensaje || "No se pudo generar la sugerencia con IA.");
+            return;
+        }
+
+        descripcionOriginalIA.textContent = textoActual || "(sin descripción original)";
+        descripcionSugeridaIA.value = resultado.descripcionMejorada || "";
+        panelSugerenciaIA.classList.remove("d-none");
+
+    } catch (error) {
+        console.error("Error al pedir mejora de descripción:", error);
+        alert("No se pudo conectar con el asistente de IA. Intente de nuevo.");
+    } finally {
+        botonMejorarDescripcion.disabled = false;
+        botonMejorarDescripcion.textContent = "Mejorar descripción con IA";
+    }
+}
+
+function aceptarSugerenciaDescripcion() {
+    document.getElementById("descripcionActividad").value = descripcionSugeridaIA.value.trim();
+    limpiarError("errorDescripcionActividad");
+    cerrarSugerenciaDescripcion();
+}
+
+function cerrarSugerenciaDescripcion() {
+    panelSugerenciaIA.classList.add("d-none");
+    descripcionOriginalIA.textContent = "";
+    descripcionSugeridaIA.value = "";
+}
+
 // ── Validación del formulario (en el navegador, antes de mandar a la API)
 function validarActividad() {
     let valido = true;

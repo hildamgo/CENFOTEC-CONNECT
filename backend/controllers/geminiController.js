@@ -13,7 +13,7 @@ async function mejorarDescripcion(req, res) {
     } catch (error) {
         console.error("Error en Gemini:", error);
         res.status(error.status || 500).json({
-            mensaje: error.mensaje || "Ocurrió un error con Gemini."
+            mensaje: error.message || "Ocurrió un error con Gemini ok."
         });
     }
 }
