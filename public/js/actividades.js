@@ -1,6 +1,4 @@
-// ======================================================
-// CONFIGURACIÓN DE LA API
-// ======================================================
+
 const API_ACTIVIDADES = "/api/actividades";
 
 const formActividad        = document.getElementById("formActividad");

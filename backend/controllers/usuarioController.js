@@ -1,6 +1,4 @@
-// ======================================================
-// CONTROLADOR: USUARIOS (login / administradores)
-// ======================================================
+
 const {
     crearUsuario: crearUsuarioModelo,
     buscarUsuarios: buscarUsuariosModelo,

@@ -1,6 +1,4 @@
-// ======================================================
-// CONTROLADOR: RESPONSABLES
-// ======================================================
+
 const { crearResponsable: crearResponsableModelo, buscarResponsables: buscarResponsablesModelo } = require("../models/Responsable");
 
 async function crearResponsable(req, res) {

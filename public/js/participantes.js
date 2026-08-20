@@ -1,8 +1,4 @@
-// ======================================================
-// REGISTRO DE PARTICIPANTES (participantes.html)
-// La tabla/búsqueda/filtros viven aparte, en lista-participantes.html
-// (ese usa lista-participantes.js, no este archivo).
-// ======================================================
+
 const API_PARTICIPANTES = "/api/participantes";
 const API_ACTIVIDADES   = "/api/actividades";
 const API_INSCRIPCIONES = "/api/inscripciones";

@@ -1,6 +1,4 @@
-// ======================================================
-// CONTROLADOR: ACTIVIDADES
-// ======================================================
+
 const {
     crearActividad: crearActividadModelo,
     buscarActividades: buscarActividadesModelo,

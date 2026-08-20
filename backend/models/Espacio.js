@@ -1,7 +1,4 @@
-// ======================================================
-// MODELO: ESPACIOS
-// Valida y guarda/busca espacios en MongoDB.
-// ======================================================
+
 const { conectarBD } = require("../database/conexion");
 
 async function coleccionEspacios() {

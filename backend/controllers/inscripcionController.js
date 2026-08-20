@@ -1,6 +1,4 @@
-// ======================================================
-// CONTROLADOR: INSCRIPCIONESn
-// ======================================================
+
 const { crearInscripcion: crearInscripcionModelo, buscarInscripciones: buscarInscripcionesModelo } = require("../models/Inscripcion");
 
 async function crearInscripcion(req, res) {

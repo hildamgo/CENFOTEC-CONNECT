@@ -1,6 +1,4 @@
-// ======================================================
-// CONFIGURACIÓN DE LA API
-// ======================================================
+
 const API_USUARIOS = "/api/usuarios";
 
 // Accesos por módulo, filtrados según el rol del administrador

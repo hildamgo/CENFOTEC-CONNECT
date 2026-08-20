@@ -1,8 +1,4 @@
-// ======================================================
-// CONTROLADOR: PARTICIPANTES
-// Recibe la petición HTTP, llama al modelo y arma la respuesta.
-// No tiene validaciones ni lógica de negocio (eso vive en models/).
-// ======================================================
+
 const { crearParticipante: crearParticipanteModelo, buscarParticipantes: buscarParticipantesModelo } = require("../models/Participante");
 
 async function crearParticipante(req, res) {

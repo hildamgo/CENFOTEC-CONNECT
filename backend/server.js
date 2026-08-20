@@ -1,4 +1,4 @@
-// ======================================================
+
 // CONFIGURACIÓN INICIAL
 // server.js SOLO enchufa las rutas de cada módulo.
 //

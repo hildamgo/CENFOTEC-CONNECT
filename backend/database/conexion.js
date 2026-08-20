@@ -1,6 +1,4 @@
-// ======================================================
-// CONEXIÓN A MONGODB (capa de datos)
-// ======================================================
+
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 

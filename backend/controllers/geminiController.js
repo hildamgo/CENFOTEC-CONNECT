@@ -1,6 +1,4 @@
-// =======================================
-// CONTROLADOR DE GEMINI
-// =======================================
+//cintroladores
 const {
     mejorarDescripcion: ejecutarMejora
 } = require("../services/geminiService.js");

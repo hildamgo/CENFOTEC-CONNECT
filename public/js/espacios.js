@@ -1,13 +1,10 @@
-// ======================================================
-// CONFIGURACIÓN DE LA API
-// ======================================================
+
 const API_ESPACIOS = "/api/espacios";
 
 const formEspacio = document.getElementById("formEspacio");
 
 // ======================================================
-// REGISTRAR ESPACIO
-// ======================================================
+
 formEspacio.addEventListener("submit", async function (evento) {
     evento.preventDefault();
     limpiarErroresEspacio();

@@ -1,6 +1,4 @@
-// ======================================================
-// CONFIGURACIÓN DE LA API
-// ======================================================
+
 const API_RESPONSABLES = "/api/responsables";
 
 function mostrarError(id, mensaje) { const el = document.getElementById(id); if (el) el.textContent = mensaje; }

@@ -1,6 +1,4 @@
-// ======================================================
-// RUTAS: ESPACIOS
-// ======================================================
+
 const express = require("express");
 const router = express.Router();
 const espacioController = require("../controllers/espacioController");

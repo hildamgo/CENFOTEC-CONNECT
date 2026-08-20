@@ -1,6 +1,4 @@
-// ======================================================
-// CONFIGURACIÓN DE LA API
-// ======================================================
+
 const API_PARTICIPANTES  = "/api/participantes";
 const API_INSCRIPCIONES  = "/api/inscripciones";
 const API_ACTIVIDADES    = "/api/actividades";

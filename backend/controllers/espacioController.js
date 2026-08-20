@@ -1,6 +1,4 @@
-// ======================================================
-// CONTROLADOR: ESPACIOS
-// ======================================================
+
 const { crearEspacio: crearEspacioModelo, buscarEspacios: buscarEspaciosModelo } = require("../models/Espacio");
 
 async function crearEspacio(req, res) {
