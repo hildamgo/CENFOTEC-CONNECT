@@ -135,19 +135,34 @@ async function mejorarDescripcion(datosEntrada) {
 
     let respuesta;
 
+    const controlador = new AbortController();
+
+    const tiempoEspera = setTimeout(() => {
+        controlador.abort();
+    }, 30000);
     try {
-        // CORRECCIÓN: faltaba enviar el "body" — la petición salía vacía
-        // y Gemini nunca recibía el prompt.
         respuesta = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "x-goog-api-key": apiKey
             },
-            body: JSON.stringify(cuerpo)
+            body: JSON.stringify(cuerpo),
+            signal: controlador.signal
         });
-    } catch (error){
-        throw crearError("No es posible conectarse con Gemini.", 503);
+    } catch (error) {
+        if (error.name === "AbortError") {
+            throw crearError(
+                "Gemini tardó demasiado en responder. Intente nuevamente.",
+                504
+            );
+        }
+        throw crearError(
+            "No es posible conectarse con Gemini.",
+            503
+        );
+    } finally {
+        clearTimeout(tiempoEspera);
     }
     const resultado = await respuesta.json();
 
